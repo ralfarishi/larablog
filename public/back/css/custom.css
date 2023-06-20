@@ -1,0 +1,19 @@
+.inputImgPreview{
+	height: 150px;
+	margin-top: 10px;
+}
+
+.dataTable  tbody tr td >a {
+	margin-right: 5px;
+}
+
+.breadcrumb{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+
+#page-wrapper > div:nth-child(2) > div > h1{
+	margin-top: 10px;
+
+}
