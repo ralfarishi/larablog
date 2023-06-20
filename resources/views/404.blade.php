@@ -6,6 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <link href="{{ asset('images/favicon.ico') }}" rel="icon">
 
 	<title>Sekolah JeWePe - Page Not Found</title>
 
