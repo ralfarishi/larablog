@@ -16,7 +16,7 @@ $ cp .env.example .env
 3. Create a new MySQL database dan set up the new database in .env file.
 
 ```sh
-DB_DATABASE=nama_database
+DB_DATABASE=database_name
 DB_USERNAME=root
 DB_PASSWORD=
 ```
