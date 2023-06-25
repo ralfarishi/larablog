@@ -1,19 +1,19 @@
 ### Installation
 
-1. Clone repo ini & install dependensi menggunakan composer.
+1. Clone this repo & install dependencies using composer.
 
 ```sh
 $ cd sekolah-jewepe
 $ composer install
 ```
 
-2. Salin file .env.example.
+2. Copy the .env.example file.
 
 ```sh
 $ cp .env.example .env
 ```
 
-3. Buat database baru di MySQL dan masukkan nama database tersebut ke file .env.
+3. Create a new MySQL database dan set up the new database in .env file.
 
 ```sh
 DB_DATABASE=nama_database
@@ -21,29 +21,29 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-4. Buka file seeder di lokasi `database/seeders/UserTableSeeder.php` untuk keperluan login admin.
+4. Open the seeder file located in `database/seeders/UserTableSeeder.php` for login credential.
 
 ```php
 DB::table('users')->insert([
-    'name' => 'admin', // nama
-    'email' => 'admin@google.com', // email
+    'name' => 'admin', // user name
+    'email' => 'admin@google.com', // user email
     'password' => Hash::make("12345") // password
 ]);
 ```
 
-5. Buat application key:
+5. Create the application key:
 
 ```sh
 $ php artisan key:generate
 ```
 
-6. Jalankan migrasi dan seed:
+6. Run migration & seed:
 
 ```sh
 $ php artisan migrate --seed
 ```
 
-7. Jalankan project:
+7. Run the project:
 
 ```sh
 $ php artisan serve
