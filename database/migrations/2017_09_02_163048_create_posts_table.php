@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('slug', 100)->unique();
             $table->text('content');
             $table->string('featured_image');
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
