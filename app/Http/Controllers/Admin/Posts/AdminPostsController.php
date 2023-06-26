@@ -129,7 +129,7 @@ class AdminPostsController extends Controller
             'title' => 'required',
             'content' => 'required',
             // 'active' => 'required',
-            'featured_image'=>'mimes:png,jpg,jpeg'
+            'featured_image'=>'mimes:png,jpg,jpeg|max:500'
         ]);
 
         $data = $request->all();
