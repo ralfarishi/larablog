@@ -46,5 +46,5 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 });
 
 Route::fallback(function (){
-    return view('404');
+    return view('errors.404');
 });
