@@ -8,8 +8,6 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            @include('includes.admin.alerts')
-
             {{Form::model($post, ['route' => ['artikel.update', $post],'method'=>'PATCH','files'=>true])}}
             @include('admin.posts.form')
             <div class="form-group text-center">
