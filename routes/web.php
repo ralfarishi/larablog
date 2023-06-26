@@ -30,7 +30,7 @@ Route::fallback(function (){
     return view('404');
 });
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest', 'ip.check')->group(function () {
     Route::get("/login", [NewAuthController::class, 'index'])->name('login');
     Route::post("/login", [NewAuthController::class,'login']);
 });
