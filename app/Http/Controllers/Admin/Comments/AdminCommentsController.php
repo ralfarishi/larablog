@@ -86,6 +86,6 @@ class AdminCommentsController extends Controller
         
         session()->flash('info','Comment deleted successfully');
 
-        return redirect(route('admin.comments'));
+        return redirect(route('admin.komentar'));
     }
 }
