@@ -18,9 +18,6 @@
   <link href="{{ asset("css/artikel_v2/vendor/bootstrap.min.css") }}" rel="stylesheet">
   {{-- <link href="{{ asset("css/artikel_v2/vendor/bootstrap-icons.css") }}" rel="stylesheet"> --}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link href="{{ asset("css/artikel_v2/vendor/aos.css") }}" rel="stylesheet">
-  <link href="{{ asset("css/artikel_v2/vendor/glightbox.min.css") }}" rel="stylesheet">
-  <link href="{{ asset("css/artikel_v2/vendor/swiper-bundle.min.css") }}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="{{ asset("css/artikel_v2/main.css") }}" rel="stylesheet">
