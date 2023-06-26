@@ -9,7 +9,6 @@
     </div>
 
     <div class="row">
-        @include('includes.admin.alerts')
         <div class="col-md-12">
             {{Form::open(['url' => route("artikel.store"), 'method' => 'POST','files'=>true])}}
             @include('admin.posts.form')
