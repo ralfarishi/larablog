@@ -77,7 +77,7 @@ class AdminPostsController extends Controller
             'title' => 'required',
             'content' => 'required',
             // 'active' => 'required',
-            'featured_image'=>'required|mimes:png,jpg,jpeg'
+            'featured_image'=>'required|mimes:png,jpg,jpeg|max:500'
         ]); 
         $inputs = $request->all();
         $inputs['user_id'] = Auth::user()->id;
