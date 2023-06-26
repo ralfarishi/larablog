@@ -34,22 +34,6 @@
     @endif
 </div>
 
-
-{{-- <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
-    <label>Active : </label>
-    <label class="radio-inline">
-        {{Form::radio('active','1',true,['id'=>'yes'])}} Yes
-    </label>
-    <label class="radio-inline">
-        {{Form::radio('active','0',null,['id'=>'yes'])}} No
-    </label>
-    @if ($errors->has('active'))
-        <span class="help-block">
-                <strong>{{ $errors->first('active') }}</strong>
-        </span>
-    @endif
-</div> --}}
-
 @section('page_scripts')
 
     <script type="text/javascript" src="{{URL::asset('back/js/ckeditor/ckeditor.js')}}"></script>
