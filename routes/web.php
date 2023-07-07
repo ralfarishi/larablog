@@ -26,7 +26,7 @@ Route::get("/artikel/{id}", [PostsController::class, 'show'])->name('post');
 Route::post("/artikel/{id}/save-comment",[PostsController::class, 'storeComment']);
 Route::get('blog/search', [SearchController::class,'index'])->name('blog.search');
 
-Route::middleware('guest', 'ip.check')->group(function () {
+Route::middleware('guest')->group(function () {
     Route::get("/login", [NewAuthController::class, 'index'])->name('login');
     Route::post("/login", [NewAuthController::class,'login']);
 });
