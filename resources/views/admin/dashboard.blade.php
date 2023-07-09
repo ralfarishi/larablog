@@ -1,59 +1,68 @@
-@extends('layouts.admin.template')
+@extends('layouts.admin_v2.template')
 
 @section('content')
-<div class="row">
-	<div class="col-lg-12">
-		<h1 class="page-header">Dashboard</h1>
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0">Dashboard</h1>
+			</div>
+			<!-- /.col -->
+			<div class="col-sm-6">
+				<ol class="breadcrumb float-sm-right">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item active">Dashboard</li>
+				</ol>
+			</div>
+			<!-- /.col -->
+		</div>
+		<!-- /.row -->
 	</div>
+	<!-- /.container-fluid -->
 </div>
-	<div class="row">
-	<div class="col-lg-3 col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<div class="row">
-					<div class="col-xs-3">
-						<i class="fa fa-comments-o fa-5x"></i>
+
+<!-- Main content -->
+<section class="content">
+	<div class="container-fluid">
+		<!-- Small boxes (Stat box) -->
+		<div class="row justify-content-center">
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-info">
+					<div class="inner">
+						<h3>{{ $num_unread_comments }}</h3>
+
+						<p>Total Komentar</p>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">{{$num_unread_comments}}</div>
-						<div>Total Komentar!</div>
+					<div class="icon">
+						<i class="ion ion-chatbubbles"></i>
 					</div>
+					<a href="{{ route('admin.komentar') }}" class="small-box-footer"
+						>View Details <i class="fas fa-arrow-circle-right"></i
+					></a>
 				</div>
 			</div>
-			<a href="{{ route('admin.komentar') }}">
-				<div class="panel-footer">
-					<span class="pull-left">View Details</span>
-					<span class="pull-right"
-						><i class="fa fa-arrow-circle-right"></i
-					></span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
-		</div>
-	</div>
-	<div class="col-lg-3 col-md-6">
-		<div class="panel panel-green">
-			<div class="panel-heading">
-				<div class="row">
-					<div class="col-xs-3">
-						<i class="fa fa-book fa-5x"></i>
+			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h3>{{ $total_posts }}</h3>
+
+						<p>Semua Artikel</p>
 					</div>
-					<div class="col-xs-9 text-right">
-						<div class="huge">{{$total_posts}}</div>
-						<div>Semua Artikel!</div>
+					<div class="icon">
+						<i class="ion ion-ios-paper"></i>
 					</div>
+					<a href="{{ route('artikel.index') }}" class="small-box-footer"
+						>View Details <i class="fas fa-arrow-circle-right"></i
+					></a>
 				</div>
 			</div>
-			<a href="{{route('artikel.index')}}">
-				<div class="panel-footer">
-					<span class="pull-left">View Details</span>
-					<span class="pull-right"
-						><i class="fa fa-arrow-circle-right"></i
-					></span>
-					<div class="clearfix"></div>
-				</div>
-			</a>
+			<!-- ./col -->
 		</div>
 	</div>
-</div>
+	<!-- /.container-fluid -->
+</section>
 @endsection

@@ -19,4 +19,6 @@
 	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
 />
 <!-- Theme style -->
+<link href="{{ asset('admin_v2/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('admin_v2/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="{{ asset('admin_v2/css/adminlte.min.css') }}" />

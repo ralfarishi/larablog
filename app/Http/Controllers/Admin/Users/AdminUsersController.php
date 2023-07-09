@@ -104,7 +104,7 @@ class AdminUsersController extends Controller
         $user->password = $inputs['password'];
         $user->save();
 
-        $request->session()->flash('success','User updated successfully');
+        $request->session()->flash('info','User updated successfully');
 
         return redirect(route('users.index'));
     }
@@ -116,11 +116,11 @@ class AdminUsersController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
-        User::delete($id);
+        User::destroy($id);
 
-        $request->session()->flash('info','User deleted successfully');
+        $request->session()->flash('danger','User berhasil dihapus!');
         return redirect()->back();
     }
 }

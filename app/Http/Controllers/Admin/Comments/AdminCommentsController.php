@@ -35,7 +35,7 @@ class AdminCommentsController extends Controller
                     //Edit Button
                     // $actionHtml = '<a href="'.$link.'/edit'.' " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span></a>';
                     //Delete Button
-                    $actionHtml ='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal"><span class="glyphicon glyphicon-trash"></span></a>';
+                    $actionHtml ='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
                     return $actionHtml;
                 })
                 ->addColumn('post',function ($model) use ($request){
@@ -73,7 +73,7 @@ class AdminCommentsController extends Controller
         $comment->fill($comment);
         $comment->save();
 
-        session()->flash('success','Comment updated successfully');
+        session()->flash('info','Komentar berhasil diperbarui!');
 
         return redirect(route('admin.comments'));
     }
@@ -84,7 +84,7 @@ class AdminCommentsController extends Controller
         $comment = CommentsModel::findOrFail($id);
         $comment->delete($id);
         
-        session()->flash('info','Comment deleted successfully');
+        session()->flash('danger','Komentar berhasil dihapus!');
 
         return redirect(route('admin.komentar'));
     }

@@ -8,7 +8,7 @@
 			></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="{{ url('admin/dashboard_v2') }}" class="nav-link">Home</a>
+			<a href="{{ url('admin/dashboard') }}" class="nav-link">Home</a>
 		</li>
 	</ul>
 
@@ -35,7 +35,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 	<!-- Brand Logo -->
-	<a href="#" class="brand-link">
+	<a href="{{ route('home') }}" class="brand-link">
 		<img
 			src="{{ asset('images/AdminLTELogo.png') }}"
 			alt="AdminLTE Logo"
@@ -58,7 +58,7 @@
 				<!-- Add icons to the links using the .nav-icon class
 					with font-awesome or any other icon font library -->
 				<li class="nav-item">
-					<a href="#" class="nav-link active">
+					<a href="{{ url('admin/dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-tachometer-alt"></i>
 						<p>Dashboard</p>
 					</a>
@@ -74,13 +74,13 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a href="{{ route('artikel.index') }}" class="nav-link">
+							<a href="{{ route('artikel.index') }}" class="nav-link {{ request()->routeIs('artikel.index') ? 'active' : '' }}">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Semua Artikel</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ route('artikel.create') }}" class="nav-link">
+							<a href="{{ route('artikel.create') }}" class="nav-link {{ request()->routeIs('artikel.create') ? 'active' : '' }}">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Buat Artikel</p>
 							</a>
@@ -88,13 +88,13 @@
 					</ul>
 				</li>
 				<li class="nav-item">
-					<a href="{{ url('admin/komentar') }}" class="nav-link">
+					<a href="{{ url('admin/komentar') }}" class="nav-link {{ request()->is('admin/komentar') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-comments"></i>
 						<p>Komentar</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="{{ route('users.index') }}" class="nav-link">
+					<a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
 						<i class="nav-icon fas fa-users"></i>
 						<p>Users</p>
 					</a>

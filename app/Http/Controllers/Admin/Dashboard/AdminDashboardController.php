@@ -24,34 +24,4 @@ class AdminDashboardController extends Controller
 
 		return view("admin.dashboard", $data);
 	}
-
-	public function v2()
-	{
-		return view('admin.dashboard_v2');
-	}
-
-	public function adminLogin()
-	{
-		return view('auth.login_v2');
-	}
-
-	public function createArticle()
-	{
-		return view('admin.posts.post_v2.create');
-	}
-
-	public function listArticle()
-	{
-		return view('admin.posts.post_v2.list');
-	}
-
-	public function listComments()
-	{
-		return view('admin.comments.list_v2');
-	}
-
-	public function listUsers()
-	{
-		return view('admin.users.list_v2');
-	}
 }

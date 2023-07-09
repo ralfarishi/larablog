@@ -1,37 +1,40 @@
-@section('page_css')
-<link href="{{URL::asset('back/css/select2.min.css')}}" rel="stylesheet" type="text/css">
-@endsection
 <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-    {{Form::label('title', 'Post title *')}}
-    {{Form::text("title", null, array("class"=>"form-control","id"=>"title"))}}
+    {{ Form::label('title', 'Post title*') }}
+    {{ Form::text("title", null, array("class"=>"form-control","id"=>"title", "placeholder"=>"Judul artikel")) }}
     @if ($errors->has('title'))
-        <span class="help-block">
-                <strong>{{ $errors->first('title') }}</strong>
-        </span>
+			<span class="help-block text-danger">
+				<strong>{{ $errors->first('title') }}</strong>
+			</span>
     @endif
 </div>
-
 <div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-    {{Form::label('content', 'Content *')}}
+	{{ Form::label('content', 'Content*') }}
 
-    {{Form::textarea("content", null, array("class"=>"form-control","id"=>"content"))}}
-    @if ($errors->has('content'))
-        <span class="help-block">
-                <strong>{{ $errors->first('content') }}</strong>
-        </span>
-    @endif
+	{{ Form::textarea("content", null, array("class"=>"form-control","id"=>"content", "placeholder"=>"isi artikel")) }}
+	@if ($errors->has('content'))
+			<span class="help-block text-danger">
+					<strong>{{ $errors->first('content') }}</strong>
+			</span>
+	@endif
 </div>
+<div class="form-group {{ $errors->has('featured_image') ? ' has-error ':''}}">
+	{{ Form::label('featured_image','Featured Image* ') }}
+	<div class="input-group">
+		<div class="custom-file">
+			{{ Form::file('featured_image', ["class"=>"form-control btn custom-file-input","id"=>"featured_image"])}}
+			<label
+				class="custom-file-label"
+				>Choose file</label
+			>
+		</div>
+	</div>
+	<img id="preview_featured_image" class="inputImgPreview w-25" src="@if(isset($post)){{ $post->featured_image->thumb }} @endif" class="img-thumbnail"/>
 
-
-<div class="form-group{{ $errors->has('featured_image') ? ' has-error ':''}}">
-{{Form::label('featured_image','Featured image * ')}}
-    {{Form::file('featured_image',null,["class"=>"form-control btn btn-default","id"=>"featured_image"])}}
-        <img id="preview_featured_image" class="inputImgPreview" src="@if(isset($post)){{$post->featured_image->thumb}} @endif" class="img-thumbnail"/>
-    @if ($errors->has('featured_image'))
-        <span class="help-block">
-            <strong>{{ $errors->first('featured_image') }}</strong>
-        </span>
-    @endif
+	@if ($errors->has('featured_image'))
+		<span class="help-block text-danger">
+			<strong>{{ $errors->first('featured_image') }}</strong>
+		</span>
+	@endif
 </div>
 
 @section('page_scripts')

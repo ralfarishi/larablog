@@ -42,9 +42,9 @@ class AdminPostsController extends Controller
                     $id = $model->id;
                     $link = $request->url().'/'.$id;
                     //Edit Button
-                    $actionHtml = '<a href="'.$link.'/edit'.' " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span></a>';
+                    $actionHtml = '<a href="'.$link.'/edit'.' " class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>';
                     //Delete Button
-                    $actionHtml .='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal"><span class="glyphicon glyphicon-trash"></span></a>';
+                    $actionHtml .='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data ml-2" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
 
                     return $actionHtml;
                 })
@@ -92,7 +92,7 @@ class AdminPostsController extends Controller
 
 
         PostsModel::create($inputs);
-        session()->flash('success', 'Post Successfull!');
+        session()->flash('success', 'Artikel berhasil dibuat!');
 
         return redirect("admin/artikel");
 
@@ -147,7 +147,7 @@ class AdminPostsController extends Controller
         // $this->postsRepository->update($inputs, $id);
         $posts->update($data);
 
-        session()->flash('success','Post updated successfully');
+        session()->flash('info','Artikel berhasil diperbarui!');
         
         return redirect(url('admin/artikel'));
     }
@@ -163,7 +163,7 @@ class AdminPostsController extends Controller
         $posts = PostsModel::findOrFail($id);
         $posts->delete($id);
         
-        session()->flash('success','Posts deleted successfully');
+        session()->flash('danger','Artikel berhasil dihapus!');
 
         return redirect(url('admin/artikel'));
     }

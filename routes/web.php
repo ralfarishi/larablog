@@ -22,13 +22,6 @@ use App\Http\Controllers\NewAuthController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/v2', [AdminDashboardController::class, 'v2']);
-Route::get('/login_v2', [AdminDashboardController::class, 'adminLogin']);
-Route::get('/create_article', [AdminDashboardController::class, 'createArticle']);
-Route::get('/list_article', [AdminDashboardController::class, 'listArticle']);
-Route::get('/list_comments', [AdminDashboardController::class, 'listComments']);
-Route::get('/list_users', [AdminDashboardController::class, 'listUsers']);
-
 Route::get("/artikel/{id}", [PostsController::class, 'show'])->name('post');
 Route::post("/artikel/{id}/save-comment",[PostsController::class, 'storeComment']);
 Route::get('blog/search', [SearchController::class,'index'])->name('blog.search');
@@ -40,6 +33,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+
     Route::resource('/artikel', AdminPostsController::class);
     
     Route::get('/komentar', [AdminCommentsController::class, 'index'])->name('admin.komentar');
@@ -47,7 +41,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::patch('/komentar/{id}', [AdminCommentsController::class, 'update'])->name('admin.comments.update');
     Route::delete('/komentar/{id}', [AdminCommentsController::class, 'destroy'])->name('admin.comments.delete');
     
-    Route::resource('/users', AdminUsersController::class);
+    Route::get('/users', [AdminUsersController::class, 'index'])->name('users.index');
+    Route::delete('/users/{id}', [AdminUsersController::class, 'destroy'])->name('users.delete');
 
     Route::post("/logout", [NewAuthController::class,'logout'])->name('logout');
 });
