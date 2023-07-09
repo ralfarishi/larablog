@@ -6,6 +6,8 @@
 
 <title>Sekolah JeWePe | Admin</title>
 
+<link href="{{ asset('images/favicon.ico') }}" rel="icon">
+
 <!-- Google Font: Source Sans Pro -->
 <link
 	rel="stylesheet"
