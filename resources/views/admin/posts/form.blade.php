@@ -24,11 +24,12 @@
 			{{ Form::file('featured_image', ["class"=>"form-control btn custom-file-input","id"=>"featured_image"])}}
 			<label
 				class="custom-file-label"
+				id="file-label"
 				>Choose file</label
 			>
 		</div>
 	</div>
-	<img id="preview_featured_image" class="inputImgPreview w-25" src="@if(isset($post)){{ $post->featured_image->thumb }} @endif" class="img-thumbnail"/>
+	<img id="preview_featured_image" class="inputImgPreview w-25 mt-2" src="@if(isset($post)){{ $post->featured_image->thumb }} @endif" class="img-thumbnail"/>
 
 	@if ($errors->has('featured_image'))
 		<span class="help-block text-danger">
@@ -39,27 +40,30 @@
 
 @section('page_scripts')
 
-    <script type="text/javascript" src="{{URL::asset('back/js/ckeditor/ckeditor.js')}}"></script>
-    <script type="text/javascript" src="{{URL::asset('back/js/select2.min.js')}}"></script>
+	<script type="text/javascript" src="{{URL::asset('back/js/ckeditor/ckeditor.js')}}"></script>
+	<script type="text/javascript" src="{{URL::asset('back/js/select2.min.js')}}"></script>
 
-    <script type="text/javascript">
-        CKEDITOR.replace( 'content' );
+	<script type="text/javascript">
+		document.getElementById('featured_image').addEventListener('change', function(e) {
+			var fileName = e.target.files[0].name;
+			document.getElementById('file-label').textContent = fileName;
+		});
 
-        function readURL(input) {
+		CKEDITOR.replace( 'content' );
 
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                var targetPreview = 'preview_'+$(input).attr('id');
-                reader.onload = function(e) {
-                    $('#'+targetPreview).attr('src', e.target.result).show();
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        $("#featured_image").change(function() {
-            readURL(this);
-        });
-    </script>
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				var targetPreview = 'preview_'+$(input).attr('id');
+				reader.onload = function(e) {
+						$('#'+targetPreview).attr('src', e.target.result).show();
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$("#featured_image").change(function() {
+				readURL(this);
+		});
+	</script>
 @endsection
 
