@@ -22,6 +22,13 @@ use App\Http\Controllers\NewAuthController;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/v2', [AdminDashboardController::class, 'v2']);
+Route::get('/login_v2', [AdminDashboardController::class, 'adminLogin']);
+Route::get('/create_article', [AdminDashboardController::class, 'createArticle']);
+Route::get('/list_article', [AdminDashboardController::class, 'listArticle']);
+Route::get('/list_comments', [AdminDashboardController::class, 'listComments']);
+Route::get('/list_users', [AdminDashboardController::class, 'listUsers']);
+
 Route::get("/artikel/{id}", [PostsController::class, 'show'])->name('post');
 Route::post("/artikel/{id}/save-comment",[PostsController::class, 'storeComment']);
 Route::get('blog/search', [SearchController::class,'index'])->name('blog.search');
