@@ -19,7 +19,7 @@ class PostsModel extends Model
      *
      * @var array
      */
-    protected $fillable = ['title','slug','content','featured_image','active','user_id'];
+    protected $fillable = ['title','slug','content','featured_image','user_id'];
 
     /**
      * Accessor that returns an object/instance with path to different sized images.
@@ -42,16 +42,5 @@ class PostsModel extends Model
      public function comments()
     {
         return $this->hasMany('App\Models\CommentsModel','post_id');
-    }
-
-    /**
-     * Scope a query to only include active posts.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
-     */
-    public function scopeActive($query)
-    {
-        $query->where('active', 1);
     }
 }

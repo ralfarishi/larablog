@@ -76,7 +76,6 @@ class AdminPostsController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'content' => 'required',
-            // 'active' => 'required',
             'featured_image'=>'required|mimes:png,jpg,jpeg|max:500'
         ]); 
         $inputs = $request->all();
@@ -128,7 +127,6 @@ class AdminPostsController extends Controller
         $data = $request->validate( [
             'title' => 'required',
             'content' => 'required',
-            // 'active' => 'required',
             'featured_image'=>'mimes:png,jpg,jpeg|max:500'
         ]);
 
@@ -141,7 +139,7 @@ class AdminPostsController extends Controller
         if($request->hasFile('featured_image'))
         {
             $image_path = uploadWithThumb($posts['featured_image'],'images/blog');
-            $posts['featured_image'] = $image_path;   
+            $posts['featured_image'] = $image_path;
         }
 
         // $this->postsRepository->update($inputs, $id);

@@ -12,14 +12,14 @@ use App\Models\CommentsModel;
 class PostsController extends Controller {
 
     /**
-     * Show post 
-     * 
-     *  
+     * Show post
+     *
+     *
      */
-	public function show($id) 
+	public function show($id)
     {
         
-		$posts = PostsModel::active()->where('slug', $id)->firstOrFail();
+		$posts = PostsModel::where('slug', $id)->firstOrFail();
 
         $data['post'] = $posts;
         
@@ -37,7 +37,7 @@ class PostsController extends Controller {
 
         $inputs = $request->all();
         
-        $post = PostsModel::active()->where('slug', $id)->firstOrFail();
+        $post = PostsModel::where('slug', $id)->firstOrFail();
         // $user = User::findOrFail($id);
 
         $comment  = new CommentsModel();
