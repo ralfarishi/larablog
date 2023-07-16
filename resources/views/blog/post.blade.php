@@ -16,10 +16,10 @@
 <section id="blog" class="blog">
   <div class="container">
     <div class="row g-5">
-      <div class="col-lg-8">
+      <div class="col-lg">
         <article class="blog-details">
           <div class="post-img">
-              <img src="{{ asset($post->featured_image->original) }}" alt="" class="img-fluid d-flex">
+              <img src="{{ asset($post->featured_image->original) }}" alt="" class="img-fluid d-flex mx-auto">
           </div>
 
           <h2 class="title">{{ $post->title }}</h2>
@@ -33,7 +33,7 @@
                 </a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="bi bi-clock"></i> 
+                <i class="bi bi-clock"></i>
                 <a href="blog-details.html">
                   <time datetime="2020-01-01">
                     {{ $post->created_at->diffForHumans() }}
