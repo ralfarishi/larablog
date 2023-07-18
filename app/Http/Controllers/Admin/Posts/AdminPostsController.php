@@ -69,7 +69,7 @@ class AdminPostsController extends Controller
 	public function store(Request $request)
 	{
 		$this->validate($request, [
-				'title' => 'required',
+				'title' => 'required|unique:posts',
 				'content' => 'required',
 				'featured_image'=>'required|mimes:png,jpg,jpeg|max:500'
 		]);
