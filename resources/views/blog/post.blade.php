@@ -19,7 +19,7 @@
       <div class="col-lg">
         <article class="blog-details">
           <div class="post-img">
-              <img src="{{ asset($post->featured_image->original) }}" alt="" class="img-fluid d-flex mx-auto">
+              <img src="{{ asset($post->featured_image->original) }}" alt="" class="img-fluid d-flex w-75 mx-auto">
           </div>
 
           <h2 class="title">{{ $post->title }}</h2>
