@@ -71,8 +71,14 @@ class AdminPostsController extends Controller
 		$this->validate($request, [
 				'title' => 'required|unique:posts',
 				'content' => 'required',
-				'featured_image'=>'required|mimes:png,jpg,jpeg|max:500'
-		]);
+				'featured_image'=> 'required|mimes:png,jpg,jpeg|max:500'
+		],
+		[
+			'title.required' => 'Judul tidak boleh kosong!',
+			'content.required' => 'Isi artikel tidak boleh kosong!',
+			'featured_image.required'=> 'Harap meng-upload gambar!'
+		]
+	);
 
 		$inputs = $request->all();
 		$inputs['user_id'] = Auth::user()->id;

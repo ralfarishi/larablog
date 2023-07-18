@@ -28,7 +28,13 @@ class PostsController extends Controller
 			'user_name' => 'required',
 			'user_email' => 'required',
 			'content' => 'required',
-		]);
+		],
+		[
+			'user_name.required' => 'Nama tidak boleh kosong!',
+			'user_email.required' => 'Email tidak boleh kosong!',
+			'content.required' => 'Komentar tidak boleh kosong!',
+		]
+	);
 
 		$inputs = $request->all();
 		
