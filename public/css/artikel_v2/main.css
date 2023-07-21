@@ -501,7 +501,7 @@ section {
         inset: 0;
         padding: 50px 0 10px 0;
         margin: 0;
-        background: rgba(0, 131, 116, 0.9);
+        background: rgba(58, 57, 98, 1);
         overflow-y: auto;
         transition: 0.3s;
         z-index: 9998;
@@ -547,7 +547,7 @@ section {
     .navbar .getstarted:hover,
     .navbar .getstarted:focus:hover {
         color: #fff;
-        background: rgba(0, 131, 116, 0.8);
+        background: rgba(58, 57, 98, 0.871);
     }
 
     .navbar .dropdown ul,
@@ -600,7 +600,7 @@ section {
         content: "";
         position: fixed;
         inset: 0;
-        background: rgba(0, 106, 93, 0.8);
+        background: rgba(64, 63, 125, 0.86);
         z-index: 9996;
     }
 }
@@ -1557,7 +1557,7 @@ section {
 
 .contact .info-item {
     width: 100%;
-    background-color: #009282;
+    background-color: var(--color-primary);
     margin-bottom: 20px;
     padding: 20px;
     border-radius: 10px;
@@ -1630,7 +1630,7 @@ section {
 .contact .php-email-form .sent-message {
     display: none;
     color: #fff;
-    background: #059652;
+    background: var(--color-primary);
     text-align: center;
     padding: 15px;
     font-weight: 600;
@@ -1650,7 +1650,7 @@ section {
     width: 24px;
     height: 24px;
     margin: 0 10px -6px 0;
-    border: 3px solid #059652;
+    border: 3px solid var(--color-primary);
     border-top-color: #fff;
     animation: animate-loading 1s linear infinite;
 }
@@ -1688,7 +1688,7 @@ section {
 }
 
 .contact .php-email-form button[type="submit"]:hover {
-    background: rgba(0, 131, 116, 0.8);
+    background: rgba(59, 59, 110, 0.871);
 }
 
 @keyframes animate-loading {
@@ -2183,7 +2183,7 @@ section {
 }
 
 .blog .sidebar .search-form form button:hover {
-    background: rgba(0, 131, 116, 0.8);
+    background: rgba(58, 57, 98, 0.871);
 }
 
 .blog .sidebar .categories ul {
@@ -2361,7 +2361,7 @@ section {
 
 .blog .comments .reply-form input:focus {
     box-shadow: none;
-    border-color: rgba(0, 131, 116, 0.8);
+    border-color: rgba(58, 57, 98, 0.871);
 }
 
 .blog .comments .reply-form textarea {
@@ -2372,7 +2372,7 @@ section {
 
 .blog .comments .reply-form textarea:focus {
     box-shadow: none;
-    border-color: rgba(0, 131, 116, 0.8);
+    border-color: rgba(58, 57, 98, 0.871);
 }
 
 .blog .comments .reply-form .form-group {
