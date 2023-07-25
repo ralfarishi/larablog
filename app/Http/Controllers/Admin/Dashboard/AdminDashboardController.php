@@ -16,7 +16,7 @@ class AdminDashboardController extends Controller
 	{
 		// $data = array();
 
-		$num_unread_comments = CommentsModel::where('read','!=','1')->count();
+		$num_unread_comments = CommentsModel::count();
 		$total_posts = PostsModel::count();
 
 		$data['num_unread_comments'] = $num_unread_comments;
