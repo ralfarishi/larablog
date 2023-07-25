@@ -40,14 +40,16 @@ class AdminCommentsController extends Controller
                 })
                 ->addColumn('post',function ($model) use ($request){
                     //Show Post title on which user has Commented
-                    $actionHtml = $model->post->title;
+                    // $actionHtml = $model->post->title;
+                    $route = route('post', $model->post->slug);
+                    $actionHtml = '<a href="' . $route . '" target="_blank">' . $model->post->title . '</a>';
                     return $actionHtml;
                 })
                 ->addColumn('status', function ($model) use ($request) {
                     // $actionHtml ='';
                     return $model->active ? '<span class="badge badge-success">Tampil</span>' : '<span class="badge badge-danger">Tidak Tampil</span>';
                 })
-                ->rawColumns(['actions','status'])
+                ->rawColumns(['actions','status', 'post'])
                 ->make(true);
         }
 
