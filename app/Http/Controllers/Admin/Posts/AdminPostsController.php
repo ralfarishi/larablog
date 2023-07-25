@@ -67,7 +67,9 @@ class AdminPostsController extends Controller
 	 */
 	public function create()
 	{
-		return view("admin.posts.create");
+		$post = new PostsModel();
+
+    return view('admin.posts.create', compact('post'));
 	}
 
 	/**
@@ -93,6 +95,7 @@ class AdminPostsController extends Controller
 		$inputs = $request->all();
 		$inputs['user_id'] = Auth::user()->id;
 		$inputs['slug'] = Str::slug($inputs['title'], '-');
+		$inputs['allowed_comment'] = $request->input('allowed_comment') === '1';
 
 		if($inputs['featured_image'])
 		{
@@ -143,6 +146,7 @@ class AdminPostsController extends Controller
 		$posts = PostsModel::findOrFail($id);
 		
 		$data['slug'] = Str::slug($data['title'], '-');
+		$data['allowed_comment'] = $request->input('allowed_comment') === '1';
 
 		if($request->hasFile('featured_image'))
 		{

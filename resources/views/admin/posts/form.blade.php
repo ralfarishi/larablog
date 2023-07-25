@@ -12,9 +12,9 @@
 
 	{{ Form::textarea("content", null, array("class"=>"form-control","id"=>"content", "placeholder"=>"isi artikel")) }}
 	@if ($errors->has('content'))
-			<span class="help-block text-danger">
-					<strong>{{ $errors->first('content') }}</strong>
-			</span>
+		<span class="help-block text-danger">
+			<strong>{{ $errors->first('content') }}</strong>
+		</span>
 	@endif
 </div>
 <div class="form-group {{ $errors->has('featured_image') ? ' has-error ':''}}">
@@ -36,6 +36,18 @@
 			<strong>{{ $errors->first('featured_image') }}</strong>
 		</span>
 	@endif
+</div>
+
+<div class="form-group clearfix">
+	<label>Buka Komentar : </label>
+	<div class="icheck-primary d-inline">
+		<input type="radio" id="radioYes" name="allowed_comment" value="1" {{ $post->allowed_comment == 1 ? 'checked' : '' }}>
+		<label for="radioYes">Ya</label>
+	</div>
+	<div class="icheck-danger d-inline">
+		<input type="radio" id="radioNo" name="allowed_comment" value="0" {{ $post->allowed_comment == 0 ? 'checked' : '' }}>
+		<label for="radioNo">Tidak</label>
+	</div>
 </div>
 
 @section('page_scripts')

@@ -19,7 +19,7 @@ protected $table = "posts";
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['title','slug','content','featured_image','user_id'];
+	protected $fillable = ['title','slug','content','featured_image','user_id','allowed_comment'];
 
 	/**
 	 * Accessor that returns an object/instance with path to different sized images.

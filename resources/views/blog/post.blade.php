@@ -48,11 +48,8 @@
               {!! $post->content !!}
             </p>
           </div>
-
           <div class="comments">
-
               <h4 class="comments-count">Comments</h4>
-
               @foreach ($active_comments as $comment)
                 <div id="comment-1" class="comment">
                   <div class="d-flex">
@@ -67,46 +64,47 @@
                 </div>
               @endforeach
 
-              <div class="reply-form">
+              @php
+                $disabledForm = $post->allowed_comment ? '' : 'disabled';
+              @endphp
 
+              <div class="reply-form">
                 <h4>Leave a Comment</h4>
                 <p>Your email address will not be published. Required fields are marked * </p>
-                {{ Form::open(['url'=>'artikel/'.$post->slug.'/save-comment','method'=>'POST']) }}
-                  @csrf
-                  <div class="row">
-                    <div class="col-md-6 form-group {{ $errors->has('user_name') ? ' has-error' : '' }}">
-                      {{-- <input name="name" type="text" class="form-control" placeholder="Your Name*"> --}}
-                      {{ Form::text('user_name',null,['placeholder' => 'Name' , 'class' => 'form-control']) }}
-                      @if ($errors->has('user_name'))
-                          <span class="help-block text-danger">
-                            <strong>{{ $errors->first('user_name') }}</strong>
-                          </span>
-                      @endif
+                  {{ Form::open(['url'=>'artikel/'.$post->slug.'/save-comment','method'=>'POST']) }}
+                    @csrf
+                    <div class="row">
+                      <div class="col-md-6 form-group {{ $errors->has('user_name') ? ' has-error' : '' }}">
+                        {{-- <input name="name" type="text" class="form-control" placeholder="Your Name*"> --}}
+                        {{ Form::text('user_name',null,['placeholder' => 'Name' , 'class' => 'form-control', $disabledForm]) }}
+                        @if ($errors->has('user_name'))
+                            <span class="help-block text-danger">
+                              <strong>{{ $errors->first('user_name') }}</strong>
+                            </span>
+                        @endif
+                      </div>
+                      <div class="col-md-6 form-group {{ $errors->has('user_email') ? ' has-error' : '' }}">
+                        {{ Form::text('user_email',null,["placeholder"=> "Email" , 'class' => 'form-control', $disabledForm]) }}
+                        @if ($errors->has('user_email'))
+                            <span class="help-block text-danger">
+                              <strong>{{ $errors->first('user_email') }}</strong>
+                            </span>
+                        @endif
+                      </div>
                     </div>
-                    <div class="col-md-6 form-group {{ $errors->has('user_email') ? ' has-error' : '' }}">
-                      {{ Form::text('user_email',null,["placeholder"=> "Email" , 'class' => 'form-control']) }}
-                      @if ($errors->has('user_email'))
-                          <span class="help-block text-danger">
-                            <strong>{{ $errors->first('user_email') }}</strong>
-                          </span>
-                      @endif
+                    <div class="row">
+                      <div class="col form-group {{ $errors->has('content') ? ' has-error' : '' }}">
+                        {{ Form::textarea('content',null,["placeholder"=>"Comment", 'class' => 'form-control', $disabledForm])}}
+                        @if ($errors->has('content'))
+                            <span class="help-block text-danger">
+                              <strong>{{ $errors->first('content') }}</strong>
+                            </span>
+                        @endif
+                      </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col form-group {{ $errors->has('content') ? ' has-error' : '' }}">
-                      {{ Form::textarea('content',null,["placeholder"=>"Comment", 'class' => 'form-control'])}}
-                      @if ($errors->has('content'))
-                          <span class="help-block text-danger">
-                            <strong>{{ $errors->first('content') }}</strong>
-                          </span>
-                      @endif
-                    </div>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Post Comment</button>
-                {{ Form::close() }}
-
+                    <button type="submit" class="btn btn-primary" {{ $disabledForm }}>Post Comment</button>
+                  {{ Form::close() }}
               </div>
-
             </div>
         </article>
       </div>
