@@ -34,6 +34,13 @@ class AdminPostsController extends Controller
 			$model = PostsModel::query();
 
 			return Datatables::of($model)
+						->addColumn('title',function ($model) use ($request){
+								//Show Post title on which user has Commented
+								// $actionHtml = $model->post->title;
+								$route = route('post', $model->slug);
+								$actionHtml = '<a href="' . $route . '" target="_blank">' . $model->title . '</a>';
+								return $actionHtml;
+						})
 						->addColumn('actions', function ($model) use ($request) {
 								$id = $model->id;
 								$link = $request->url().'/'.$id;
@@ -47,7 +54,7 @@ class AdminPostsController extends Controller
 						->addColumn('comment_count', function ($model) use ($request){
 							return $model->comments->count();
 						})
-						->rawColumns(['actions','status'])
+						->rawColumns(['actions','status', 'title'])
 						->make(true);
 		}
 		return view('admin.posts.list');
