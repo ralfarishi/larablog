@@ -27,9 +27,9 @@ class PostsController extends Controller
 	public function storeComment(Request $request, $id)
 	{
 		$inputs = $request->validate([
-			'user_name' => 'required',
-			'user_email' => 'required',
-			'content' => 'required',
+			'user_name' => 'required|string|max:100',
+			'user_email' => 'required|email|max:100',
+			'content' => 'required|string',
 		],
 		[
 			'user_name.required' => 'Nama tidak boleh kosong!',
@@ -39,6 +39,11 @@ class PostsController extends Controller
 	);
 
 		$inputs = $request->all();
+
+		// escape html char for each inputs
+		foreach ($inputs as $key => $value) {
+      $inputs[$key] = strip_tags($value);
+    }
 		
 		$post = PostsModel::where('slug', $id)->firstOrFail();
 		// $user = User::findOrFail($id);
