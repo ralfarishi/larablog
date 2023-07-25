@@ -33,9 +33,9 @@ class AdminCommentsController extends Controller
                     $id = $model->id;
                     $link = $request->url().'/'.$id;
                     //Edit Button
-                    // $actionHtml = '<a href="'.$link.'/edit'.' " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-edit"></span></a>';
+                    $actionHtml = '<a href="'.$link.'/edit'.' " class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>';
                     //Delete Button
-                    $actionHtml ='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
+                    $actionHtml .='<a href="" data-delete-url="'.$link .'" class="btn btn-danger btn-sm delete-data ml-2" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
                     return $actionHtml;
                 })
                 ->addColumn('post',function ($model) use ($request){
@@ -43,7 +43,10 @@ class AdminCommentsController extends Controller
                     $actionHtml = $model->post->title;
                     return $actionHtml;
                 })
-
+                ->addColumn('status', function ($model) use ($request) {
+                    // $actionHtml ='';
+                    return $model->active ? '<span class="badge badge-success">Tampil</span>' : '<span class="badge badge-danger">Tidak Tampil</span>';
+                })
                 ->rawColumns(['actions','status'])
                 ->make(true);
         }
@@ -70,12 +73,12 @@ class AdminCommentsController extends Controller
     {
         $inputs = $request->all();
         $comment = CommentsModel::findOrFail($id);
-        $comment->fill($comment);
+        $comment->fill($inputs);
         $comment->save();
         
         session()->flash('info','Komentar berhasil diperbarui!');
 
-        return redirect(route('admin.comments'));
+        return redirect(route('admin.komentar'));
     }
 
     public function destroy(Request $request,$id)

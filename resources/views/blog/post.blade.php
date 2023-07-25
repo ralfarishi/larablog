@@ -53,7 +53,7 @@
 
               <h4 class="comments-count">Comments</h4>
 
-              @foreach ($post->comments as $comment)
+              @foreach ($active_comments as $comment)
                 <div id="comment-1" class="comment">
                   <div class="d-flex">
                     <div class="comment-img"><img src="assets/img/blog/comments-1.jpg" alt=""></div>

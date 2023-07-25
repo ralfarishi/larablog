@@ -37,6 +37,7 @@
 									<th>Email</th>
 									<th>Artikel</th>
 									<th>Komentar</th>
+									<th>Status</th>
 									<th>Aksi</th>
 								</tr>
               </thead>
@@ -99,6 +100,7 @@
 				{data: 'user_email', name: 'user_email'},
 				{data: 'post', name: 'post', orderable: false, searchable: false},
 				{data: 'content', name: 'content'},
+				{data: 'status', name: 'status'},
 				{data: 'actions', name: 'actions', orderable: false, searchable: false}
 			]
 		});
