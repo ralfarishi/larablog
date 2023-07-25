@@ -102,7 +102,12 @@
 				{data: 'content', name: 'content'},
 				{data: 'status', name: 'status'},
 				{data: 'actions', name: 'actions', orderable: false, searchable: false}
-			]
+			],
+			responsive: true,
+			lengthChange: false,
+      autoWidth: false,
+			paging: true,
+			pageLength: 5
 		});
 	});
 </script>
