@@ -19,7 +19,7 @@ class CreateCommentsTable extends Migration
             $table->string('user_email',200)->nullable();
             $table->text('content');
             $table->boolean('read')->default(false);
-            $table->boolean('active')->default(false);
+            $table->boolean('active')->default(true);
             $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
             $table->timestamps();
         });
