@@ -31,8 +31,8 @@
 					{{ Form::model($comment, [ 'route' => array('admin.comments.update', $comment->id), 'method'=>'PATCH']) }}
 						<div class="card-body">
 							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                {{ Form::label('user_name', 'User name') }}
-                {{ Form::text("user_name", null, array("class"=>"form-control","id"=>"user_name")) }}
+                {{ Form::label('user_name', 'Nama') }}
+                {{ Form::text("user_name", null, array("class"=>"form-control","id"=>"user_name","disabled"=>"disabled")) }}
                 @if ($errors->has('user_name'))
 									<span class="help-block">
 										<strong>{{ $errors->first('user_name') }}</strong>
@@ -41,8 +41,8 @@
             	</div>
             
 							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-								{{ Form::label('user_email', 'User Email') }}
-								{{ Form::text("user_email", null, array("class"=>"form-control","id"=>"user_email")) }}
+								{{ Form::label('user_email', 'Email') }}
+								{{ Form::text("user_email", null, array("class"=>"form-control","id"=>"user_email","disabled"=>"disabled")) }}
 								@if ($errors->has('user_email'))
 									<span class="help-block">
 										<strong>{{ $errors->first('user_name') }}</strong>
@@ -51,9 +51,9 @@
 							</div>
 
 							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-								{{ Form::label('blog_title', 'Blog') }}
-								{{--{{Form::text("post[title]", null, array("class"=>"form-control","id"=>"blog_title","disabled"=>"disabled"))}}--}}
-								<a href="{{ route('post', $comment->post->slug) }}" target="_blank">{{$comment->post->title}}</a>
+								{{ Form::label('judul_artikel', 'Artikel') }}
+								{{Form::text("post[title]", null, array("class"=>"form-control","id"=>"judul_artikel","disabled"=>"disabled"))}}
+								{{-- <a href="{{ route('post', $comment->post->slug) }}" target="_blank">{{$comment->post->title}}</a> --}}
 								@if ($errors->has('user_email'))
 									<span class="help-block">
 										<strong>{{ $errors->first('user_name') }}</strong>
@@ -62,9 +62,9 @@
 							</div>
 
 							<div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-								{{ Form::label('comment', 'Comment*') }}
+								{{ Form::label('comment', 'Komentar*') }}
 
-								{{ Form::textarea("content", null, array("class"=>"form-control","id"=>"comment")) }}
+								{{ Form::textarea("content", null, array("class"=>"form-control","id"=>"comment", "disabled"=>"disabled")) }}
 								@if ($errors->has('content'))
 									<span class="help-block">
 										<strong>{{ $errors->first('content') }}</strong>
@@ -73,14 +73,14 @@
 							</div>
 
 							<div class="form-group clearfix">
-								<label>Approve : </label>
+								<label>Setujui : </label>
 								<div class="icheck-primary d-inline">
 									<input type="radio" id="radioYes" name="active" value="1" {{ $comment->active == 1 ? 'checked' : '' }}>
-									<label for="radioYes">Yes</label>
+									<label for="radioYes">Ya</label>
 								</div>
-								<div class="icheck-primary d-inline">
+								<div class="icheck-danger d-inline">
 									<input type="radio" id="radioNo" name="active" value="0" {{ $comment->active == 0 ? 'checked' : '' }}>
-									<label for="radioNo">No</label>
+									<label for="radioNo">Tidak</label>
 								</div>
 							</div>
 						</div>
