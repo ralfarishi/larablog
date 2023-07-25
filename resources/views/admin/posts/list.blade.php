@@ -82,7 +82,9 @@
             searchable: false,
             orderable: false,
             render: function (data, type, row, meta) {
-              return meta.row + 1;
+              var start = meta.settings._iDisplayStart;
+              var length = meta.settings._iDisplayLength;
+              return start + meta.row + 1;
             }
           },
           {data: 'title', name: 'title'},
@@ -93,7 +95,15 @@
         lengthChange: false,
         autoWidth: false,
         paging: true,
-        pageLength: 5
+        pageLength: 5,
+        drawCallback: function (settings) {
+          // Mengatur ulang nomor urut pada setiap halaman
+          var api = this.api();
+          var startIndex = api.context[0]._iDisplayStart;
+          api.column(0, {order: 'applied', search: 'applied'}).nodes().each(function (cell, i) {
+              cell.innerHTML = startIndex + i + 1;
+          });
+        }
       });
     });
   </script>
