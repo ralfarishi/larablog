@@ -18,6 +18,8 @@ class PostsController extends Controller
 	{
 		$posts = PostsModel::where('slug', $id)->firstOrFail();
 		$data['post'] = $posts;
+
+		$data['active_comments'] = CommentsModel::where('post_id', $posts->id)->where('active', 1)->get();
 			
 		return view("blog.post", $data);
 	}

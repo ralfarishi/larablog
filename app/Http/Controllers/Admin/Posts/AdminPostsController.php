@@ -44,6 +44,9 @@ class AdminPostsController extends Controller
 
 								return $actionHtml;
 						})
+						->addColumn('comment_count', function ($model) use ($request){
+							return $model->comments->count();
+						})
 						->rawColumns(['actions','status'])
 						->make(true);
 		}

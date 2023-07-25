@@ -72,7 +72,7 @@ class AdminCommentsController extends Controller
         $comment = CommentsModel::findOrFail($id);
         $comment->fill($comment);
         $comment->save();
-
+        
         session()->flash('info','Komentar berhasil diperbarui!');
 
         return redirect(route('admin.comments'));

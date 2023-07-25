@@ -34,6 +34,7 @@
                 <tr>
                   <th>#</th>
                   <th>Judul Artikel</th>
+                  <th>Jumlah Komentar</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -85,6 +86,7 @@
             }
           },
           {data: 'title', name: 'title'},
+          {data: 'comment_count', name: 'comment_count'},
           {data: 'actions', name: 'actions', orderable: false, searchable: false}
         ]
       });
