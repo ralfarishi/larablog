@@ -8,7 +8,7 @@
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <link href="{{ asset('images/favicon.ico') }}" rel="icon">
 
-	<title>Page Not Found</title>
+	<title>Service Unavailable</title>
 
 	<!-- Custom stlylesheet -->
 	<link type="text/css" rel="stylesheet" href="{{ asset('css/404/style.css') }}" />
@@ -19,11 +19,11 @@
 	<div id="notfound">
 		<div class="notfound">
 			<div class="notfound-404">
-				<h1>404</h1>
+				<h1>503</h1>
 			</div>
-			<h2>Oops! Nothing was found</h2>
-			<p>The page you are looking for might have been removed had its name changed or is temporarily unavailable.
-        <a href="{{ url('/') }}">Return to homepage</a>
+			<h2>Service Unavailable!</h2>
+			<p>
+				Sorry, this service is currently unavailable. We are undergoing maintenance. Please try again later.
       </p>
 		</div>
 	</div>
