@@ -19,6 +19,6 @@ yarn-error.log
 
 /public/uploads/
 
-/resources/views/admin/gallery/
-/resources/views/admin/tags/
-/resources/views/admin/contact/
+/resources/views/admin/gallery
+/resources/views/admin/tags
+/resources/views/admin/contact
