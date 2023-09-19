@@ -3,31 +3,24 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use App\Models\PostsModel;
+use App\Models\Categories;
+use App\Models\Posts;
 
 class HomeController extends Controller
 {
+	public function index()
+	{
+		$posts = Posts::where('active', 1)->withCount('comments')->latest()->paginate(4);
 
-  /**
-   * Show home page
-   *  
-   * 
-   * @return view
-   */
-  public function index()
-  {
+		$categories = Categories::withCount(['posts' => function ($query) {
+			$query->where('active', 1);
+		}])->get();
 
-    $data = array();
-    $data['recent_posts'] = PostsModel::OrderBy('created_at', 'Desc')->limit(6)->get();
-      
-    return view('home', $data);
-  }
+		return view('home', compact('posts', 'categories'));
+	}
 
-  public function detail()
-  {
-    // $data = array();
-    // $data['recent_posts'] = PostsModel::OrderBy('created_at', 'Desc')->where('active', '1')->limit(6)->get();
-      
-    return view('blog.post_v2');
-  }
+	public function test()
+	{
+		return view('auth.login');
+	}
 }

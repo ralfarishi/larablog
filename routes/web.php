@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Category\CategoryController;
+use App\Http\Controllers\Admin\Comment\CommentsController;
+use App\Http\Controllers\Admin\Dashboard\DashboardController;
+use App\Http\Controllers\Admin\Post\PostsController;
+use App\Http\Controllers\Home\Blogs\PostController;
+use App\Http\Controllers\Home\Blogs\SearchController;
+use App\Http\Controllers\Home\CategoryListController;
 use App\Http\Controllers\Home\HomeController;
-use App\Http\Controllers\Blog\PostsController;
-use App\Http\Controllers\Blog\SearchController;
-use App\Http\Controllers\Admin\Comments\AdminCommentsController;
-use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
-use App\Http\Controllers\Admin\Posts\AdminPostsController;
-use App\Http\Controllers\Admin\Users\AdminUsersController;
-use App\Http\Controllers\NewAuthController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,37 +17,50 @@ use App\Http\Controllers\NewAuthController;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get("/artikel/{id}", [PostsController::class, 'show'])->name('post');
-Route::post("/artikel/{id}/save-comment",[PostsController::class, 'storeComment']);
-Route::get('blog/search', [SearchController::class,'index'])->name('blog.search');
-
-Route::middleware('guest')->group(function () {
-    Route::get("/login", [NewAuthController::class, 'index'])->name('login');
-    Route::post("/login", [NewAuthController::class,'login']);
+Route::middleware(['guest'])->group(function () {
+	Route::get('/login', [LoginController::class, 'index'])->name('login');
+	Route::post('/login', [LoginController::class, 'login'])->name('auth');
 });
+
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+Route::get('/blog/{id}', [PostController::class, 'show'])->name('post');
+Route::post('/blog/{id}', [PostController::class, 'storeComment'])->name('store-comment');
+
+Route::get('/{kategori}', [CategoryListController::class, 'show'])->name('categories');
 
 Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('/artikel', AdminPostsController::class);
-    
-    Route::get('/komentar', [AdminCommentsController::class, 'index'])->name('admin.komentar');
-    Route::get('/komentar/{id}/edit', [AdminCommentsController::class, 'edit'])->name("admin.comments.edit");
-    Route::patch('/komentar/{id}', [AdminCommentsController::class, 'update'])->name('admin.comments.update');
-    Route::delete('/komentar/{id}', [AdminCommentsController::class, 'destroy'])->name('admin.comments.delete');
-    
-    Route::get('/users', [AdminUsersController::class, 'index'])->name('users.index');
-    Route::delete('/users/{id}', [AdminUsersController::class, 'destroy'])->name('users.delete');
+	Route::controller(PostsController::class)->group(function () {
+		Route::get('/artikel', 'index')->name('list-posts');
+		Route::get('/artikel/buat-artikel', 'create')->name('create-post');
+		Route::post('/artikel/buat-artikel', 'store')->name('store-post');
+		Route::get('/artikel/edit-artikel/{id}', 'edit')->name('edit-post');
+		Route::patch('/artikel/edit-artikel/{id}', 'update')->name('update-post');
+		Route::delete('/artikel/{id}', 'destroy')->name('delete-post');
+	});
 
-    Route::post("/logout", [NewAuthController::class,'logout'])->name('logout');
-});
+	Route::controller(CommentsController::class)->group(function () {
+		Route::get('/komentar', 'index')->name('list-comments');
+		Route::get('/komentar/{id}', 'edit')->name('edit-comment');
+		Route::patch('/komentar/{id}', 'update')->name('update-comment');
+		Route::delete('/komentar/{id}', 'destroy')->name('delete-comment');
+	});
 
-Route::fallback(function (){
-    return view('errors.404');
+	Route::controller(CategoryController::class)->group(function () {
+		Route::get('/kategori', 'index')->name('list-categories');
+		Route::get('/kategori/buat-kategori', 'create')->name('create-category');
+		Route::post('/kategori/buat-kategori', 'store')->name('store-category');
+		Route::delete('/kategori/{id}', 'destroy')->name('delete-category');
+	});
+
+	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });

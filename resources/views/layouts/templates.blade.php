@@ -4,7 +4,7 @@
     @include('includes.head')
     @yield('page_css')
 </head>
-<body>
+<body class="page-blog">
     <!--start-header-->
     @include('includes.header')
     <!--End-header-->

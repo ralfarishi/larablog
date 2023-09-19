@@ -21,7 +21,7 @@
 	<div class="container-fluid">
 		<div class="row">
       <div class="container-fluid text-right" style="margin-bottom: 16px;">
-        <a class="btn btn-success" href="{{ url('/admin/artikel/create')}} ">
+        <a class="btn btn-success" href="{{ route('create-post') }} ">
           Buat Artikel
         </a>
       </div>
@@ -34,7 +34,9 @@
                 <tr>
                   <th>#</th>
                   <th>Judul Artikel</th>
+                  <th>Kategori</th>
                   <th>Jumlah Komentar</th>
+                  <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -75,7 +77,7 @@
       var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('artikel.index') !!}',
+        ajax: '{!! route('list-posts') !!}',
         columns: [
           {
             data: null,
@@ -88,7 +90,9 @@
             }
           },
           {data: 'title', name: 'title'},
+          {data: 'category.name', name: 'category.name'},
           {data: 'comment_count', name: 'comment_count'},
+          {data: 'status', name: 'status'},
           {data: 'actions', name: 'actions', orderable: false, searchable: false}
         ],
         responsive: true,

@@ -8,7 +8,7 @@
 			></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
-			<a href="{{ url('admin/dashboard') }}" class="nav-link">Home</a>
+			<a href="{{ route('dashboard') }}" class="nav-link">Home</a>
 		</li>
 	</ul>
 
@@ -65,7 +65,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-copy"></i>
+						<i class="nav-icon fas fa-newspaper"></i>
 						<p>
 							Artikel
 							<i class="fas fa-angle-left right"></i>
@@ -74,13 +74,13 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a href="{{ route('artikel.index') }}" class="nav-link {{ request()->routeIs('artikel.index') ? 'active' : '' }}">
+							<a href="{{ route('list-posts') }}" class="nav-link {{ request()->routeIs('list-posts') ? 'active' : '' }}">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Semua Artikel</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ route('artikel.create') }}" class="nav-link {{ request()->routeIs('artikel.create') ? 'active' : '' }}">
+							<a href="{{ route('create-post') }}" class="nav-link {{ request()->routeIs('create-post') ? 'active' : '' }}">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Buat Artikel</p>
 							</a>
@@ -88,13 +88,19 @@
 					</ul>
 				</li>
 				<li class="nav-item">
-					<a href="{{ url('admin/komentar') }}" class="nav-link {{ request()->is('admin/komentar') ? 'active' : '' }}">
+					<a href="{{ route('list-comments') }}" class="nav-link ">
 						<i class="nav-icon fas fa-comments"></i>
 						<p>Komentar</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.index') ? 'active' : '' }}">
+					<a href="{{ route('list-categories') }}" class="nav-link ">
+					<i class="nav-icon fas fa-bookmark"></i>
+						<p>Kategori</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="#" class="nav-link">
 						<i class="nav-icon fas fa-users"></i>
 						<p>Users</p>
 					</a>

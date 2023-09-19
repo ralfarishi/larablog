@@ -25,42 +25,53 @@
 <!-- Main content -->
 <section class="content">
 	<div class="container-fluid">
-		<!-- Small boxes (Stat box) -->
 		<div class="row justify-content-center">
 			<div class="col-lg-3 col-6">
-				<!-- small box -->
 				<div class="small-box bg-info">
 					<div class="inner">
-						<h3>{{ $num_unread_comments }}</h3>
+						<h3>{{ $total_comments }}</h3>
 
-						<p>Total Komentar</p>
+						<p>Jumlah Komentar</p>
 					</div>
 					<div class="icon">
-						<i class="ion ion-chatbubbles"></i>
+						<i class="fas fa-comments"></i>
 					</div>
-					<a href="{{ route('admin.komentar') }}" class="small-box-footer"
+					<a href="#" class="small-box-footer"
 						>View Details <i class="fas fa-arrow-circle-right"></i
 					></a>
 				</div>
 			</div>
-			<!-- ./col -->
 			<div class="col-lg-3 col-6">
-				<!-- small box -->
 				<div class="small-box bg-success">
 					<div class="inner">
 						<h3>{{ $total_posts }}</h3>
 
-						<p>Semua Artikel</p>
+						<p>Jumlah Artikel</p>
 					</div>
 					<div class="icon">
-						<i class="ion ion-ios-paper"></i>
+						<i class="fas fa-newspaper"></i>
 					</div>
-					<a href="{{ route('artikel.index') }}" class="small-box-footer"
+					<a href="{{ route('list-posts') }}" class="small-box-footer"
 						>View Details <i class="fas fa-arrow-circle-right"></i
 					></a>
 				</div>
 			</div>
-			<!-- ./col -->
+			<div class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h3>{{ $total_categories }}</h3>
+
+						<p>Jumlah Kategori</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-bookmark"></i>
+					</div>
+					<a href="{{ route('list-categories') }}" class="small-box-footer"
+						>View Details <i class="fas fa-arrow-circle-right"></i
+					></a>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- /.container-fluid -->

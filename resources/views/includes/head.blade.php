@@ -1,7 +1,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Sekolah JeWePe</title>
+  <title>Sekolah JeWePe | @yield('page-title')</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -16,7 +16,7 @@
 
   <!-- Vendor CSS Files -->
   <link href="{{ asset("css/artikel_v2/vendor/bootstrap.min.css") }}" rel="stylesheet">
-  {{-- <link href="{{ asset("css/artikel_v2/vendor/bootstrap-icons.css") }}" rel="stylesheet"> --}}
+  <link href="{{ asset("css/artikel_v2/vendor/aos.css") }}" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
   <!-- Template Main CSS File -->

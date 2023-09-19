@@ -28,52 +28,33 @@
 					<!-- /.card-header -->
 					@include('includes.admin_v2.alerts')
 					<!-- form start -->
-					{{ Form::model($comment, [ 'route' => array('admin.comments.update', $comment->id), 'method'=>'PATCH']) }}
+					<form action="{{ route('update-comment', $comment->id) }}" method="POST">
+						@method('PATCH')
+						@csrf
 						<div class="card-body">
-							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-                {{ Form::label('user_name', 'Nama') }}
-                {{ Form::text("user_name", null, array("class"=>"form-control","id"=>"user_name","disabled"=>"disabled")) }}
-                @if ($errors->has('user_name'))
-									<span class="help-block">
-										<strong>{{ $errors->first('user_name') }}</strong>
-									</span>
-                @endif
+							<div class="form-group">
+								<label for="user_name" class="form-label">Nama</label>
+								<input type="text" name="user_name" class="form-control" placeholder="{{ $comment->user_name }}" disabled>
             	</div>
             
-							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-								{{ Form::label('user_email', 'Email') }}
-								{{ Form::text("user_email", null, array("class"=>"form-control","id"=>"user_email","disabled"=>"disabled")) }}
-								@if ($errors->has('user_email'))
-									<span class="help-block">
-										<strong>{{ $errors->first('user_name') }}</strong>
-									</span>
-								@endif
+							<div class="form-group">
+								<label for="user_email" class="form-label">Email</label>
+								<input type="text" name="user_email" class="form-control" placeholder="{{ $comment->user_email }}" disabled>
 							</div>
 
-							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-								{{ Form::label('judul_artikel', 'Artikel') }}
-								{{Form::text("post[title]", null, array("class"=>"form-control","id"=>"judul_artikel","disabled"=>"disabled"))}}
-								{{-- <a href="{{ route('post', $comment->post->slug) }}" target="_blank">{{$comment->post->title}}</a> --}}
-								@if ($errors->has('user_email'))
-									<span class="help-block">
-										<strong>{{ $errors->first('user_name') }}</strong>
-									</span>
-								@endif
+							<div class="form-group">
+								<label class="form-label" for="article">Artikel</label><br/>
+								<a href="{{ route('post', $comment->post->slug) }}" target="_blank">{{$comment->post->title}}</a>
 							</div>
-
-							<div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-								{{ Form::label('comment', 'Komentar*') }}
-
-								{{ Form::textarea("content", null, array("class"=>"form-control","id"=>"comment", "disabled"=>"disabled")) }}
-								@if ($errors->has('content'))
-									<span class="help-block">
-										<strong>{{ $errors->first('content') }}</strong>
-									</span>
-								@endif
+							
+							<div class="form-group">
+								<label for="comment" class="form-label">Komentar</label>
+								
+								<textarea name="content" class="form-control" placeholder="{{ $comment->content }}" disabled></textarea>
 							</div>
-
+							
 							<div class="form-group clearfix">
-								<label>Setujui : </label>
+								<label>Tampilkan?</label>
 								<div class="icheck-primary d-inline">
 									<input type="radio" id="radioYes" name="active" value="1" {{ $comment->active == 1 ? 'checked' : '' }}>
 									<label for="radioYes">Ya</label>
@@ -88,7 +69,7 @@
 						<div class="card-footer">
 							<input type="submit" class="btn btn-block btn-primary" value="Save" />
 						</div>
-					{{ Form::close() }}
+					</form>
 				</div>
 				<!-- /.card -->
 			</div>

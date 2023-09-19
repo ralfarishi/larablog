@@ -1,7 +1,9 @@
 <script type="text/javascript" src="{{ asset('js/artikel_v2/bootstrap.bundle.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/artikel_v2/main.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/artikel_v2/aos.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
-<script type="text/javascript">
+
+{{-- <script type="text/javascript">
     jQuery(document).ready(function ($) {
             $(".scroll").click(function (event) {
                 event.preventDefault();
@@ -10,12 +12,12 @@
                 }, 1000);
             });
         });
-</script>
+</script> --}}
 
 <!-- script-for-menu -->
-<script>
+{{-- <script>
     $("span.menu").click(function () {
             $(" ul.navig").slideToggle("slow", function () {});
         });
-</script>
+</script> --}}
 <!-- script-for-menu End-->

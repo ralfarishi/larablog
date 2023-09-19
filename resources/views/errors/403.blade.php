@@ -1,34 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('errors::layout')
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <link href="{{ asset('images/favicon.ico') }}" rel="icon">
+@section('title', __('Forbidden'))
 
-	<title>Forbidden</title>
+@section('code', '403')
 
-	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="{{ asset('css/404/style.css') }}" />
-</head>
-
-<body>
-
-	<div id="notfound">
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>403</h1>
-			</div>
-			<h2>Access Forbidden!</h2>
-			<p>
-				Sorry, you are not allowed to access this page. Please contact the administrator if you believe this is an error.
-        <a href="{{ url('/') }}">Return to homepage</a>
-      </p>
-		</div>
-	</div>
-
-</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
-
-</html>
+@section('message')
+<p>
+  Sorry, you are not allowed to access this page. Please contact the administrator if you believe this is an error.
+</p>
+<a href="{{ route('home') }}">Homepage</a>
+@endsection

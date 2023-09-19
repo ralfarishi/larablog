@@ -1,3 +1,4 @@
+/.phpunit.cache
 /node_modules
 /public/build
 /public/hot
@@ -6,6 +7,7 @@
 /vendor
 .env
 .env.backup
+.env.production
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -14,7 +16,9 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-.env.production
 
-public/uploads/images/blog/*
-!public/uploads/images/blog/.gitkeep
+/public/uploads/
+
+/resources/views/admin/gallery/
+/resources/views/admin/tags/
+/resources/views/admin/contact/

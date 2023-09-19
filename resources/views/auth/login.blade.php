@@ -29,10 +29,10 @@
 				</div>
 				<div class="card-body">
 					<p class="login-box-msg">Sign in to start your session</p>
-
-					<form id="login_form" action="{{ url('login') }}" method="POST">
+					@include('includes.admin_v2.alerts')
+					<form id="login_form" action="{{ route('auth') }}" method="POST">
 						{{ csrf_field() }}
-						<div class="input-group mb-3 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+						<div class="input-group mb-3 form-group">
 							<input
 								type="email"
 								name="email"
@@ -46,13 +46,13 @@
 									<span class="fas fa-envelope"></span>
 								</div>
 							</div>
-							@if ($errors->has('email'))
-								<span class="help-block">
-									<strong>{{ $errors->first('email') }}</strong>
-								</span>
-							@endif
 						</div>
-						<div class="input-group mb-3 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+						@if ($errors->has('email'))
+							<span class="help-block">
+								<p class="text-danger">{{ $errors->first('email') }}</p>
+							</span>
+						@endif
+						<div class="input-group mb-3 form-group">
 							<input
 								type="password"
 								class="form-control"
@@ -65,13 +65,13 @@
 									<span class="fas fa-lock"></span>
 								</div>
 							</div>
-
-							@if ($errors->has('password'))
-								<span class="help-block">
-									<strong>{{ $errors->first('password') }}</strong>
-								</span>
-							@endif
+							
 						</div>
+						@if ($errors->has('password'))
+							<span class="help-block">
+								<p class="text-danger">{{ $errors->first('password') }}</p>
+							</span>
+						@endif
 						<div class="row">
 							<div class="col-8">
 								<div class="icheck-primary">

@@ -66,9 +66,11 @@
             <p>Apa kamu yakin ingin menghapus komentar ini?</p>
           </div>
           <div class="modal-footer justify-content-center">
-            {{ Form::open(['url'=>url('admin/artikel/'),'method'=>'delete',"id"=>"data-delete-form"]) }}
+						<form action="{{ url('admin/komentar/') }}" id="data-delete-form" method="POST">
+							@method('DELETE')
+							@csrf
               <button type="submit" class="btn btn-danger">Hapus</button>
-            {{ Form::close() }}
+						</form>
           </div>
         </div>
       </div>
@@ -85,7 +87,7 @@
 		var table = $('#list-table').DataTable({
 			processing: true,
 			serverSide: true,
-			ajax: '{!! route('admin.komentar') !!}',
+			ajax: '{!! route('list-comments') !!}',
 			columns: [
 				{
 					data: null,
@@ -97,10 +99,9 @@
 						return start + meta.row + 1;
 					}
 				},
-					// {data: 'id', name: 'id'},
 				{data: 'user_name', name: 'user_name'},
 				{data: 'user_email', name: 'user_email'},
-				{data: 'post', name: 'post', orderable: false, searchable: false},
+				{data: 'post', name: 'post'},
 				{data: 'content', name: 'content'},
 				{data: 'status', name: 'status'},
 				{data: 'actions', name: 'actions', orderable: false, searchable: false}

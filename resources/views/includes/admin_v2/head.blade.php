@@ -15,11 +15,7 @@
 />
 <!-- Font Awesome -->
 <link rel="stylesheet" href="{{ asset('admin_v2/css/fontawesome-free/css/all.min.css') }}" />
-<!-- Ionicons -->
-<link
-	rel="stylesheet"
-	href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"
-/>
+
 <!-- Theme style -->
 <link href="{{ asset('admin_v2/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('admin_v2/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css">
