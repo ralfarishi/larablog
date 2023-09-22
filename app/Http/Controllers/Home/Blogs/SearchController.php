@@ -22,7 +22,7 @@ class SearchController extends Controller
 		$results = Posts::where('title', 'like', '%' . $query . '%')
 			// ->orWhere('content', 'like', '%' . $query . '%')
 			->where('active', 1) // Pastikan hanya mencari artikel yang aktif
-			->get();
+			->paginate(4);
 
 		return view('search', compact('results', 'query', 'categories'));
 	}

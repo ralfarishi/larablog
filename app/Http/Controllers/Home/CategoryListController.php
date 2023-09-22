@@ -11,7 +11,10 @@ class CategoryListController extends Controller
 	public function show($category)
 	{
 		$category = Categories::where('name', $category)->firstOrFail();
-		$categories = Categories::withCount('posts')->get();
+
+		$categories = Categories::withCount(['posts' => function ($query) {
+			$query->where('active', 1);
+		}])->get();
 
 		$posts = $category->posts()
 			->where('active', 1)

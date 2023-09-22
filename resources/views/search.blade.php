@@ -66,13 +66,16 @@
 
         </div><!-- End blog posts list -->
 
-        <div class="blog-pagination">
+         <div class="blog-pagination">
           <ul class="justify-content-center">
-            <li><a href="#">1</a></li>
-            <li class="active"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
+            @for ($i = 1; $i <= $results->lastPage(); $i++)
+              <li class="{{ $i === $results->currentPage() ? 'active' : '' }}">
+                <a href="{{ $results->url($i) }}">{{ $i }}</a>
+              </li>
+            @endfor
           </ul>
-        </div><!-- End blog pagination -->
+        </div>
+        <!-- End blog pagination -->
 
       </div>
 
@@ -82,11 +85,12 @@
 
           <div class="sidebar-item search-form">
             <h3 class="sidebar-title">Search</h3>
-            <form action="" class="mt-3">
-              <input type="text">
+            <form action="{{ route('search') }}" class="mt-3" method="GET">
+              <input type="text" name="query" placeholder="Cari artikel ...">
               <button type="submit"><i class="bi bi-search"></i></button>
             </form>
-          </div><!-- End sidebar search formn-->
+          </div>
+          <!-- End sidebar search formn-->
 
           <div class="sidebar-item categories">
             <h3 class="sidebar-title">Categories</h3>
