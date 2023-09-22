@@ -35,17 +35,17 @@
           <div class="meta-top">
             <ul>
               <li class="d-flex align-items-center">
-                <i class="bi bi-person"></i>
+                <i class="fa-regular fa-user"></i>
                 <a href="javascript:void(0)">{{ $post->user->name }}</a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="bi bi-clock"></i>
+                <i class="fa-regular fa-clock"></i>
                 <a href="javascript:void(0)">
                   <time datetime="2020-01-01">{{ $post->created_at->format('M d, Y') }}</time>
                 </a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="bi bi-chat-dots"></i>
+                <i class="fa-regular fa-comment-dots"></i>
                 <a href="javascript:void(0)">{{ $totalComments }} Comments</a>
               </li>
             </ul>
@@ -56,7 +56,7 @@
           </div><!-- End post content -->
 
           <div class="meta-bottom">
-            <i class="bi bi-folder"></i>
+            <i class="{{ $post->category->icon }}"></i>
             <ul class="cats">
               <li><a href="{{ route('categories', Str::lower($post->category->name)) }}">{{ $post->category->name }}</a></li>
             </ul>

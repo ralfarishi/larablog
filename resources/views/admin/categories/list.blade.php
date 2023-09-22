@@ -38,6 +38,7 @@
                 <tr>
 									<th>#</th>
 									<th>Nama Kategori</th>
+									<th>Icon</th>
 									<th>Total Artikel</th>
 									<th>Aksi</th>
 								</tr>
@@ -101,6 +102,7 @@
 					}
 				},
 				{data: 'name', name: 'name'},
+				{data: 'icon', name: 'icon'},
 				{data: 'total_posts', name: 'total_posts'},
 				{data: 'actions', name: 'actions', orderable: false, searchable: false}
 			],

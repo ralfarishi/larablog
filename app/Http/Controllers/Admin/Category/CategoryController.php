@@ -26,7 +26,10 @@ class CategoryController extends Controller
 				->addColumn('total_posts', function ($model) use ($request) {
 					return $model->posts->count();
 				})
-				->rawColumns(['actions'])
+				->addColumn('icon', function ($model) use ($request) {
+					return '<i class="' . $model->icon . '"></i>';
+				})
+				->rawColumns(['actions', 'icon'])
 				->make(true);
 		}
 
@@ -42,11 +45,17 @@ class CategoryController extends Controller
 	{
 		$request->validate(
 			[
-				'name' => 'required|regex:/^[\w]+$/'
+				'name' => 'required|regex:/^[\w]+$/',
+				'icon' => [
+					'required',
+					'regex:/^(fa-solid|fa-regular|fa-brands)\s+[a-z0-9-]+$/i'
+				]
 			],
 			[
 				'name.required' => 'Harap masukkan nama kategori!',
-				'name.regex' => 'Nama kategori hanya boleh terdiri dari satu kata tanpa spasi & tanpa simbol apapun!'
+				'icon.required' => 'Harap masukkan icon!',
+				'name.regex' => 'Nama kategori hanya boleh terdiri dari satu kata tanpa spasi & tanpa simbol apapun!',
+				'icon.regex' => 'Harap input icon berdasarkan class pada font awesome!'
 			]
 		);
 

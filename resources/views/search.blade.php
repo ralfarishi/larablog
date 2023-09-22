@@ -87,7 +87,7 @@
             <h3 class="sidebar-title">Search</h3>
             <form action="{{ route('search') }}" class="mt-3" method="GET">
               <input type="text" name="query" placeholder="Cari artikel ...">
-              <button type="submit"><i class="bi bi-search"></i></button>
+              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
           </div>
           <!-- End sidebar search formn-->

@@ -4,7 +4,7 @@
 	<ul class="navbar-nav">
 		<li class="nav-item">
 			<a class="nav-link" data-widget="pushmenu" href="#" role="button"
-				><i class="fas fa-bars"></i
+				><i class="fa-solid fa-bars"></i
 			></a>
 		</li>
 		<li class="nav-item d-none d-sm-inline-block">
@@ -16,7 +16,7 @@
 		<li class="nav-item">
 			<a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">
-				<i class="fas fa-sign-out-alt"></i>
+				<i class="fa-solid fa-sign-out-alt"></i>
 			</a>
 		</li>
 
@@ -59,29 +59,29 @@
 					with font-awesome or any other icon font library -->
 				<li class="nav-item">
 					<a href="{{ url('admin/dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
-						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<i class="nav-icon fa-solid fa-gauge"></i>
 						<p>Dashboard</p>
 					</a>
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-newspaper"></i>
+						<i class="nav-icon fa-solid fa-file-lines"></i>
 						<p>
 							Artikel
-							<i class="fas fa-angle-left right"></i>
+							<i class="fa-solid fa-angle-left right"></i>
 							<span class="badge badge-info right">2</span>
 						</p>
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
 							<a href="{{ route('list-posts') }}" class="nav-link {{ request()->routeIs('list-posts') ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
+								<i class="far fa-regular fa-circle nav-icon"></i>
 								<p>Semua Artikel</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a href="{{ route('create-post') }}" class="nav-link {{ request()->routeIs('create-post') ? 'active' : '' }}">
-								<i class="far fa-circle nav-icon"></i>
+								<i class="far fa-regular fa-circle nav-icon"></i>
 								<p>Buat Artikel</p>
 							</a>
 						</li>
@@ -89,19 +89,19 @@
 				</li>
 				<li class="nav-item">
 					<a href="{{ route('list-comments') }}" class="nav-link ">
-						<i class="nav-icon fas fa-comments"></i>
+						<i class="nav-icon fa-solid fa-comments"></i>
 						<p>Komentar</p>
 					</a>
 				</li>
 				<li class="nav-item">
 					<a href="{{ route('list-categories') }}" class="nav-link ">
-					<i class="nav-icon fas fa-bookmark"></i>
+					<i class="nav-icon fa-solid fa-bookmark"></i>
 						<p>Kategori</p>
 					</a>
 				</li>
 				<li class="nav-item">
 					<a href="#" class="nav-link">
-						<i class="nav-icon fas fa-users"></i>
+						<i class="nav-icon fa-solid fa-users"></i>
 						<p>Users</p>
 					</a>
 				</li>

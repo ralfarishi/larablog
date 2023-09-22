@@ -42,9 +42,9 @@
 
                 <div class="meta-top">
                   <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}}
+                    <li class="d-flex align-items-center"><i class="fa-regular fa-user"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
+                    <li class="d-flex align-items-center"><i class="fa-regular fa-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
+                    <li class="d-flex align-items-center"><i class="fa-regular fa-comment-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}}
                         Comments</a></li>
                   </ul>
                 </div>
@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="read-more mt-auto align-self-end">
-                  <a href="{{ route('post', $post->slug) }}">Read More <i class="bi bi-arrow-right"></i></a>
+                  <a href="{{ route('post', $post->slug) }}">Read More <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
 
               </article>
@@ -89,7 +89,7 @@
             <h3 class="sidebar-title">Search</h3>
             <form action="{{ route('search') }}" class="mt-3" method="GET">
               <input type="text" name="query" placeholder="Cari artikel ...">
-              <button type="submit"><i class="bi bi-search"></i></button>
+              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
             </form>
           </div>
           <!-- End sidebar search formn-->

@@ -41,9 +41,17 @@
 									</span>
 								@endif
 							</div>
+							<div class="form-group">
+								<label class="form-label" for="name">Icon*</label>
+								<input type="text" class="form-control" name="icon" placeholder="Ex: fa-solid fa-microchip" />
+								@if ($errors->has('icon'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('icon') }}</p>
+									</span>
+								@endif
+							</div>
 						</div>
 						<!-- /.card-body -->
-						
 						<div class="card-footer">
 							<input type="submit" class="btn btn-block btn-primary" value="Create"/>
 						</div>
