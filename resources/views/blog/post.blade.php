@@ -49,20 +49,23 @@
                 <a href="javascript:void(0)">{{ $totalComments }} Comments</a>
               </li>
             </ul>
-          </div><!-- End meta top -->
+          </div>
+          <!-- End meta top -->
 
           <div class="content">
             {!! $post->content !!}
-          </div><!-- End post content -->
+          </div>
+          <!-- End post content -->
 
           <div class="meta-bottom">
             <i class="{{ $post->category->icon }}"></i>
             <ul class="cats">
               <li><a href="{{ route('categories', Str::lower($post->category->name)) }}">{{ $post->category->name }}</a></li>
             </ul>
-          </div><!-- End meta bottom -->
-
-        </article><!-- End blog post -->
+          </div>
+          <!-- End meta bottom -->
+        </article>
+        <!-- End blog post -->
 
         <div class="comments">
 
@@ -126,13 +129,10 @@
                 </div>
               </div>
               <button type="submit" class="btn btn-primary" {{ $disabledForm }}>Post Comment</button>
-
             </form>
-
           </div>
-
-        </div><!-- End blog comments -->
-
+        </div>
+        <!-- End blog comments -->
       </div>
 
       <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
@@ -171,14 +171,12 @@
               @endforeach
               <!-- End recent post item-->
             </div>
-
-          </div><!-- End sidebar recent posts-->
-
-        </div><!-- End Blog Sidebar -->
-
+          </div>
+          <!-- End sidebar recent posts-->
+        </div>
+        <!-- End Blog Sidebar -->
       </div>
     </div>
-
   </div>
 </section>
 @endsection
