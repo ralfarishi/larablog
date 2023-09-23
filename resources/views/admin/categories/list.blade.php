@@ -24,7 +24,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="container-fluid text-right" style="margin-bottom: 16px;">
-        <a class="btn btn-success" href="{{ route('create-category') }} ">
+        <a class="btn btn-success" href="{{ route('kategori.create') }} ">
           Buat Kategori Baru
         </a>
       </div>
@@ -89,7 +89,7 @@
 		var table = $('#list-table').DataTable({
 			processing: true,
 			serverSide: true,
-			ajax: '{!! route('list-categories') !!}',
+			ajax: '{!! route('kategori.index') !!}',
 			columns: [
 				{
 					data: null,

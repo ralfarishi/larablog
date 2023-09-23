@@ -39,28 +39,11 @@ Route::get('/{kategori}', [CategoryListController::class, 'show'])->name('catego
 Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-	Route::controller(PostsController::class)->group(function () {
-		Route::get('/artikel', 'index')->name('list-posts');
-		Route::get('/artikel/buat-artikel', 'create')->name('create-post');
-		Route::post('/artikel/buat-artikel', 'store')->name('store-post');
-		Route::get('/artikel/edit-artikel/{id}', 'edit')->name('edit-post');
-		Route::patch('/artikel/edit-artikel/{id}', 'update')->name('update-post');
-		Route::delete('/artikel/{id}', 'destroy')->name('delete-post');
-	});
-
-	Route::controller(CommentsController::class)->group(function () {
-		Route::get('/komentar', 'index')->name('list-comments');
-		Route::get('/komentar/{id}', 'edit')->name('edit-comment');
-		Route::patch('/komentar/{id}', 'update')->name('update-comment');
-		Route::delete('/komentar/{id}', 'destroy')->name('delete-comment');
-	});
-
-	Route::controller(CategoryController::class)->group(function () {
-		Route::get('/kategori', 'index')->name('list-categories');
-		Route::get('/kategori/buat-kategori', 'create')->name('create-category');
-		Route::post('/kategori/buat-kategori', 'store')->name('store-category');
-		Route::delete('/kategori/{id}', 'destroy')->name('delete-category');
-	});
+	Route::resources([
+		'artikel' => PostsController::class,
+		'komentar' => CommentsController::class,
+		'kategori' => CategoryController::class
+	]);
 
 	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });

@@ -28,7 +28,7 @@ class PostsController extends Controller
 					$id = $model->id;
 					$link = $request->url() . '/' . $id;
 					//Edit Button
-					$actionHtml = '<a href="' . route('edit-post', $id) . ' " class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>';
+					$actionHtml = '<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>';
 					//Delete Button
 					$actionHtml .= '<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data ml-2" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
 
@@ -86,7 +86,7 @@ class PostsController extends Controller
 
 		Posts::create($data);
 
-		return to_route("list-posts")->with('success', 'Artikel berhasil dibuat!');
+		return to_route('artikel.index')->with('success', 'Artikel berhasil dibuat!');
 	}
 
 	/**
@@ -145,7 +145,7 @@ class PostsController extends Controller
 
 		$post->update($data);
 
-		return to_route('list-posts')->with('info', 'Artikel berhasil diupdate!');
+		return to_route('artikel.index')->with('info', 'Artikel berhasil diupdate!');
 	}
 
 	/**
@@ -163,6 +163,6 @@ class PostsController extends Controller
 
 		$post->delete();
 
-		return to_route('list-posts')->with('danger', 'Artikel berhasil dihapus!');
+		return to_route('artikel.index')->with('danger', 'Artikel berhasil dihapus!');
 	}
 }

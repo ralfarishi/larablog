@@ -29,7 +29,7 @@
 				<div class="card">
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form action="{{ route('store-category') }}" enctype="multipart/form-data" method="POST">
+					<form action="{{ route('kategori.store') }}" enctype="multipart/form-data" method="POST">
 						@csrf
 						<div class="card-body">
 							<div class="form-group">

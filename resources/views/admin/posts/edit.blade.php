@@ -29,7 +29,7 @@
 				<div class="card">
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form action="{{ route('update-post', $post->id) }}" enctype="multipart/form-data" method="POST">
+					<form action="{{ route('artikel.update', $post->id) }}" enctype="multipart/form-data" method="POST">
 						@method('PATCH')
 						@csrf
 						<div class="card-body">
@@ -148,7 +148,7 @@
 			}
 		}
 		$("#featured_image").change(function() {
-				readURL(this);
+			readURL(this);
 		});
 	</script>
 @endsection

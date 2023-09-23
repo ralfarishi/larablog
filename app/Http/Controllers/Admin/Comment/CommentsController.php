@@ -22,7 +22,7 @@ class CommentsController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<div class="d-flex align-items-center">
-							<a href="' . route('edit-comment', $id) . '" class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>
+							<a href="' . route('komentar.edit', $id) . '" class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>
 							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>
 						</div>
 					';
@@ -95,7 +95,7 @@ class CommentsController extends Controller
 
 		$comment->save();
 
-		return to_route('list-comments')->with('info', 'Komentar berhasil diperbarui!');
+		return to_route('komentar.index')->with('info', 'Komentar berhasil diperbarui!');
 	}
 
 	/**
@@ -107,6 +107,6 @@ class CommentsController extends Controller
 
 		$comment->delete();
 
-		return to_route('list-comments')->with('danger', 'Komentar berhasil dihapus!');
+		return to_route('komentar.index')->with('danger', 'Komentar berhasil dihapus!');
 	}
 }

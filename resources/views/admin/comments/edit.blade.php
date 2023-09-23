@@ -28,7 +28,7 @@
 					<!-- /.card-header -->
 					@include('includes.admin_v2.alerts')
 					<!-- form start -->
-					<form action="{{ route('update-comment', $comment->id) }}" method="POST">
+					<form action="{{ route('komentar.update', $comment->id) }}" method="POST">
 						@method('PATCH')
 						@csrf
 						<div class="card-body">

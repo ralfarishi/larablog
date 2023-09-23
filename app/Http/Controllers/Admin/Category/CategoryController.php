@@ -63,7 +63,7 @@ class CategoryController extends Controller
 
 		Categories::create($data);
 
-		return to_route('list-categories')->with('success', 'Kategori berhasil ditambahkan!');
+		return to_route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
 	}
 
 	public function destroy($id)
@@ -72,6 +72,6 @@ class CategoryController extends Controller
 
 		$data->delete();
 
-		return to_route('list-categories')->with('danger', 'Kategori berhasil dihapus!');
+		return to_route('kategori.index')->with('danger', 'Kategori berhasil dihapus!');
 	}
 }

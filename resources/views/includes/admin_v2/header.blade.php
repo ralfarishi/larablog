@@ -74,13 +74,13 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
-							<a href="{{ route('list-posts') }}" class="nav-link {{ request()->routeIs('list-posts') ? 'active' : '' }}">
+							<a href="{{ route('artikel.index') }}" class="nav-link {{ request()->routeIs('artikel.index') ? 'active' : '' }}">
 								<i class="far fa-regular fa-circle nav-icon"></i>
 								<p>Semua Artikel</p>
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ route('create-post') }}" class="nav-link {{ request()->routeIs('create-post') ? 'active' : '' }}">
+							<a href="{{ route('artikel.create') }}" class="nav-link {{ request()->routeIs('artikel.create') ? 'active' : '' }}">
 								<i class="far fa-regular fa-circle nav-icon"></i>
 								<p>Buat Artikel</p>
 							</a>
@@ -88,13 +88,13 @@
 					</ul>
 				</li>
 				<li class="nav-item">
-					<a href="{{ route('list-comments') }}" class="nav-link ">
+					<a href="{{ route('komentar.index') }}" class="nav-link ">
 						<i class="nav-icon fa-solid fa-comments"></i>
 						<p>Komentar</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="{{ route('list-categories') }}" class="nav-link ">
+					<a href="{{ route('kategori.index') }}" class="nav-link ">
 					<i class="nav-icon fa-solid fa-bookmark"></i>
 						<p>Kategori</p>
 					</a>

@@ -87,7 +87,7 @@
 		var table = $('#list-table').DataTable({
 			processing: true,
 			serverSide: true,
-			ajax: '{!! route('list-comments') !!}',
+			ajax: '{!! route('komentar.index') !!}',
 			columns: [
 				{
 					data: null,

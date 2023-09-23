@@ -36,7 +36,7 @@
 					<div class="icon">
 						<i class="fas fa-comments"></i>
 					</div>
-					<a href="#" class="small-box-footer"
+					<a href="{{ route('komentar.index') }}" class="small-box-footer"
 						>View Details <i class="fas fa-arrow-circle-right"></i
 					></a>
 				</div>
@@ -51,7 +51,7 @@
 					<div class="icon">
 						<i class="fas fa-newspaper"></i>
 					</div>
-					<a href="{{ route('list-posts') }}" class="small-box-footer"
+					<a href="{{ route('artikel.index') }}" class="small-box-footer"
 						>View Details <i class="fas fa-arrow-circle-right"></i
 					></a>
 				</div>
@@ -67,7 +67,7 @@
 					<div class="icon">
 						<i class="fas fa-bookmark"></i>
 					</div>
-					<a href="{{ route('list-categories') }}" class="small-box-footer"
+					<a href="{{ route('kategori.index') }}" class="small-box-footer"
 						>View Details <i class="fas fa-arrow-circle-right"></i
 					></a>
 				</div>

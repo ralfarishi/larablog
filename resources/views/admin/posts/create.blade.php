@@ -29,7 +29,7 @@
 				<div class="card">
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form action="{{ route('store-post') }}" enctype="multipart/form-data" method="POST">
+					<form action="{{ route('artikel.store') }}" enctype="multipart/form-data" method="POST">
 						@csrf
 						<div class="card-body">
 							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">

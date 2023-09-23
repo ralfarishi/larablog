@@ -21,7 +21,7 @@
 	<div class="container-fluid">
 		<div class="row">
       <div class="container-fluid text-right" style="margin-bottom: 16px;">
-        <a class="btn btn-success" href="{{ route('create-post') }} ">
+        <a class="btn btn-success" href="{{ route('artikel.create') }} ">
           Buat Artikel
         </a>
       </div>
@@ -77,7 +77,7 @@
       var table = $('#list-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('list-posts') !!}',
+        ajax: '{!! route('artikel.index') !!}',
         columns: [
           {
             data: null,
