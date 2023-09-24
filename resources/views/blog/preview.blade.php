@@ -98,7 +98,7 @@
 
             <h4>Leave a Reply</h4>
             <p>Your email address will not be published. Required fields are marked * </p>
-            <form action="#comment-section" method="POST" id="comment-section">
+            <form action="javascript:void(0)" method="POST" id="comment-section">
               <div class="row">
                 <div class="col-md-6 form-group">
                   <input name="user_name" type="text" class="form-control" placeholder="Your Name*" {{ $disabledForm }}>
