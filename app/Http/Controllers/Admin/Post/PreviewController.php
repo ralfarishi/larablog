@@ -15,6 +15,8 @@ class PreviewController extends Controller
 			return to_route('artikel.index')->with('warning', 'Tidak bisa melihat preview artikel yang sudah di-publish!');
 		}
 
-		return view('blog.preview', compact('post'));
+		$tags = explode(',', $post->tags);
+
+		return view('blog.preview', compact('post', 'tags'));
 	}
 }

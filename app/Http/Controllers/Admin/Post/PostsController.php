@@ -66,7 +66,7 @@ class PostsController extends Controller
 				'title' => 'required|unique:posts',
 				'content' => 'required',
 				'featured_image' => 'required|mimes:png,jpg,jpeg,webp|max:500',
-				'allowed_comment' => 'required'
+				'allowed_comment' => 'required',
 			],
 			[
 				'title.required' => 'Judul tidak boleh kosong!',
@@ -120,8 +120,9 @@ class PostsController extends Controller
 				'title' => 'required',
 				'content' => 'required',
 				'featured_image' => 'mimes:png,jpg,jpeg|max:500',
+				'tags' => 'required',
 				'allowed_comment' => 'required',
-				'active' => 'required'
+				'active' => 'required',
 			],
 			[
 				'title.required' => 'Judul tidak boleh kosong!',

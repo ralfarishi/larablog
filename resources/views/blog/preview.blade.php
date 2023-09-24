@@ -66,6 +66,13 @@
             <ul class="cats">
               <li><a href="javascript:void(0)">{{ $post->category->name }}</a></li>
             </ul>
+
+            <i class="bi bi-tags"></i>
+            <ul class="tags">
+              @foreach ($tags as $tag)
+                <li><a href="{{ route('post-by-tag', $tag) }}">{{ Str::title($tag) }}</a></li>
+              @endforeach
+            </ul>
           </div>
           <!-- End meta bottom -->
         </article>

@@ -62,6 +62,25 @@
             <ul class="cats">
               <li><a href="{{ route('categories', Str::lower($post->category->name)) }}">{{ $post->category->name }}</a></li>
             </ul>
+
+            <i class="bi bi-tags"></i>
+            <ul class="tags">
+              @if (!empty(array_filter($postTags)))
+                @foreach ($postTags as $postTag)
+                  @if (!empty($postTag))
+                    <li>
+                      <a href="{{ route('post-by-tag', $postTag) }}">
+                        {{ Str::title($postTag) }}
+                      </a>
+                    </li>
+                  @endif
+                @endforeach
+              @else
+                <li>
+                  <a href="javascript:void(0)">Belum ada tag.</a>
+                </li>
+              @endif
+            </ul>
           </div>
           <!-- End meta bottom -->
         </article>
@@ -173,6 +192,19 @@
             </div>
           </div>
           <!-- End sidebar recent posts-->
+
+          <div class="sidebar-item tags">
+            <h3 class="sidebar-title">Tags</h3>
+            <ul class="mt-3">
+              @foreach ($tags as $tag)
+                <li>
+                  <a href="{{ route('post-by-tag', $tag) }}">
+                    {{ Str::title($tag) }}
+                  </a>
+                </li>
+              @endforeach
+            </ul>
+          </div>
         </div>
         <!-- End Blog Sidebar -->
       </div>

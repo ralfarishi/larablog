@@ -33,11 +33,34 @@ class PostController extends Controller
 		$relatedPosts = Posts::where('active', 1)
 			->where('category_id', $category->id)
 			->where('id', '!=', $post->id)
+			->orWhere(function ($query) use ($post) {
+				// Menggunakan subquery untuk mencocokkan artikel berdasarkan tag yang sama
+				$query->where('id', '!=', $post->id)
+					->where(function ($query) use ($post) {
+						// Memisahkan dan mencocokkan tag-tag
+						$tags = explode(',', $post->tags);
+						foreach ($tags as $tag) {
+							$query->orWhere('tags', 'LIKE', '%' . $tag . '%');
+						}
+					});
+			})
 			->latest()
 			->limit(5)
 			->get();
 
-		return view('blog.post', compact('post', 'activeComments', 'totalComments', 'relatedPosts', 'categories'));
+		// get tags per post
+		$postTags = explode(',', $post->tags);
+
+		// dd($postTags);
+
+		// get all tags
+		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
+			return explode(',', $tags);
+		})->unique()->reject(function ($tag) {
+			return empty($tag); // Hapus tag yang kosong
+		});
+
+		return view('blog.post', compact('post', 'activeComments', 'totalComments', 'relatedPosts', 'categories', 'postTags', 'tags'));
 	}
 
 	public function storeComment(Request $request, $id)

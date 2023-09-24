@@ -101,9 +101,25 @@
               <li><a href="{{ route('categories', Str::lower($category->name)) }}">{{ $category->name }} <span>({{ $category->posts_count }})</span></a></li>
               @endforeach
             </ul>
-          </div><!-- End sidebar categories-->
+          </div>
+          <!-- End sidebar categories-->
+          
+          <div class="sidebar-item tags">
+            <h3 class="sidebar-title">Tags</h3>
+            <ul class="mt-3">
+              @foreach ($tags as $tag)
+              <li>
+                  <a href="{{ route('post-by-tag', $tag) }}">
+                    {{ Str::title($tag) }}
+                  </a>
+                </li>
+              @endforeach
+            </ul>
+          </div>
+          <!-- End sidebar tags-->
 
-        </div><!-- End Blog Sidebar -->
+        </div>
+        <!-- End Blog Sidebar -->
 
       </div>
 

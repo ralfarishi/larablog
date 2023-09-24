@@ -10,6 +10,7 @@ use App\Http\Controllers\Home\Blogs\PostController;
 use App\Http\Controllers\Home\Blogs\SearchController;
 use App\Http\Controllers\Home\CategoryListController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\TagsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,7 +36,9 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::get('/blog/{id}', [PostController::class, 'show'])->name('post');
 Route::post('/blog/{id}', [PostController::class, 'storeComment'])->name('store-comment');
 
-Route::get('/{kategori}', [CategoryListController::class, 'show'])->name('categories');
+Route::get('/kategori/{kategori}', [CategoryListController::class, 'show'])->name('categories');
+
+Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('post-by-tag');
 
 Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

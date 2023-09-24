@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Controller;
-use App\Models\Categories;
 use App\Models\Posts;
+use App\Models\Categories;
+use App\Http\Controllers\Controller;
 
-class HomeController extends Controller
+class TagsController extends Controller
 {
-	public function index()
+	public function index($tag)
 	{
-		$posts = Posts::where('active', 1)->withCount('comments')->latest()->paginate(4);
+		// Cari semua artikel yang memiliki tag yang sama dengan $tag
+		$posts = Posts::where('active', 1)->where('tags', 'LIKE', "%$tag%")->paginate(4);
 
 		$categories = Categories::withCount(['posts' => function ($query) {
 			$query->where('active', 1);
@@ -22,13 +23,6 @@ class HomeController extends Controller
 			return empty($tag); // Hapus tag yang kosong
 		});
 
-		// dd($tags);
-
-		return view('home', compact('posts', 'categories', 'tags'));
-	}
-
-	public function test()
-	{
-		return view('auth.login');
+		return view('tags', compact('posts', 'tags', 'categories'));
 	}
 }

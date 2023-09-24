@@ -11,9 +11,9 @@
 		@endif
 		<!--End-header-->
 		<main id="main">
-				<!--Main-Content-->
-				@yield('content-id')
-				<!--Main-Content-end-->
+			<!--Main-Content-->
+			@yield('content-id')
+			<!--Main-Content-end-->
 		</main>
 		<!--footer-starts-->
 		{{-- @include('includes.footer') --}}

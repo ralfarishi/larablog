@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Home;
 
-use App\Http\Controllers\Controller;
+use App\Models\Posts;
 use App\Models\Categories;
+use App\Http\Controllers\Controller;
 
 class CategoryListController extends Controller
 {
@@ -21,6 +22,12 @@ class CategoryListController extends Controller
 			->withCount('comments')
 			->paginate(4);
 
-		return view('category', compact('category', 'posts', 'categories'));
+		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
+			return explode(',', $tags);
+		})->unique()->reject(function ($tag) {
+			return empty($tag); // Hapus tag yang kosong
+		});
+
+		return view('category', compact('category', 'posts', 'categories', 'tags'));
 	}
 }
