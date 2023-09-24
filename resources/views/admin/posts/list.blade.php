@@ -35,6 +35,7 @@
                   <th>#</th>
                   <th>Judul Artikel</th>
                   <th>Kategori</th>
+                  <th>Tags</th>
                   <th>Jumlah Komentar</th>
                   <th>Status</th>
                   <th>Aksi</th>
@@ -91,6 +92,7 @@
           },
           {data: 'title', name: 'title'},
           {data: 'category.name', name: 'category.name'},
+          {data: 'tags', name: 'tags'},
           {data: 'comment_count', name: 'comment_count'},
           {data: 'status', name: 'status'},
           {data: 'actions', name: 'actions', orderable: false, searchable: false}
