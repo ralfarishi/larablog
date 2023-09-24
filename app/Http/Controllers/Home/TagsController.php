@@ -13,6 +13,10 @@ class TagsController extends Controller
 		// Cari semua artikel yang memiliki tag yang sama dengan $tag
 		$posts = Posts::where('active', 1)->where('tags', 'LIKE', "%$tag%")->paginate(4);
 
+		if ($posts->isEmpty()) {
+			abort(404);
+		}
+
 		$categories = Categories::withCount(['posts' => function ($query) {
 			$query->where('active', 1);
 		}])->get();
