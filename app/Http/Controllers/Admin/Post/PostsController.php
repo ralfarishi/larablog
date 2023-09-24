@@ -65,7 +65,7 @@ class PostsController extends Controller
 			[
 				'title' => 'required|unique:posts',
 				'content' => 'required',
-				'featured_image' => 'required|mimes:png,jpg,jpeg|max:500',
+				'featured_image' => 'required|mimes:png,jpg,jpeg,webp|max:500',
 				'allowed_comment' => 'required'
 			],
 			[
