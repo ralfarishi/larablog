@@ -9,7 +9,11 @@ class PreviewController extends Controller
 {
 	public function preview($slug)
 	{
-		$post = Posts::where('slug', $slug)->where('active', 1)->firstOrFail();
+		$post = Posts::where('slug', $slug)->firstOrFail();
+
+		if ($post->active == 1) {
+			return to_route('artikel.index')->with('danger', 'Tidak bisa melihat preview artikel yang sudah di-publish!');
+		}
 
 		return view('blog.preview', compact('post'));
 	}
