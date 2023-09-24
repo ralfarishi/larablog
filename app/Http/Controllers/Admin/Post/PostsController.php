@@ -26,13 +26,13 @@ class PostsController extends Controller
 				})
 				->addColumn('actions', function ($model) use ($request) {
 					$id = $model->id;
+					$slug = $model->slug;
 					$link = $request->url() . '/' . $id;
-					//Edit Button
-					$actionHtml = '<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>';
-					//Delete Button
-					$actionHtml .= '<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data ml-2" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>';
-
-					return $actionHtml;
+					return '
+						<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
+						<a href="' . route('preview', $slug) . ' " class="btn btn-warning btn-sm text-white mx-2" title="Preview"><span class="fas fa-eye"></span></a>
+						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
+					';
 				})
 				->addColumn('comment_count', function ($model) use ($request) {
 					return $model->comments->count();

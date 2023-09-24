@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Comment\CommentsController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Post\PostsController;
+use App\Http\Controllers\Admin\Post\PreviewController;
 use App\Http\Controllers\Home\Blogs\PostController;
 use App\Http\Controllers\Home\Blogs\SearchController;
 use App\Http\Controllers\Home\CategoryListController;
@@ -44,6 +45,8 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 		'komentar' => CommentsController::class,
 		'kategori' => CategoryController::class
 	]);
+
+	Route::get('/artikel/p/{id}', [PreviewController::class, 'preview'])->name('preview');
 
 	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });
