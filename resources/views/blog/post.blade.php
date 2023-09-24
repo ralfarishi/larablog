@@ -156,16 +156,16 @@
           </div><!-- End sidebar categories-->
 
           <div class="sidebar-item recent-posts">
-            <h3 class="sidebar-title">Recent Posts</h3>
+            <h3 class="sidebar-title">Related Posts</h3>
 
             <div class="mt-3">
 
-              @foreach ($latestPosts as $latestPost)
+              @foreach ($relatedPosts as $relatedPost)
               <div class="post-item">
-                <img src="{{ asset('uploads/' . $latestPost->featured_image) }}" alt="" class="flex-shrink-0">
+                <img src="{{ asset('uploads/' . $relatedPost->featured_image) }}" alt="" class="flex-shrink-0">
                 <div>
-                  <h4><a href="{{ route('post', $latestPost->slug) }}">{{ $latestPost->title }}</a></h4>
-                  <time datetime="2020-01-01">{{ $latestPost->created_at->format('M d, Y') }}</time>
+                  <h4><a href="{{ route('post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h4>
+                  <time datetime="2020-01-01">{{ $relatedPost->created_at->format('M d, Y') }}</time>
                 </div>
               </div>
               @endforeach

@@ -13,6 +13,7 @@ class PostController extends Controller
 	public function show($slug)
 	{
 		$post = Posts::where('slug', $slug)->where('active', 1)->firstOrFail();
+
 		$activeComments = $post->comments()->where('active', 1)->get();
 		$totalComments = $activeComments->count();
 
@@ -20,13 +21,23 @@ class PostController extends Controller
 			$query->where('active', 1);
 		}])->get();
 
-		$latestPosts = Posts::where('active', 1)
+		// get the latest post
+		// $latestPosts = Posts::where('active', 1)
+		// 	->where('id', '!=', $post->id)
+		// 	->latest()
+		// 	->limit(5)
+		// 	->get();
+
+		// get the related post based on category
+		$category = $post->category;
+		$relatedPosts = Posts::where('active', 1)
+			->where('category_id', $category->id)
 			->where('id', '!=', $post->id)
 			->latest()
 			->limit(5)
 			->get();
 
-		return view('blog.post', compact('post', 'activeComments', 'totalComments', 'latestPosts', 'categories'));
+		return view('blog.post', compact('post', 'activeComments', 'totalComments', 'relatedPosts', 'categories'));
 	}
 
 	public function storeComment(Request $request, $id)
