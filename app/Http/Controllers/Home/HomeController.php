@@ -10,7 +10,11 @@ class HomeController extends Controller
 {
 	public function index()
 	{
-		$posts = Posts::where('active', 1)->withCount('comments')->latest()->paginate(4);
+		$posts = Posts::where('active', 1)
+			->withCount('comments as comment_count')
+			->orderBy('comment_count', 'desc')
+			->latest()
+			->paginate(4);
 
 		$categories = Categories::withCount(['posts' => function ($query) {
 			$query->where('active', 1);

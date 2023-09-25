@@ -21,12 +21,14 @@ class TagsController extends Controller
 			$query->where('active', 1);
 		}])->get();
 
+		$selectedTag = $tag;
+
 		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
 			return explode(',', $tags);
 		})->unique()->reject(function ($tag) {
 			return empty($tag); // Hapus tag yang kosong
 		});
 
-		return view('tags', compact('posts', 'tags', 'categories'));
+		return view('tags', compact('posts', 'tags', 'categories', 'selectedTag'));
 	}
 }

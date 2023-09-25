@@ -12,7 +12,7 @@
     <h2>Tags</h2>
     <ol>
       <li><a href="/">Home</a></li>
-      <li>Tags</li>
+      <li>{{ $selectedTag }}</li>
     </ol>
 
   </div>
