@@ -17,8 +17,8 @@
 <link rel="stylesheet" href="{{ asset('admin_v2/css/fontawesome-free/css/all.min.css') }}" />
 
 <!-- Theme style -->
-<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.1/dist/css/bootstrap.min.css">
 {{-- <link href="{{ asset('admin_v2/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css"> --}}
 <link href="{{ asset('admin_v2/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('admin_v2/css/icheck-bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.1/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="{{ asset('admin_v2/css/adminlte.min.css') }}" />

@@ -29,7 +29,7 @@ class PostsController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
-						<a href="' . route('preview', $model->slug) . ' " class="btn btn-warning btn-sm text-white mx-2" title="Preview"><span class="fas fa-eye"></span></a>
+						<a href="' . route('preview', $model->slug) . ' " class="btn btn-warning btn-sm text-white mx-1" title="Preview"><span class="fas fa-eye"></span></a>
 						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
 					';
 				})
