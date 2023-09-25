@@ -1,5 +1,9 @@
 @extends('layouts.admin_v2.template')
 
+@section('page_css')
+	<link rel="stylesheet" href="{{ asset('css/use-bootstrap-tag.min.css') }}">
+@endsection
+
 @section('content')
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -79,6 +83,16 @@
 								@endif
 							</div>
 
+							<div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
+								<label class="form-label" for="tags">Tags*</label>
+								<input name="tags" class="form-control" id="tags" type="text" placeholder="Pisahkan tags dengan tanda koma atau Enter" data-ub-tag-variant="dark"/>
+								@if ($errors->has('tags'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('tags') }}</p>
+									</span>
+								@endif
+							</div>
+
 							{{-- {{ $post->allowed_comment == 1 ? 'checked' : '' }} --}}
 							<div class="form-group clearfix">
 								<label>Buka Komentar : </label>
@@ -123,10 +137,13 @@
 
 @section('page_scripts')
 	<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+	<script type="text/javascript" src="{{ asset('js/use-bootstrap-tag.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('back/js/select2.min.js')}}"></script>
 
 	<script type="text/javascript">
 		CKEDITOR.replace('content');
+
+		UseBootstrapTag(document.getElementById('tags'))
 
 		document.getElementById('featured_image').addEventListener('change', function(e) {
 			var fileName = e.target.files[0].name;

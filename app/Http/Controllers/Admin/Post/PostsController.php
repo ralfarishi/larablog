@@ -66,12 +66,14 @@ class PostsController extends Controller
 				'title' => 'required|unique:posts',
 				'content' => 'required',
 				'featured_image' => 'required|mimes:png,jpg,jpeg,webp|max:500',
+				'tags' => 'required',
 				'allowed_comment' => 'required',
 			],
 			[
 				'title.required' => 'Judul tidak boleh kosong!',
 				'content.required' => 'Isi artikel tidak boleh kosong!',
 				'featured_image.required' => 'Harap meng-upload gambar!',
+				'tags.required' => 'Harap memasukkan tag minimal 1!',
 				'allowed_comment.required' => 'Harap pilih salah satu!'
 			]
 		);
@@ -128,6 +130,7 @@ class PostsController extends Controller
 				'title.required' => 'Judul tidak boleh kosong!',
 				'content.required' => 'Isi artikel tidak boleh kosong!',
 				'featured_image.required' => 'Harap meng-upload gambar!',
+				'tags.required' => 'Harap memasukkan tag minimal 1!',
 				'allowed_comment.required' => 'Harap pilih salah satu!',
 				'active.required' => 'Harap pilih salah satu!',
 			]
