@@ -95,7 +95,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="{{ route('kategori.index') }}" class="nav-link ">
-					<i class="nav-icon fa-solid fa-bookmark"></i>
+					<i class="nav-icon fa-solid fa-tags"></i>
 						<p>Kategori</p>
 					</a>
 				</li>
