@@ -30,8 +30,7 @@ class PostController extends Controller
 
 		// get the related post based on category
 		$category = $post->category;
-		$relatedPosts = Posts::where('active', 1)
-			->where('category_id', $category->id)
+		$relatedPosts = Posts::where('category_id', $category->id)
 			->where('id', '!=', $post->id)
 			->orWhere(function ($query) use ($post) {
 				// Menggunakan subquery untuk mencocokkan artikel berdasarkan tag yang sama

@@ -180,13 +180,15 @@
             <div class="mt-3">
 
               @foreach ($relatedPosts as $relatedPost)
-              <div class="post-item">
-                <img src="{{ asset('uploads/' . $relatedPost->featured_image) }}" alt="" class="flex-shrink-0">
-                <div>
-                  <h4><a href="{{ route('post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h4>
-                  <time datetime="2020-01-01">{{ $relatedPost->created_at->format('M d, Y') }}</time>
-                </div>
-              </div>
+                @if ($relatedPost->active == 1)
+                  <div class="post-item">
+                    <img src="{{ asset('uploads/' . $relatedPost->featured_image) }}" alt="" class="flex-shrink-0">
+                    <div>
+                      <h4><a href="{{ route('post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h4>
+                      <time datetime="2020-01-01">{{ $relatedPost->created_at->format('M d, Y') }}</time>
+                    </div>
+                  </div>
+                @endif
               @endforeach
               <!-- End recent post item-->
             </div>
