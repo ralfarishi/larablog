@@ -36,7 +36,6 @@ body {
 	top: 0;
 	bottom: 0;
 	width: 1px;
-	background-color: #eee;
 }
 
 #notfound .notfound-bg > div:nth-child(1) {
