@@ -28,6 +28,8 @@ class CategoryListController extends Controller
 			return empty($tag); // Hapus tag yang kosong
 		});
 
+		$posts->load('comments');
+
 		return view('category', compact('category', 'posts', 'categories', 'tags'));
 	}
 }

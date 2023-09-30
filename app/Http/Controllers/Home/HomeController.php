@@ -12,6 +12,7 @@ class HomeController extends Controller
 	{
 		$posts = Posts::where('active', 1)
 			->withCount('comments as comment_count')
+			->with(['category', 'comments', 'user'])
 			->orderBy('comment_count', 'desc')
 			->latest()
 			->paginate(4);
@@ -29,10 +30,5 @@ class HomeController extends Controller
 		// dd($tags);
 
 		return view('home', compact('posts', 'categories', 'tags'));
-	}
-
-	public function test()
-	{
-		return view('auth.login');
 	}
 }
