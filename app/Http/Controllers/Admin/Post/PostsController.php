@@ -18,7 +18,7 @@ class PostsController extends Controller
 	public function index(Request $request)
 	{
 		if ($request->ajax()) {
-			$model = Posts::with(['category'])->latest();
+			$model = Posts::with(['category', 'comments'])->latest();
 
 			return DataTables::of($model)
 				->addColumn('status', function ($model) use ($request) {
@@ -50,10 +50,7 @@ class PostsController extends Controller
 		$categories = Categories::all();
 		$post = new Posts();
 
-		return view('admin.posts.create', [
-			'categories' => $categories,
-			'post' => $post
-		]);
+		return view('admin.posts.create', compact('categories', 'post'));
 	}
 
 	/**
@@ -106,10 +103,7 @@ class PostsController extends Controller
 		$post = Posts::findOrFail($id);
 		$categories = Categories::all();
 
-		return view("admin.posts.edit", [
-			'post' => $post,
-			'categories' => $categories
-		]);
+		return view("admin.posts.edit", compact('post', 'categories'));
 	}
 
 	/**

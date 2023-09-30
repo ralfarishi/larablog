@@ -74,7 +74,7 @@
 										>
 									</div>
 								</div>
-								<img id="preview_featured_image" class="inputImgPreview w-25 mt-2" src="@if(isset($post)){{ $post->featured_image }} @endif" class="img-thumbnail"/>
+								<img id="preview_featured_image" class="inputImgPreview w-25 mt-2" src="{{ isset($post) ? $post->featured_image : '' }}" />
 
 								@if ($errors->has('featured_image'))
 									<span class="help-block text-danger">

@@ -15,7 +15,7 @@ class CommentsController extends Controller
 	public function index(Request $request)
 	{
 		if ($request->ajax()) {
-			$model = Comments::latest();
+			$model = Comments::with('post')->latest();
 			return DataTables::of($model)
 				->addColumn('actions', function ($model) use ($request) {
 					$id = $model->id;
@@ -78,9 +78,7 @@ class CommentsController extends Controller
 	{
 		$comment = Comments::findOrFail($id);
 
-		return view('admin.comments.edit', [
-			'comment' => $comment
-		]);
+		return view('admin.comments.edit', compact('comment'));
 	}
 
 	/**
