@@ -37,7 +37,7 @@
               <li class="d-flex align-items-center">
                 <i class="fa-regular fa-clock"></i>
                 <a href="javascript:void(0)">
-                  <time datetime="2020-01-01">{{ $post->created_at->format('M d, Y') }}</time>
+                  <time datetime="{{ $post->created_at }}">{{ formatDate($post->created_at) }}</time>
                 </a>
               </li>
               <li class="d-flex align-items-center">
