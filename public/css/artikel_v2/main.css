@@ -1484,7 +1484,7 @@ section {
 }
 
 .blog .blog-details .content a:hover {
-	text-decoration: underline;
+	text-decoration: underline dotted 2px;
 }
 
 .blog .blog-details .content h3 {
@@ -1581,7 +1581,8 @@ section {
 	font-size: 14px;
 }
 
-.blog .blog-details .meta-bottom .cats li {
+.blog .blog-details .meta-bottom .cats li,
+.blog .blog-details .meta-bottom .tags li {
 	display: inline-block;
 }
 
@@ -1590,10 +1591,6 @@ section {
 	display: inline;
 	padding: 0;
 	font-size: 14px;
-}
-
-.blog .blog-details .meta-bottom .tags li {
-	display: inline-block;
 }
 
 .blog .blog-details .meta-bottom .tags li + li::before {
@@ -1717,7 +1714,7 @@ section {
 }
 
 .blog .sidebar .categories ul a:hover {
-	color: var(--color-default);
+	color: var(--color-primary);
 }
 
 .blog .sidebar .categories ul a span {
