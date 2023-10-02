@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Posts;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class HomeController extends Controller
 {
@@ -27,7 +28,9 @@ class HomeController extends Controller
 			return empty($tag); // Hapus tag yang kosong
 		});
 
-		// dd($tags);
+		$twitterCardImage = asset('images/blog-header.jpg');
+
+		SEOTools::twitter()->setImage($twitterCardImage);
 
 		return view('home', compact('posts', 'categories', 'tags'));
 	}

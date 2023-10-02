@@ -52,7 +52,6 @@ return [
 		'defaults' => [
 			'card'        => 'summary_large_image',
 			'title'				=> 'Sekolah JeWePe: Selalu Relevan',
-			'image'				=> asset('images/blog-header.jpg'),
 			//'site'        => '@LuizVinicius73',
 		],
 	],
