@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Comments;
 use App\Models\Posts;
+use Artesaos\SEOTools\Facades\SEOTools;
+use DOMDocument;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -50,8 +52,6 @@ class PostController extends Controller
 		// get tags per post
 		$postTags = explode(',', $post->tags);
 
-		// dd($postTags);
-
 		// get all tags
 		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
 			return explode(',', $tags);
@@ -59,7 +59,57 @@ class PostController extends Controller
 			return empty($tag); // Hapus tag yang kosong
 		});
 
-		return view('blog.post', compact('post', 'activeComments', 'totalComments', 'relatedPosts', 'categories', 'postTags', 'tags'));
+		/*
+		 * Generate on page SEO
+		*/
+		// get blog description
+		$content = $post->content;
+
+		$dom = new DOMDocument();
+		$dom->loadHTML($content);
+
+		// get <p> tag only
+		$pTag = null;
+		foreach ($dom->getElementsByTagName('p') as $p) {
+			$pTag = $p->nodeValue;
+			break;
+		}
+
+		$firstPeriodPosition = strpos($pTag, '.'); // find the first '.' (dot) symbol in content
+
+		if ($firstPeriodPosition === false) {
+			$firstSentence = $pTag;
+		} else {
+			$firstSentence = substr($pTag, 0, $firstPeriodPosition + 1);
+		}
+
+		// get URL
+		$baseUrl = url('/');
+		$canonicalUrl = $baseUrl . '/blog/' . $post->slug;
+		$blogImage = $baseUrl . '/uploads/' . $post->featured_image;
+
+		// generate SEO
+		SEOTools::setTitle($post->title);
+		SEOTools::setDescription($firstSentence);
+		SEOTools::setCanonical($canonicalUrl);
+
+		SEOTools::opengraph()->setTitle($post->title);
+		SEOTools::opengraph()->setDescription($firstSentence);
+		SEOTools::opengraph()->setUrl($baseUrl);
+
+		SEOTools::twitter()->setTitle($post->title);
+		SEOTools::twitter()->setDescription($firstPeriodPosition);
+		SEOTools::twitter()->setImage($blogImage);
+
+		return view('blog.post', compact(
+			'post',
+			'activeComments',
+			'totalComments',
+			'relatedPosts',
+			'categories',
+			'postTags',
+			'tags'
+		));
 	}
 
 	public function storeComment(Request $request, $id)

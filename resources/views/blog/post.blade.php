@@ -1,9 +1,5 @@
 @extends('layouts.templates')
 
-@section('page-title')
-  {{ $post->title }}
-@endsection
-
 @section('content-id')
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
