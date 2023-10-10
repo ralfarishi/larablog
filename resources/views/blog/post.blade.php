@@ -1,5 +1,9 @@
 @extends('layouts.templates')
 
+@section('page_css')
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/atom-one-dark.min.css">
+@endsection
+
 @section('content-id')
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
@@ -209,4 +213,11 @@
     </div>
   </div>
 </section>
+@endsection
+
+@section('page_scripts')
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
 @endsection
