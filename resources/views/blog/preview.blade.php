@@ -1,5 +1,9 @@
 @extends('layouts.templates')
 
+@section('page_css')
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/atom-one-dark.min.css">
+@endsection
+
 @php
   $hideNavbar = true;
 @endphp
@@ -57,7 +61,7 @@
           <!-- End meta top -->
 
           <div class="content">
-            {!! $post->content !!}
+            {!! Str::markdown($post->content) !!}
           </div>
           <!-- End post content -->
 
@@ -128,4 +132,11 @@
     </div>
   </div>
 </section>
+@endsection
+
+@section('page_scripts')
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/highlight.min.js"></script>
+  <script>
+    hljs.highlightAll();
+  </script>
 @endsection

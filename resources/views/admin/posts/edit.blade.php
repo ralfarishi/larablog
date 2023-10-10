@@ -1,6 +1,9 @@
 @extends('layouts.admin_v2.template')
 
 @section('page_css')
+	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-editor.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/prism.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-plugin-code-syntax-highlight.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('css/use-bootstrap-tag.min.css') }}">
 @endsection
 
@@ -33,7 +36,7 @@
 				<div class="card">
 					<!-- /.card-header -->
 					<!-- form start -->
-					<form action="{{ route('artikel.update', $post->id) }}" enctype="multipart/form-data" method="POST">
+					<form action="{{ route('artikel.update', $post->id) }}" enctype="multipart/form-data" method="POST" id="editPost">
 						@method('PATCH')
 						@csrf
 						<div class="card-body">
@@ -48,10 +51,10 @@
 							</div>
 							<div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
 								<label class="form-label" for="content">Content*</label>
-
-								<textarea name="content" class="form-control" id="content">
-									{!! $post->content !!}
-								</textarea>
+								<div id="editor">
+									{!! Str::markdown($post->content) !!}
+								</div>
+								<input type="hidden" name="content" id="content">
 								@if ($errors->has('content'))
 									<span class="help-block text-danger">
 										<p>{{ $errors->first('content') }}</p>
@@ -140,13 +143,31 @@
 @endsection
 
 @section('page_scripts')
-	<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-editor-all.min.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-plugin-code-syntax-highlight-all.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('js/use-bootstrap-tag.min.js')}}"></script>
 	<script type="text/javascript" src="{{URL::asset('back/js/select2.min.js')}}"></script>
 
-	<script type="text/javascript">
-		CKEDITOR.replace('content');
+	<script>
+		const { Editor } = toastui;
+		const { codeSyntaxHighlight } = Editor.plugin;
 
+		const editor = new Editor({
+			el: document.querySelector('#editor'),
+			height: '450px',
+			initialEditType: 'markdown',
+  		previewStyle: 'vertical',
+			plugins: [codeSyntaxHighlight]
+		});
+
+		document.querySelector('#editPost').addEventListener('submit', e => {
+			e.preventDefault();
+			document.querySelector('#content').value = editor.getMarkdown();
+			e.target.submit();
+		});
+	</script>
+
+	<script type="text/javascript">
 		UseBootstrapTag(document.getElementById('tags'))
 
 		document.getElementById('featured_image').addEventListener('change', function(e) {

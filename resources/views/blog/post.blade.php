@@ -49,7 +49,7 @@
           <!-- End meta top -->
 
           <div class="content">
-            {!! $post->content !!}
+            {!! Str::markdown($post->content) !!}
           </div>
           <!-- End post content -->
 
