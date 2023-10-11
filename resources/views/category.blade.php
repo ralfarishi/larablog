@@ -49,9 +49,13 @@
                   </ul>
                 </div>
 
+                @php
+                  $content = Str::markdown($post->content);
+                @endphp
+
                 <div class="content">
                   <p>
-                    {!! Str::limit(strip_tags($post->content), 280) !!}
+                    {!! Str::limit(strip_tags($content), 280) !!}
                   </p>
                 </div>
 

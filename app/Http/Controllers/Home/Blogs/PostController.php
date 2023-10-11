@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Home\Blogs;
 
-use App\Http\Controllers\Controller;
-use App\Models\Categories;
-use App\Models\Comments;
-use App\Models\Posts;
-use Artesaos\SEOTools\Facades\SEOTools;
 use DOMDocument;
+use App\Models\Posts;
+use App\Models\Comments;
+use App\Models\Categories;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Artesaos\SEOTools\Facades\SEOTools;
 
 class PostController extends Controller
 {
@@ -63,7 +64,7 @@ class PostController extends Controller
 		 * Generate on page SEO
 		*/
 		// get blog description
-		$content = $post->content;
+		$content = Str::markdown($post->content);
 
 		$dom = new DOMDocument();
 		$dom->loadHTML($content);
