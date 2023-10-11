@@ -24,6 +24,13 @@ class PostsController extends Controller
 				->addColumn('status', function ($model) use ($request) {
 					return $model->active ? '<span class="badge bg-success">Published</span>' : '<span class="badge bg-info">Draft</span>';
 				})
+				->filterColumn('status', function ($query, $keyword) {
+					if ($keyword == 'published') {
+						$query->where('active', true);
+					} elseif ($keyword == 'draft') {
+						$query->where('active', false);
+					}
+				})
 				->addColumn('actions', function ($model) use ($request) {
 					$id = $model->slug;
 					$link = $request->url() . '/' . $id;
