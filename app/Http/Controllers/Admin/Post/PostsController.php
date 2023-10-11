@@ -25,7 +25,7 @@ class PostsController extends Controller
 					return $model->active ? '<span class="badge bg-success">Published</span>' : '<span class="badge bg-info">Draft</span>';
 				})
 				->addColumn('actions', function ($model) use ($request) {
-					$id = $model->id;
+					$id = $model->slug;
 					$link = $request->url() . '/' . $id;
 					return '
 						<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
@@ -100,7 +100,7 @@ class PostsController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		$post = Posts::findOrFail($id);
+		$post = Posts::where('slug', $id)->firstOrFail();
 		$categories = Categories::all();
 
 		return view("admin.posts.edit", compact('post', 'categories'));
@@ -150,7 +150,11 @@ class PostsController extends Controller
 	 */
 	public function destroy(string $id)
 	{
-		$post = Posts::findOrFail($id);
+		$post = Posts::where('slug', $id)->firstOrFail();
+
+		if ($post->active === 1) {
+			return to_route('artikel.index')->with('warning', 'Artikel sudah di-publish! Ubah status artikel untuk menghapus artikel.');
+		}
 
 		$imagePath = public_path('uploads/' . $post->featured_image);
 
