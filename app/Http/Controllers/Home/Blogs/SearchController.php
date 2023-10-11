@@ -11,17 +11,15 @@ class SearchController extends Controller
 {
 	public function index(Request $request)
 	{
-		// Ambil kata kunci pencarian dari form
 		$query = $request->input('query');
 
 		$categories = Categories::withCount(['posts' => function ($query) {
 			$query->where('active', 1);
 		}])->get();
 
-		// Lakukan pencarian ke dalam model Posts (sesuaikan dengan model yang Anda gunakan)
 		$results = Posts::where('title', 'like', '%' . $query . '%')
-			// ->orWhere('content', 'like', '%' . $query . '%')
-			->where('active', 1) // Pastikan hanya mencari artikel yang aktif
+			->orWhere('content', 'like', '%' . $query . '%')
+			->where('active', 1)
 			->paginate(4);
 
 		return view('search', compact('results', 'query', 'categories'));
