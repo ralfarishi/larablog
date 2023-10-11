@@ -4,7 +4,7 @@
 	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-editor.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/prism.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-plugin-code-syntax-highlight.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('css/use-bootstrap-tag.min.css') }}">
+	<link rel="stylesheet" href="{{ asset('admin_v2/css/use-bootstrap-tag.min.css') }}">
 @endsection
 
 @section('content')
@@ -145,7 +145,7 @@
 @section('page_scripts')
 	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-editor-all.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-plugin-code-syntax-highlight-all.min.js')}}"></script>
-	<script type="text/javascript" src="{{ asset('js/use-bootstrap-tag.min.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('admin_v2/js/use-bootstrap-tag.min.js')}}"></script>
 	<script type="text/javascript" src="{{URL::asset('back/js/select2.min.js')}}"></script>
 
 	<script>
