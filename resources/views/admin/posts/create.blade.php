@@ -52,12 +52,11 @@
 								<label class="form-label">Content*</label>
 								<div id="editor"></div>
 								<input type="hidden" name="content" id="content">
-								{{-- <textarea name="content" class="form-control" id="content"></textarea>
 								@if ($errors->has('content'))
 									<span class="help-block text-danger">
 										<p>{{ $errors->first('content') }}</p>
 									</span>
-								@endif --}}
+								@endif
 							</div>
 							<div class="form-group">
 								<label>Kategori*</label>
