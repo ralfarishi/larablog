@@ -1,10 +1,10 @@
 ### Installation
 
-1. Clone this repo & install dependencies using composer.
+1. Clone this repo & update dependencies using composer.
 
 ```sh
 $ cd sekolah-jewepe
-$ composer install
+$ composer update
 ```
 
 2. Copy the .env.example file.
