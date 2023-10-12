@@ -68,9 +68,13 @@ class CategoryController extends Controller
 
 	public function destroy($id)
 	{
-		$data = Categories::findOrfail($id);
+		$category = Categories::findOrfail($id);
 
-		$data->delete();
+		if ($category->posts->count() > 0) {
+			return to_route('kategori.index')->with('warning', 'Tidak dapat menghapus kategori karena masih ada artikel yang berhubungan.');
+		}
+
+		$category->delete();
 
 		return to_route('kategori.index')->with('danger', 'Kategori berhasil dihapus!');
 	}
