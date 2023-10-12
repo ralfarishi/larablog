@@ -1523,6 +1523,13 @@ section {
 	margin-bottom: 20px;
 }
 
+.blog .blog-details p code,
+.blog .blog-details ol code {
+	background-color: #edededd9;
+	padding: 3.5px;
+	border-radius: 3px;
+}
+
 .blog .blog-details .meta-top {
 	margin-top: 20px;
 	color: var(--color-gray);
