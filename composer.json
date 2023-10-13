@@ -33,7 +33,7 @@
 			"Database\\Seeders\\": "database/seeders/"
 		},
 		"files": [
-			"app/Helpers/dateFormat.php"
+			"app/helpers.php"
 		]
 	},
 	"autoload-dev": {
