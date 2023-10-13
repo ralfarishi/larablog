@@ -24,10 +24,10 @@
       <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
 
         <div class="row gy-5 posts-list">
-          <h1>Hasil Pencarian untuk "{{ $query }}"</h1>
+          <h3>Hasil Pencarian untuk "{{ $query }}"</h3>
 
           @if ($results->isEmpty())
-            <p>Tidak ada hasil yang ditemukan</p>
+            <p class="text-center">Tidak ada artikel yang ditemukan.</p>
           @else
             @foreach ($results as $result)
               <div class="col-lg-6">
@@ -83,37 +83,10 @@
 
       </div>
 
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-
-        <div class="sidebar ps-lg-4">
-
-          <div class="sidebar-item search-form">
-            <h3 class="sidebar-title">Search</h3>
-            <form action="{{ route('search') }}" class="mt-3" method="GET">
-              <input type="text" name="query" placeholder="Cari artikel ...">
-              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
-          </div>
-          <!-- End sidebar search formn-->
-
-          <div class="sidebar-item categories">
-            <h3 class="sidebar-title">Categories</h3>
-            <ul class="mt-3">
-              @foreach ($categories as $category)
-                <li>
-                  <a href="{{ route('categories', Str::lower($category->name)) }}">{{ $category->name }}
-                    <span>
-                      ({{ $category->posts_count }})
-                    </span>
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          </div><!-- End sidebar categories-->
-
-        </div><!-- End Blog Sidebar -->
-
-      </div>
+     @include('partials._sidebar', [
+        'categories' => $categories,
+        'tags' => $tags
+      ])
 
     </div>
 

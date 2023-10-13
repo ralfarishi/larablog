@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Home\Blogs;
 
 use App\Models\Posts;
-use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -13,15 +12,15 @@ class SearchController extends Controller
 	{
 		$query = $request->input('query');
 
-		$categories = Categories::withCount(['posts' => function ($query) {
-			$query->where('active', 1);
-		}])->get();
-
-		$results = Posts::where('title', 'like', '%' . $query . '%')
-			->orWhere('content', 'like', '%' . $query . '%')
-			->where('active', 1)
+		$results = Posts::where('active', 1)
+			->where(function ($q) use ($query) {
+				$q->where('title', 'like', '%' . $query . '%')
+					->orWhere('content', 'like', '%' . $query . '%');
+			})
 			->paginate(4);
 
-		return view('search', compact('results', 'query', 'categories'));
+		$sidebarData = getSidebarData();
+
+		return view('search', compact('results', 'query'), $sidebarData);
 	}
 }

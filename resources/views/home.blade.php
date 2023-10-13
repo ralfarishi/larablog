@@ -40,9 +40,26 @@
 
                   <div class="meta-top">
                     <ul>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-user"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-comment-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}} Comments</a></li>
+                      <li class="d-flex align-items-center">
+                        <i class="fa-regular fa-user"></i>
+                        <a href="{{ route('post', $post->slug) }}">
+                          {{ $post->user->name }}
+                        </a>
+                      </li>
+                      <li class="d-flex align-items-center">
+                        <i class="fa-regular fa-clock"></i> 
+                        <a href="{{ route('post', $post->slug) }}">
+                          <time datetime="{{ $post->created_at }}">
+                            {{ formatDate($post->created_at) }}
+                          </time>
+                        </a>
+                      </li>
+                      <li class="d-flex align-items-center">
+                        <i class="fa-regular fa-comment-dots"></i> 
+                        <a href="{{ route('post', $post->slug) }}">
+                          {{ $post->comments->count() > 0 ? $post->comments->count() : 0}} Comments
+                        </a>
+                      </li>
                     </ul>
                   </div>
 
@@ -81,51 +98,10 @@
         <!-- End blog pagination -->
       </div>
 
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-
-        <div class="sidebar ps-lg-4">
-          <div class="sidebar-item search-form">
-            <h3 class="sidebar-title">Search</h3>
-            <form action="{{ route('search') }}" class="mt-3" method="GET">
-              <input type="text" name="query" placeholder="Cari artikel ...">
-              <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
-          </div>
-          <!-- End sidebar search formn-->
-
-          <div class="sidebar-item categories">
-            <h3 class="sidebar-title">Categories</h3>
-            <ul class="mt-3">
-              @foreach ($categories as $category)
-                <li>
-                  <a href="{{ route('categories', Str::lower($category->name)) }}">{{ $category->name }}
-                    <span>
-                      ({{ $category->posts_count }})
-                    </span>
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          </div>
-          <!-- End sidebar categories-->
-
-          <div class="sidebar-item tags">
-            <h3 class="sidebar-title">Tags</h3>
-            <ul class="mt-3">
-              @foreach ($tags as $tag)
-                <li>
-                  <a href="{{ route('post-by-tag', $tag) }}">
-                    {{ Str::title($tag) }}
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          </div>
-
-        </div>
-        <!-- End Blog Sidebar -->
-
-      </div>
+      @include('partials._sidebar', [
+        'categories' => $categories,
+        'tags' => $tags
+      ])
       
     </div>
 
