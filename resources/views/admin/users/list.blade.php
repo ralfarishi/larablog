@@ -58,7 +58,7 @@
             <p>Apa anda yakin ingin menghapus user ini?</p>
           </div>
           <div class="modal-footer justify-content-center">
-            <form action="{{ url('admin/user/') }}" id="data-delete-form" method="POST">
+            <form action="{{ url('dashboard/user/') }}" id="data-delete-form" method="POST">
 							@method('DELETE')
 							@csrf
               <button type="submit" class="btn btn-danger">Hapus</button>

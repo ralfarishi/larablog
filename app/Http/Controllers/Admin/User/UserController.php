@@ -130,7 +130,7 @@ class UserController extends Controller
 	 */
 	public function destroy(string $id)
 	{
-		$data = User::firstOrFail();
+		$data = User::findOrFail($id);
 
 		if ($data->id == 1) {
 			return to_route('user.index')->with('warning', 'Tidak dapat menghapus seorang ADMIN!');
