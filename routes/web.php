@@ -30,6 +30,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware(['guest'])->group(function () {
 	Route::get('/login', [LoginController::class, 'index'])->name('login');
 	Route::post('/login', [LoginController::class, 'login'])->name('auth');
+	Route::post('/register', [LoginController::class, 'register'])->name('register');
 });
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
