@@ -9,6 +9,7 @@ use App\Models\Categories;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
 
 class PostController extends Controller
@@ -144,5 +145,20 @@ class PostController extends Controller
 		$comment->save();
 
 		return back()->with('success', 'Komentar berhasil terkirim!');
+	}
+
+	public function postByUser($slug)
+	{
+		$user = User::where('slug', $slug)->firstOrFail();
+
+		if (!$user) {
+			abort(404);
+		}
+
+		$posts = $user->posts()->with(['user', 'comments'])->latest()->paginate(4);
+
+		$sidebarData = getSidebarData();
+
+		return view('post-by-user', compact('user', 'posts'), $sidebarData);
 	}
 }

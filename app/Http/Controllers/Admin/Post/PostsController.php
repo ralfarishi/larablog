@@ -18,7 +18,11 @@ class PostsController extends Controller
 	public function index(Request $request)
 	{
 		if ($request->ajax()) {
-			$model = Posts::with(['category', 'comments'])->latest();
+			if (Auth::user()->id === 1) {
+				$model = Posts::with(['category', 'comments', 'user'])->latest();
+			} else {
+				$model = Posts::where('user_id', Auth::user()->id)->with(['category', 'comments', 'user'])->latest();
+			}
 
 			return DataTables::of($model)
 				->addColumn('status', function ($model) use ($request) {
@@ -42,6 +46,9 @@ class PostsController extends Controller
 				})
 				->addColumn('comment_count', function ($model) use ($request) {
 					return $model->comments->count();
+				})
+				->addColumn('writer', function ($model) use ($request) {
+					return $model->user->name;
 				})
 				->rawColumns(['actions', 'status'])
 				->make(true);

@@ -12,7 +12,8 @@ class SearchController extends Controller
 	{
 		$query = $request->input('query');
 
-		$results = Posts::where('active', 1)
+		$results = Posts::with(['user', 'comments'])
+			->where('active', 1)
 			->where(function ($q) use ($query) {
 				$q->where('title', 'like', '%' . $query . '%')
 					->orWhere('content', 'like', '%' . $query . '%');

@@ -58,7 +58,7 @@
 				<!-- Add icons to the links using the .nav-icon class
 					with font-awesome or any other icon font library -->
 				<li class="nav-item">
-					<a href="{{ url('admin/dashboard') }}" class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}">
+					<a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
 						<i class="nav-icon fa-solid fa-gauge"></i>
 						<p>Dashboard</p>
 					</a>
@@ -88,23 +88,25 @@
 					</ul>
 				</li>
 				<li class="nav-item">
-					<a href="{{ route('komentar.index') }}" class="nav-link ">
+					<a href="{{ route('komentar.index') }}" class="nav-link {{ request()->routeIs('komentar.index') ? 'active' : '' }}">
 						<i class="nav-icon fa-solid fa-comments"></i>
 						<p>Komentar</p>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a href="{{ route('kategori.index') }}" class="nav-link ">
-					<i class="nav-icon fa-solid fa-tags"></i>
-						<p>Kategori</p>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a href="#" class="nav-link">
-						<i class="nav-icon fa-solid fa-users"></i>
-						<p>Users</p>
-					</a>
-				</li>
+				@if (Auth::user()->id == 1)
+					<li class="nav-item">
+						<a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.index') ? 'active' : '' }}">
+						<i class="nav-icon fa-solid fa-tags"></i>
+							<p>Kategori</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+							<i class="nav-icon fa-solid fa-users"></i>
+							<p>Users</p>
+						</a>
+					</li>
+				@endif
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->

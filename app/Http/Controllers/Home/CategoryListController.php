@@ -12,6 +12,7 @@ class CategoryListController extends Controller
 		$category = Categories::where('name', $category)->firstOrFail();
 
 		$posts = $category->posts()
+			->with(['user'])
 			->where('active', 1)
 			->latest()
 			->withCount('comments')

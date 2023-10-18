@@ -29,8 +29,7 @@
 			<div class="col-lg-3 col-6">
 				<div class="small-box bg-indigo">
 					<div class="inner">
-						<h3>{{ $total_posts }}</h3>
-
+						<h3>{{ $totalPosts }}</h3>
 						<p>Jumlah Artikel</p>
 					</div>
 					<div class="icon">
@@ -41,11 +40,10 @@
 					></a>
 				</div>
 			</div>
-						<div class="col-lg-3 col-6">
+			<div class="col-lg-3 col-6">
 				<div class="small-box bg-maroon">
 					<div class="inner">
-						<h3>{{ $total_comments }}</h3>
-
+						<h3>{{ $totalComments }}</h3>
 						<p>Jumlah Komentar</p>
 					</div>
 					<div class="icon">
@@ -56,22 +54,36 @@
 					></a>
 				</div>
 			</div>
-			<div class="col-lg-3 col-6">
-				<!-- small box -->
-				<div class="small-box bg-fuchsia">
-					<div class="inner">
-						<h3>{{ $total_categories }}</h3>
-
-						<p>Jumlah Kategori</p>
+			@if (Auth::user()->id == 1)
+				<div class="col-lg-3 col-6">
+					<div class="small-box bg-fuchsia">
+						<div class="inner">
+							<h3>{{ $totalCategories }}</h3>
+							<p>Jumlah Kategori</p>
+						</div>
+						<div class="icon">
+							<i class="fa-solid fa-tags"></i>
+						</div>
+						<a href="{{ route('kategori.index') }}" class="small-box-footer"
+							>View Details <i class="fas fa-arrow-circle-right"></i
+						></a>
 					</div>
-					<div class="icon">
-						<i class="fa-solid fa-tags"></i>
-					</div>
-					<a href="{{ route('kategori.index') }}" class="small-box-footer"
-						>View Details <i class="fas fa-arrow-circle-right"></i
-					></a>
 				</div>
-			</div>
+				<div class="col-lg-3 col-6">
+					<div class="small-box bg-teal">
+						<div class="inner">
+							<h3>{{ $totalUsers }}</h3>
+							<p>Jumlah Pengguna</p>
+						</div>
+						<div class="icon">
+							<i class="fa-solid fa-users"></i>
+						</div>
+						<a href="{{ route('user.index') }}" class="small-box-footer"
+							>View Details <i class="fas fa-arrow-circle-right"></i
+						></a>
+					</div>
+				</div>
+			@endif
 		</div>
 	</div>
 	<!-- /.container-fluid -->

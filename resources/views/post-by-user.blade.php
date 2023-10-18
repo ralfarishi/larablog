@@ -10,7 +10,7 @@
     <h2>Blog</h2>
     <ol>
       <li><a href="/">Home</a></li>
-      <li>Blog</li>
+      <li>{{ $user->name }}</li>
     </ol>
 
   </div>
@@ -42,7 +42,7 @@
                     <ul>
                       <li class="d-flex align-items-center">
                         <i class="fa-regular fa-user"></i>
-                        <a href="{{ route('post-by-user', $post->user->slug) }}">
+                        <a href="{{ route('post-by-user', $post->user->name) }}">
                           {{ $post->user->name }}
                         </a>
                       </li>

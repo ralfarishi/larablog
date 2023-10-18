@@ -18,71 +18,95 @@
 	<!-- /.container-fluid -->
 </section>
 <section class="content">
-  @include('includes.admin_v2.alerts')
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-            {{-- <div class="container-fluid text-right" style="margin-bottom: 16px;">
-              <a class="btn btn-success" href="{{ route('users.create') }}">
-                Add New
-              </a>
-            </div> --}}
-            <table class="table table-bordered table-striped">
+	<div class="container-fluid">
+		<div class="row">
+      <div class="container-fluid text-right" style="margin-bottom: 16px;">
+        <a class="btn btn-success" href="{{ route('user.create') }}">
+          Buat User
+        </a>
+      </div>
+			<div class="col-md-12">
+        @include('includes.admin_v2.alerts')
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-bordered table-striped" id="list-table">
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
+                  <th>Nama</th>
                   <th>Email</th>
-
+                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach($users as $user)
-                <tr>
-                  <td>{{ $user->id }}</td>
-                  <td>{{ $user->name }}</td>
-                  <td>
-                    {{-- <a href="{{url('admin/users/'.$user->id.'/edit')}}" class="btn btn-primary">
-                      <span class="fas fa-edit"></span>
-                    </a> --}}
-                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{$user->id}}">
-                      <span class="fas fa-trash"></span>
-                    </a>
-                    <div class="modal fade" id="deleteModal{{$user->id}}" role="dialog">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title">Delete User</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <p>Are you sure you want to delete this user?</p>
-                          </div>
-                          <div class="modal-footer justify-content-center">
-                            {{Form::open(['url'=>url('admin/users/'.$user->id),'method'=>'delete'])}}
-                              <button type="submit" class="btn btn-danger">Yes</button>
-                            {{Form::close()}}
-                          </div>
-                        </div>
-                        <!-- /.modal-content -->
-                      </div>
-                      <!-- /.modal-dialog -->
-                    </div>
-                  </td>
-                </tr>
-                @endforeach
               </tbody>
             </table>
-
-          <div class="text-center">
-            {{ $users->links() }}
+          </div>
+        </div>
+			</div>
+		</div>
+    <div class="modal fade" id="deleteModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Hapus User</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Apa anda yakin ingin menghapus user ini?</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <form action="{{ url('admin/user/') }}" id="data-delete-form" method="POST">
+							@method('DELETE')
+							@csrf
+              <button type="submit" class="btn btn-danger">Hapus</button>
+						</form>
           </div>
         </div>
       </div>
     </div>
-  </div>
+	</div>
 </section>
+@endsection
+
+@section('page_scripts')
+  <script type="text/javascript">
+    $(function () {
+      var table = $('#list-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('user.index') !!}',
+        columns: [
+          {
+            data: null,
+            searchable: false,
+            orderable: false,
+            render: function (data, type, row, meta) {
+              var start = meta.settings._iDisplayStart;
+              var length = meta.settings._iDisplayLength;
+              return start + meta.row + 1;
+            }
+          },
+          {data: 'name', name: 'name'},
+          {data: 'email', name: 'email'},
+          {data: 'actions', name: 'actions', orderable: false, searchable: false}
+        ],
+        responsive: true,
+        lengthChange: false,
+        autoWidth: false,
+        paging: true,
+        pageLength: 5,
+        drawCallback: function (settings) {
+          // Mengatur ulang nomor urut pada setiap halaman
+          var api = this.api();
+          var startIndex = api.context[0]._iDisplayStart;
+          api.column(0, {order: 'applied', search: 'applied'}).nodes().each(function (cell, i) {
+              cell.innerHTML = startIndex + i + 1;
+          });
+        }
+      });
+    });
+  </script>
 @endsection

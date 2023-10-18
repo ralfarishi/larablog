@@ -34,6 +34,7 @@
                 <tr>
                   <th>#</th>
                   <th>Judul Artikel</th>
+                  <th>Penulis</th>
                   <th>Kategori</th>
                   <th>Tags</th>
                   <th>Jumlah Komentar</th>
@@ -91,6 +92,7 @@
             }
           },
           {data: 'title', name: 'title'},
+          {data: 'writer', name: 'writer'},
           {data: 'category.name', name: 'category.name'},
           {data: 'tags', name: 'tags'},
           {data: 'comment_count', name: 'comment_count'},

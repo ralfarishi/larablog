@@ -16,11 +16,21 @@
             Home
           </a>
         </li>
-        <li>
-          <a href="{{ route('login') }}">
-            Login
-          </a>
-        </li>
+        @guest
+          <li>
+            <a href="{{ route('login') }}">
+              Login
+            </a>
+          </li>
+        @endguest
+
+        @auth
+          <li>
+            <a href="{{ route('dashboard') }}">
+              Dashboard
+            </a>
+          </li>
+        @endauth
       </ul>
     </nav><!-- .navbar -->
 

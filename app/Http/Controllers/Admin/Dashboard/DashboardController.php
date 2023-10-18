@@ -6,19 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\Categories;
 use App\Models\Comments;
 use App\Models\Posts;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
 	public function index()
 	{
-		$total_posts = Posts::count();
-		$total_comments = Comments::count();
-		$total_categories = Categories::count();
+		if (Auth::user()->id == 1) {
+			$totalPosts = Posts::count();
+			$totalComments = Comments::count();
+		} else {
+			$totalPosts = Posts::where('user_id', Auth::user()->id)->count();
+			$totalComments = Comments::whereHas('post', function ($query) {
+				$query->where('user_id', Auth::user()->id);
+			})->count();
+		}
+
+		$totalCategories = Categories::count();
+		$totalUsers = User::count();
 
 		return view('admin.dashboard', [
-			'total_posts' => $total_posts,
-			'total_comments' => $total_comments,
-			'total_categories' => $total_categories
+			'totalPosts' => $totalPosts,
+			'totalComments' => $totalComments,
+			'totalCategories' => $totalCategories,
+			'totalUsers' => $totalUsers
 		]);
 	}
 }
