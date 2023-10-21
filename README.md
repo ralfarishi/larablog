@@ -23,6 +23,8 @@ DB_PASSWORD=
 
 4. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for login credential.
 
+\*_note: the first created user will automatically be an administrator._
+
 ```php
 DB::table('users')->insert([
 	'name' => 'admin', // user name
