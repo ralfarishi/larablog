@@ -6,8 +6,8 @@
       <h1 class="d-flex align-items-center">Sekolah JeWePe</h1>
     </a>
 
-    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    <i class="mobile-nav-toggle mobile-nav-show fa-solid fa-bars"></i>
+    <i class="mobile-nav-toggle mobile-nav-hide d-none fa-solid fa-xmark"></i>
 
     <nav id="navbar" class="navbar">
       <ul>

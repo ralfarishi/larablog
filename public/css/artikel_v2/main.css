@@ -455,7 +455,7 @@ section {
 
 	.mobile-nav-show {
 		color: rgba(255, 255, 255, 0.9);
-		font-size: 28px;
+		font-size: 24px;
 		cursor: pointer;
 		line-height: 0;
 		transition: 0.5s;
@@ -463,9 +463,9 @@ section {
 
 	.mobile-nav-hide {
 		color: rgba(255, 255, 255, 0.9);
-		font-size: 32px;
+		font-size: 25px;
 		cursor: pointer;
-		line-height: 0;
+		line-height: 1;
 		transition: 0.5s;
 		position: fixed;
 		right: 15px;
