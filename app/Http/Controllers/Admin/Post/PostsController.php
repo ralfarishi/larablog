@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Auth;
 
@@ -70,26 +72,9 @@ class PostsController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request)
+	public function store(CreatePostRequest $request)
 	{
-		$request->validate(
-			[
-				'title' => 'required|unique:posts',
-				'content' => 'required',
-				'featured_image' => 'required|mimes:png,jpg,jpeg,webp|max:500',
-				'tags' => 'required',
-				'allowed_comment' => 'required',
-			],
-			[
-				'title.required' => 'Judul tidak boleh kosong!',
-				'content.required' => 'Isi artikel tidak boleh kosong!',
-				'featured_image.required' => 'Harap meng-upload gambar!',
-				'tags.required' => 'Harap memasukkan tag minimal 1!',
-				'allowed_comment.required' => 'Harap pilih salah satu!'
-			]
-		);
-
-		$data = $request->all();
+		$data = $request->validated();
 
 		$data['user_id'] = Auth::user()->id;
 		$data['slug'] = Str::slug($request->title);
@@ -123,28 +108,9 @@ class PostsController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 */
-	public function update(Request $request, string $id)
+	public function update(UpdatePostRequest $request, string $id)
 	{
-		$request->validate(
-			[
-				'title' => 'required',
-				'content' => 'required',
-				'featured_image' => 'mimes:png,jpg,jpeg|max:500',
-				'tags' => 'required',
-				'allowed_comment' => 'required',
-				'active' => 'required',
-			],
-			[
-				'title.required' => 'Judul tidak boleh kosong!',
-				'content.required' => 'Isi artikel tidak boleh kosong!',
-				'featured_image.required' => 'Harap meng-upload gambar!',
-				'tags.required' => 'Harap memasukkan tag minimal 1!',
-				'allowed_comment.required' => 'Harap pilih salah satu!',
-				'active.required' => 'Harap pilih salah satu!',
-			]
-		);
-
-		$data = $request->all();
+		$data = $request->validated();
 
 		$post = Posts::findOrFail($id);
 

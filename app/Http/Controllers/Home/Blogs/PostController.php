@@ -7,8 +7,8 @@ use App\Models\Posts;
 use App\Models\Comments;
 use App\Models\Categories;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCommentRequest;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
 
@@ -114,22 +114,9 @@ class PostController extends Controller
 		));
 	}
 
-	public function storeComment(Request $request, $id)
+	public function storeComment(StoreCommentRequest $request, $id)
 	{
-		$data = $request->validate(
-			[
-				'user_name' => 'required|string|max:100',
-				'user_email' => 'required|email|max:100',
-				'content' => 'required|string',
-			],
-			[
-				'user_name.required' => 'Nama tidak boleh kosong!',
-				'user_email.required' => 'Email tidak boleh kosong!',
-				'content.required' => 'Komentar tidak boleh kosong!',
-			]
-		);
-
-		$data = $request->all();
+		$data = $request->validated();
 
 		// escape html char for each inputs
 		foreach ($data as $key => $value) {

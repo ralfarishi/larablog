@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -46,25 +47,9 @@ class UserController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 */
-	public function store(Request $request)
+	public function store(UserRequest $request)
 	{
-		$request->validate(
-			[
-				'name' => 'required|string|unique:users,name',
-				'email' => 'required|email|unique:users,email',
-				'password' => 'required|min:5'
-			],
-			[
-				'name.required' => 'Harap mengisi nama!',
-				'name.unique' => 'Nama sudah digunakan. Coba nama lain.',
-				'email.required' => 'Harap mengisi email!',
-				'email.unique' => 'Email sudah digunakan. Coba email lain.',
-				'password.required' => 'Harap mengisi password!',
-				'password.min' => 'Password minimal 5 karakter!',
-			]
-		);
-
-		$data = $request->all();
+		$data = $request->validated();
 
 		$data['slug'] = Str::slug($request->name);
 		$data['password'] = Hash::make($request->password);

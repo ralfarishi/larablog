@@ -6,6 +6,7 @@ use App\Models\Categories;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -41,25 +42,9 @@ class CategoryController extends Controller
 		return view('admin.categories.create');
 	}
 
-	public function store(Request $request)
+	public function store(CategoryRequest $request)
 	{
-		$request->validate(
-			[
-				'name' => 'required|regex:/^[\w]+$/',
-				'icon' => [
-					'required',
-					'regex:/^(fa-solid|fa-regular|fa-brands)\s+[a-z0-9-]+$/i'
-				]
-			],
-			[
-				'name.required' => 'Harap masukkan nama kategori!',
-				'icon.required' => 'Harap masukkan icon!',
-				'name.regex' => 'Nama kategori hanya boleh terdiri dari satu kata tanpa spasi & tanpa simbol apapun!',
-				'icon.regex' => 'Harap input icon berdasarkan class pada font awesome!'
-			]
-		);
-
-		$data = $request->all();
+		$data = $request->validated();
 
 		Categories::create($data);
 
