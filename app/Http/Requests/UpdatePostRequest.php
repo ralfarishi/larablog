@@ -26,6 +26,7 @@ class UpdatePostRequest extends FormRequest
 			'content' => 'required',
 			'featured_image' => 'mimes:png,jpg,jpeg,webp|max:500',
 			'tags' => 'required',
+			'active' => 'required',
 			'allowed_comment' => 'required',
 			'category_id' => 'required|exists:categories,id'
 		];
