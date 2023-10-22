@@ -35,6 +35,7 @@
                   <th>#</th>
                   <th>Nama</th>
                   <th>Email</th>
+                  <th>Artikel Dibuat</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -55,7 +56,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Apa anda yakin ingin menghapus user ini?</p>
+            <p>Apa anda yakin ingin menghapus user ini serta data artikelnya?</p>
           </div>
           <div class="modal-footer justify-content-center">
             <form action="{{ url('dashboard/user/') }}" id="data-delete-form" method="POST">
@@ -91,6 +92,7 @@
           },
           {data: 'name', name: 'name'},
           {data: 'email', name: 'email'},
+          {data: 'total_posts', name: 'total_posts'},
           {data: 'actions', name: 'actions', orderable: false, searchable: false}
         ],
         responsive: true,

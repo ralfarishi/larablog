@@ -30,7 +30,7 @@
 				<div class="small-box bg-indigo">
 					<div class="inner">
 						<h3>{{ $totalPosts }}</h3>
-						<p>Jumlah Artikel</p>
+						<p>Artikel Dibuat</p>
 					</div>
 					<div class="icon">
 						<i class="fas fa-newspaper"></i>
@@ -44,7 +44,7 @@
 				<div class="small-box bg-maroon">
 					<div class="inner">
 						<h3>{{ $totalComments }}</h3>
-						<p>Jumlah Komentar</p>
+						<p>Komentar Diberikan</p>
 					</div>
 					<div class="icon">
 						<i class="fa-solid fa-comments"></i>
@@ -54,12 +54,12 @@
 					></a>
 				</div>
 			</div>
-			@if (Auth::user()->id == 1)
+			@if (Auth::user()->role == 'admin')
 				<div class="col-lg-3 col-6">
 					<div class="small-box bg-fuchsia">
 						<div class="inner">
 							<h3>{{ $totalCategories }}</h3>
-							<p>Jumlah Kategori</p>
+							<p>Kategori Dibuat</p>
 						</div>
 						<div class="icon">
 							<i class="fa-solid fa-tags"></i>
