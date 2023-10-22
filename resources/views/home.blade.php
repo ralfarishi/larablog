@@ -55,9 +55,9 @@
                         </a>
                       </li>
                       <li class="d-flex align-items-center">
-                        <i class="fa-regular fa-comment-dots"></i> 
+                      <i class="fa-regular fa-comment-dots"></i>
                         <a href="{{ route('post', $post->slug) }}">
-                          {{ $post->comments->count() > 0 ? $post->comments->count() : 0}} Comments
+                          {{ $post->activeCommentsCount > 0 ? $post->activeCommentsCount : 0}} Comments
                         </a>
                       </li>
                     </ul>

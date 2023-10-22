@@ -11,9 +11,11 @@ class HomeController extends Controller
 	public function index()
 	{
 		$posts = Posts::where('active', 1)
-			->withCount('comments as comment_count')
+			->withCount(['comments as activeCommentsCount' => function ($query) {
+				$query->where('active', 1);
+			}])
 			->with(['category', 'comments', 'user'])
-			->orderBy('comment_count', 'desc')
+			->orderBy('activeCommentsCount', 'desc')
 			->latest()
 			->paginate(4);
 
