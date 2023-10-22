@@ -51,6 +51,21 @@
 									@endif
 								</div>
 								<div class="form-group">
+									<label class="form-label" for="email">Role</label>
+									<input
+										type="text"
+										class="form-control"
+										name="role"
+										value="{{ Str::upper($user->role) }}"
+										disabled
+									/>
+									@if ($errors->has('role'))
+										<span class="help-block text-danger">
+											<p>{{ $errors->first('role') }}</p>
+										</span>
+									@endif
+								</div>
+								<div class="form-group">
 									<label class="form-label" for="password">Password</label>
 									<input type="password" class="form-control" name="password" placeholder="Min. 5 karakter"/>
 									@if ($errors->has('password'))
