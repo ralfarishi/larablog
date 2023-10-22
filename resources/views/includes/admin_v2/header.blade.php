@@ -93,7 +93,7 @@
 						<p>Komentar</p>
 					</a>
 				</li>
-				@if (Auth::user()->id == 1)
+				@if (Auth::user()->role == 'admin')
 					<li class="nav-item">
 						<a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.index') ? 'active' : '' }}">
 						<i class="nav-icon fa-solid fa-tags"></i>

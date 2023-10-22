@@ -6,6 +6,7 @@ use App\Models\Comments;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CommentsController extends Controller
 {
@@ -15,7 +16,14 @@ class CommentsController extends Controller
 	public function index(Request $request)
 	{
 		if ($request->ajax()) {
-			$model = Comments::with('post')->latest();
+			if (Auth::user()->role == 'admin') {
+				$model = Comments::with('post')->latest();
+			} else {
+				$model = Comments::whereHas('post', function ($query) {
+					$query->where('user_id', Auth::user()->id);
+				})->with('post')->latest();
+			}
+
 			return DataTables::of($model)
 				->addColumn('actions', function ($model) use ($request) {
 					$id = $model->id;

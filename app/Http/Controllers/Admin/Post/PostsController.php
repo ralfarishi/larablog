@@ -20,7 +20,7 @@ class PostsController extends Controller
 	public function index(Request $request)
 	{
 		if ($request->ajax()) {
-			if (Auth::user()->id === 1) {
+			if (Auth::user()->role == 'admin') {
 				$model = Posts::with(['category', 'comments', 'user'])->latest();
 			} else {
 				$model = Posts::where('user_id', Auth::user()->id)->with(['category', 'comments', 'user'])->latest();

@@ -21,8 +21,11 @@ class UserController extends Controller
 			$data = User::get();
 
 			return DataTables::of($data)
-				->addColumn('actions', function ($model) use ($request) {
-					$id = $model->id;
+				->addColumn('total_posts', function ($data) use ($request) {
+					return $data->posts->count();
+				})
+				->addColumn('actions', function ($data) use ($request) {
+					$id = $data->id;
 					$link = $request->url() . '/' . $id;
 					return '
 						<a href="' . route('user.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
@@ -117,9 +120,11 @@ class UserController extends Controller
 	{
 		$data = User::findOrFail($id);
 
-		if ($data->id == 1) {
+		if ($data->role == 'admin') {
 			return to_route('user.index')->with('warning', 'Tidak dapat menghapus seorang ADMIN!');
 		}
+
+		dd('lewat if nya');
 
 		$data->delete();
 

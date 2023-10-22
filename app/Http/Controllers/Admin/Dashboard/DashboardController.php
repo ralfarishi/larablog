@@ -13,7 +13,7 @@ class DashboardController extends Controller
 {
 	public function index()
 	{
-		if (Auth::user()->id == 1) {
+		if (Auth::user()->role == 'admin') {
 			$totalPosts = Posts::count();
 			$totalComments = Comments::count();
 		} else {
