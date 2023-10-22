@@ -29,7 +29,7 @@ DB_PASSWORD=
 DB::table('users')->insert([
 	'name' => 'admin', // user name
 	'email' => 'admin@google.com', // user email
-	'role' => 'admin', // user email
+	'role' => 'admin', // role
 	'password' => Hash::make("12345") // password
 ]);
 ```
