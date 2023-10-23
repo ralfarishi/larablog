@@ -68,6 +68,7 @@
 								<div class="form-group">
 									<label class="form-label" for="password">Password</label>
 									<input type="password" class="form-control" name="password" placeholder="Min. 5 karakter"/>
+									<small class="text-danger">Kosongkan jika tidak ingin mengubah password</small>
 									@if ($errors->has('password'))
 										<span class="help-block text-danger">
 											<p>{{ $errors->first('password') }}</p>

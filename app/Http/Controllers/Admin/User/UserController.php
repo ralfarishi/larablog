@@ -89,7 +89,7 @@ class UserController extends Controller
 			[
 				'name' => 'required|string',
 				'email' => 'required|email',
-				'password' => 'sometimes|min:5'
+				'password' => 'nullable|sometimes|min:5'
 			],
 			[
 				'name.required' => 'Harap mengisi nama!',
@@ -104,8 +104,10 @@ class UserController extends Controller
 
 		$data['slug'] = Str::slug($request->name);
 
-		if ($request->has('password')) {
+		if ($request->password) {
 			$data['password'] = Hash::make($request->password);
+		} else {
+			unset($data['password']);
 		}
 
 		$user->update($data);
