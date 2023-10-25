@@ -30,9 +30,11 @@
 
     <div class="row g-5">
 
-      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+      <div class="col-lg-12" data-aos="fade-up" data-aos-delay="200">
 
         <article class="blog-details">
+
+          <div class="ribbon"><span>PREVIEW</span></div>
 
           <div class="post-img">
             <img src="{{ asset('uploads/' . $post->featured_image) }}" alt="" class="img-fluid">
