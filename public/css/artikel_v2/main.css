@@ -2154,3 +2154,7 @@ section {
 	border-bottom: 3px solid transparent;
 	border-top: 3px solid #ffc640;
 }
+
+mark {
+	padding: .5px !important;
+}

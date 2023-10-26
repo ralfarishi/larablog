@@ -3,9 +3,11 @@
   <div class="sidebar ps-lg-4">
     <div class="sidebar-item search-form">
       <h3 class="sidebar-title">Search</h3>
-      <form action="{{ route('search') }}" class="mt-3" method="GET">
+      <form action="{{ route('search') }}" class="mt-3" method="GET" id="search-form">
         <input type="text" name="query" placeholder="Cari artikel ...">
-        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        <button type="submit" onclick="submitSearchForm()">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
       </form>
     </div>
     <!-- End sidebar search formn-->
@@ -49,3 +51,28 @@
   <!-- End Blog Sidebar -->
 
 </div>
+
+@section('page_scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <script>
+    /**
+     * Highlight searched text result
+     */
+    function highlightText() {
+      const searchQuery = new URLSearchParams(window.location.search).get("query");
+
+      if (searchQuery) {
+          const postsList = new Mark(document.querySelector(".posts-list"));
+          postsList.unmark();
+          postsList.mark(searchQuery);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", highlightText);
+
+    function submitSearchForm() {
+      document.getElementById("search-form").submit();
+    }
+  </script>
+@endsection

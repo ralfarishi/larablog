@@ -23,9 +23,9 @@
 
       <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
 
-        <div class="row gy-5 posts-list">
-          <h3>Hasil Pencarian untuk "{{ $query }}"</h3>
+        <h3 class="mb-4">Hasil pencarian untuk "<mark>{{ $query }}</mark>"</h3>
 
+        <div class="row gy-5 posts-list">
           @if ($results->isEmpty())
             <p class="text-center">Tidak ada artikel yang ditemukan.</p>
           @else
