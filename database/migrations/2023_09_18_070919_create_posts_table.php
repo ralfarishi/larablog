@@ -16,7 +16,7 @@ return new class extends Migration
 			$table->string('title');
 			$table->string('slug')->unique();
 			$table->text('content');
-			$table->string('featured_image');
+			$table->string('image');
 			$table->boolean('active')->default(false);
 			$table->boolean('allowed_comment')->default(true);
 			$table->foreignId('user_id')->constrained('users')->onDelete('cascade');

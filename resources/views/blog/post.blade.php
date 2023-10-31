@@ -27,7 +27,7 @@
         <article class="blog-details">
 
           <div class="post-img">
-            <img src="{{ asset('uploads/' . $post->featured_image) }}" alt="" class="img-fluid">
+            <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="img-fluid">
           </div>
 
           <h2 class="title">{{ $post->title }}</h2>
@@ -182,7 +182,7 @@
               @foreach ($relatedPosts as $relatedPost)
                 @if ($relatedPost->active == 1)
                   <div class="post-item">
-                    <img src="{{ asset('uploads/' . $relatedPost->featured_image) }}" alt="" class="flex-shrink-0">
+                    <img src="{{ asset('uploads/' . $relatedPost->image) }}" alt="" class="flex-shrink-0">
                     <div>
                       <h4><a href="{{ route('post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h4>
                       <time datetime="2020-01-01">{{ $relatedPost->created_at->format('M d, Y') }}</time>

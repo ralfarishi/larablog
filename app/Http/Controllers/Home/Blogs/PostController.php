@@ -88,7 +88,7 @@ class PostController extends Controller
 		// get URL
 		$baseUrl = url('/');
 		$canonicalUrl = $baseUrl . '/blog/' . $post->slug;
-		$blogImage = $baseUrl . '/uploads/' . $post->featured_image;
+		$blogImage = $baseUrl . '/uploads/' . $post->image;
 
 		// generate SEO
 		SEOTools::setTitle($post->title);

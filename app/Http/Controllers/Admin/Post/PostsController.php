@@ -79,7 +79,7 @@ class PostsController extends Controller
 		$data['user_id'] = Auth::user()->id;
 		$data['slug'] = Str::slug($request->title);
 
-		$data['featured_image'] = $request->file('featured_image')->store('images/blogs', 'public');
+		$data['image'] = $request->file('image')->store('images/blogs', 'public');
 
 		Posts::create($data);
 
@@ -116,8 +116,8 @@ class PostsController extends Controller
 
 		$data['slug'] = Str::slug($request->title);
 
-		if ($request->hasFile('feature_image')) {
-			$data['feature_image'] = $request->store('images/blogs', 'public');
+		if ($request->hasFile('image')) {
+			$data['image'] = $request->store('images/blogs', 'public');
 		}
 
 		$post->update($data);
@@ -136,7 +136,7 @@ class PostsController extends Controller
 			return to_route('artikel.index')->with('warning', 'Artikel sudah di-publish! Ubah status artikel untuk menghapus artikel.');
 		}
 
-		$imagePath = public_path('uploads/' . $post->featured_image);
+		$imagePath = public_path('uploads/' . $post->image);
 
 		if (file_exists($imagePath)) {
 			unlink($imagePath);

@@ -37,7 +37,7 @@
           <div class="ribbon"><span>PREVIEW</span></div>
 
           <div class="post-img">
-            <img src="{{ asset('uploads/' . $post->featured_image) }}" alt="" class="img-fluid">
+            <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="img-fluid">
           </div>
 
           <h2 class="title">{{ $post->title }}</h2>

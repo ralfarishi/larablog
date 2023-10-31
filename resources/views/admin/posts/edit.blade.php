@@ -70,11 +70,11 @@
 									@endforeach
 								</select>
 							</div>
-							<div class="form-group {{ $errors->has('featured_image') ? ' has-error ':''}}">
-								<label class="form-label" for="feature_image">Image*</label>
+							<div class="form-group {{ $errors->has('image') ? ' has-error ':''}}">
+								<label class="form-label" for="image">Image*</label>
 								<div class="input-group">
 									<div class="custom-file">
-										<input class="form-control custom-file-input" type="file" name="feature_image" id="feature_image">
+										<input class="form-control custom-file-input" type="file" name="image" id="image">
 										<label
 											class="custom-file-label"
 											id="file-label"
@@ -82,11 +82,11 @@
 										>
 									</div>
 								</div>
-								<img id="preview_featured_image" class="inputImgPreview w-25 mt-2" src="{{ asset('uploads/' . $post->featured_image ?? '') }}" class="img-thumbnail"/>
+								<img id="preview_image" class="inputImgPreview w-25 mt-2" src="{{ asset('uploads/' . $post->image ?? '') }}" class="img-thumbnail"/>
 
-								@if ($errors->has('featured_image'))
+								@if ($errors->has('image'))
 									<span class="help-block text-danger">
-										<p>{{ $errors->first('featured_image') }}</p>
+										<p>{{ $errors->first('image') }}</p>
 									</span>
 								@endif
 							</div>
@@ -170,7 +170,7 @@
 	<script type="text/javascript">
 		UseBootstrapTag(document.getElementById('tags'))
 
-		document.getElementById('featured_image').addEventListener('change', function(e) {
+		document.getElementById('image').addEventListener('change', function(e) {
 			var fileName = e.target.files[0].name;
 			document.getElementById('file-label').textContent = fileName;
 		});
@@ -185,7 +185,7 @@
 				reader.readAsDataURL(input.files[0]);
 			}
 		}
-		$("#featured_image").change(function() {
+		$("#image").change(function() {
 			readURL(this);
 		});
 	</script>
