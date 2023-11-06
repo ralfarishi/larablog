@@ -56,7 +56,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p>Apa anda yakin ingin menghapus user ini serta data artikelnya?</p>
+            <p>Apa anda yakin ingin menghapus <b>user</b> ini dan <b>data artikelnya</b>?</p>
           </div>
           <div class="modal-footer justify-content-center">
             <form action="{{ url('dashboard/user/') }}" id="data-delete-form" method="POST">

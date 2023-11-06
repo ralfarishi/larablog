@@ -17,11 +17,11 @@ class CommentsController extends Controller
 	{
 		if ($request->ajax()) {
 			if (Auth::user()->role == 'admin') {
-				$model = Comments::with('post')->latest();
+				$model = Comments::with('post')->orderBy('active', 'DESC')->latest();
 			} else {
 				$model = Comments::whereHas('post', function ($query) {
 					$query->where('user_id', Auth::user()->id);
-				})->with('post')->latest();
+				})->with('post')->orderBy('active', 'DESC')->latest();
 			}
 
 			return DataTables::of($model)

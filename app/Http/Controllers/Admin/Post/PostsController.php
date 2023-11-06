@@ -21,9 +21,9 @@ class PostsController extends Controller
 	{
 		if ($request->ajax()) {
 			if (Auth::user()->role == 'admin') {
-				$model = Posts::with(['category', 'comments', 'user'])->latest();
+				$model = Posts::with(['category', 'comments', 'user'])->orderBy('active', 'DESC')->latest();
 			} else {
-				$model = Posts::where('user_id', Auth::user()->id)->with(['category', 'comments', 'user'])->latest();
+				$model = Posts::where('user_id', Auth::user()->id)->with(['category', 'comments', 'user'])->orderBy('active', 'DESC')->latest();
 			}
 
 			return DataTables::of($model)
