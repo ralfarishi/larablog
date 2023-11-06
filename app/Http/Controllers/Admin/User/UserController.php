@@ -25,10 +25,10 @@ class UserController extends Controller
 					return $data->posts->count();
 				})
 				->addColumn('actions', function ($data) use ($request) {
-					$id = $data->id;
-					$link = $request->url() . '/' . $id;
+					$slug = $data->slug;
+					$link = $request->url() . '/' . $slug;
 					return '
-						<a href="' . route('user.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
+						<a href="' . route('user.edit', $slug) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
 						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
 					';
 				})
@@ -75,7 +75,7 @@ class UserController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		$user = User::where('id', $id)->firstOrFail();
+		$user = User::where('slug', $id)->firstOrFail();
 
 		return view('admin.users.edit', compact('user'));
 	}
@@ -125,8 +125,6 @@ class UserController extends Controller
 		if ($data->role == 'admin') {
 			return to_route('user.index')->with('warning', 'Tidak dapat menghapus seorang ADMIN!');
 		}
-
-		dd('lewat if nya');
 
 		$data->delete();
 
