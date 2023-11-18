@@ -16,6 +16,11 @@
 		</h5>
 		{{ Session::get('danger') }}
 	</div>
+@elseif(Session::has('error'))
+	<div class="alert alert-danger alert-dismissible">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+		{{ Session::get('error') }}
+	</div>
 @elseif(Session::has('warning'))
 	<div class="alert alert-warning alert-dismissible">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
