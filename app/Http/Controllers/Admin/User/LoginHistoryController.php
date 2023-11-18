@@ -18,6 +18,9 @@ class LoginHistoryController extends Controller
 				->addColumn('status', function ($data) use ($request) {
 					return $data->status === 0 ? '<span class="badge bg-danger">Gagal</span>' : '<span class="badge bg-success">Berhasil</span>';
 				})
+				->addColumn('created_at', function ($data) use ($request) {
+					return \Carbon\Carbon::parse($data->created_at)->format('d-m-Y H:i:s');
+				})
 				->addColumn('action', function ($data) use ($request) {
 					$id = $data->id;
 					$link = $request->url() . '/' . $id;

@@ -35,6 +35,7 @@
                   <th>Kota</th>
                   <th>Latitude</th>
                   <th>Longitute</th>
+                  <th>Tanggal</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -96,6 +97,7 @@
           {data: 'city', name: 'city'},
           {data: 'latitude', name: 'latitude'},
           {data: 'longitude', name: 'longitude'},
+          {data: 'created_at', name: 'created_at'},
           {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
         responsive: true,
