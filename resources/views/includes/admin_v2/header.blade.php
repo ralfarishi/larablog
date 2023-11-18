@@ -101,10 +101,28 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+						<a href="#" class="nav-link">
 							<i class="nav-icon fa-solid fa-users"></i>
-							<p>Users</p>
+							<p>
+								Users
+								<i class="fa-solid fa-angle-left right"></i>
+								<span class="badge badge-info right">2</span>
+							</p>
 						</a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+									<a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
+									<i class="far fa-regular fa-circle nav-icon"></i>
+									<p>Semua Users</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="{{ route('login-history.index') }}" class="nav-link {{ request()->routeIs('login-history.index') ? 'active' : '' }}">
+									<i class="far fa-regular fa-circle nav-icon"></i>
+									<p>Login History</p>
+								</a>
+							</li>
+						</ul>
 					</li>
 				@endif
 			</ul>

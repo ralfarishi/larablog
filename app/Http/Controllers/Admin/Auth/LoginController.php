@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Admin\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\LoginHistory;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Stevebauman\Location\Facades\Location;
 
 class LoginController extends Controller
 {
@@ -51,13 +54,19 @@ class LoginController extends Controller
 			'password' => 'required',
 		]);
 
-		if (Auth::attempt($credentials)) {
+		$isLoginSuccess = Auth::attempt($credentials);
+
+		if ($isLoginSuccess) {
 			$request->session()->regenerate();
 
-			return to_route('dashboard');
-		}
+			$this->storeLoginHistory($request, $isLoginSuccess);
 
-		return to_route('login')->with('danger', 'Credential not match in out database!');
+			return to_route('dashboard');
+		} else {
+			$this->storeLoginHistory($request, $isLoginSuccess);
+
+			return to_route('login')->with('error', 'Credential not match in our database!');
+		}
 	}
 
 	public function logout(Request $request)
@@ -68,5 +77,37 @@ class LoginController extends Controller
 		$request->session()->regenerateToken();
 
 		return to_route('home');
+	}
+
+
+	protected function storeLoginHistory(Request $request, $status)
+	{
+		$email = $request->email;
+
+		$userAgent = $request->header('User-Agent');
+
+		try {
+			$response = Http::get('https://api.ipify.org?format=json');
+
+			$data = $response->json();
+
+			$publicIp = $data['ip'];
+
+			$locationData = Location::get($publicIp);
+		} catch (\Exception $e) {
+			// Tangani kesalahan jika terjadi
+			return 'Unable to retrieve IP.';
+		}
+
+		LoginHistory::insert([
+			'email' => $email,
+			'status' => $status,
+			'ip_address' => $locationData->ip,
+			'user_agent' => $userAgent,
+			'city' => $locationData->cityName . ', ' . $locationData->regionName ?? null,
+			'latitude' => $locationData->latitude ?? null,
+			'longitude' => $locationData->longitude ?? null,
+			'created_at' => now(),
+		]);
 	}
 }

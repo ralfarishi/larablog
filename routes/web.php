@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Comment\CommentsController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\Post\PostsController;
 use App\Http\Controllers\Admin\Post\PreviewController;
+use App\Http\Controllers\Admin\User\LoginHistoryController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Home\Blogs\PostController;
 use App\Http\Controllers\Home\Blogs\SearchController;
@@ -62,4 +63,9 @@ Route::middleware(['auth', 'is.admin'])->prefix('dashboard')->group(function () 
 		'kategori' => CategoryController::class,
 		'user' => UserController::class
 	]);
+
+	Route::controller(LoginHistoryController::class)->group(function () {
+		Route::get('/login-history', 'index')->name('login-history.index');
+		Route::delete('/login-history/{id}', 'destroy')->name('login-history.destroy');
+	});
 });
