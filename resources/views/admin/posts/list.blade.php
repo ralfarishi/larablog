@@ -62,9 +62,11 @@
             <p>Apa anda yakin ingin menghapus artikel ini?</p>
           </div>
           <div class="modal-footer justify-content-center">
-            {{ Form::open(['url'=>url('admin/artikel/'),'method'=>'delete',"id"=>"data-delete-form"]) }}
+            <form action="{{ url('admin/artikel/') }}" method="post" id="data-delete-form">
+							@csrf
+              @method('DELETE')
               <button type="submit" class="btn btn-danger">Hapus</button>
-            {{ Form::close() }}
+            </form>
           </div>
         </div>
       </div>
