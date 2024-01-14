@@ -8,7 +8,7 @@ class LoginHistory extends Model
 {
 	protected $table = 'login_history';
 
-	protected $fillable = ['email', 'status', 'ip_address', 'user_agent', 'city', 'latitude', 'longitude'];
+	protected $fillable = ['email', 'activity', 'status', 'ip_address', 'user_agent', 'city', 'latitude', 'longitude'];
 
 	public $timestamps = true;
 }

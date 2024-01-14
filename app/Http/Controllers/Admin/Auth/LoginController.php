@@ -56,21 +56,25 @@ class LoginController extends Controller
 
 		$isLoginSuccess = Auth::attempt($credentials);
 
-		if ($isLoginSuccess) {
-			$request->session()->regenerate();
-
-			$this->storeLoginHistory($request, $isLoginSuccess);
-
-			return to_route('dashboard');
-		} else {
-			$this->storeLoginHistory($request, $isLoginSuccess);
+		if (!$isLoginSuccess) {
+			$this->storeLoginHistory($request, $isLoginSuccess, 'Gagal login');
 
 			return to_route('login')->with('error', 'Credential not match in our database!');
 		}
+
+		$request->session()->regenerate();
+
+		$this->storeLoginHistory($request, $isLoginSuccess, 'Melakukan login');
+
+		return to_route('dashboard');
 	}
 
 	public function logout(Request $request)
 	{
+		$userEmail = Auth::user()->email;
+
+		$this->storeLoginHistory($request, true, 'Melakukan logout', $userEmail);
+
 		Auth::logout();
 		$request->session()->invalidate();
 
@@ -80,9 +84,11 @@ class LoginController extends Controller
 	}
 
 
-	protected function storeLoginHistory(Request $request, $status)
+	protected function storeLoginHistory(Request $request, $status, $activity, $userEmail = null)
 	{
-		$email = $request->email;
+		$user = Auth::user();
+
+		$email = $userEmail ? optional($user)->email : $request->email;
 
 		$userAgent = $request->header('User-Agent');
 
@@ -101,6 +107,7 @@ class LoginController extends Controller
 
 		LoginHistory::insert([
 			'email' => $email,
+			'activity' => $activity,
 			'status' => $status,
 			'ip_address' => $locationData->ip,
 			'user_agent' => $userAgent,

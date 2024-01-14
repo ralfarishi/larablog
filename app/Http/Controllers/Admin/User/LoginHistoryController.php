@@ -21,13 +21,13 @@ class LoginHistoryController extends Controller
 				->addColumn('created_at', function ($data) use ($request) {
 					return \Carbon\Carbon::parse($data->created_at)->format('d-m-Y H:i:s');
 				})
-				->addColumn('action', function ($data) use ($request) {
-					$id = $data->id;
-					$link = $request->url() . '/' . $id;
-					return '
-						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
-					';
-				})
+				// ->addColumn('action', function ($data) use ($request) {
+				// 	$id = $data->id;
+				// 	$link = $request->url() . '/' . $id;
+				// 	return '
+				// 		<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
+				// 	';
+				// })
 				->rawColumns(['status', 'action'])
 				->make(true);
 		}

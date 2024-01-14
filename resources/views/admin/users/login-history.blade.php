@@ -29,14 +29,14 @@
                 <tr>
                   <th>#</th>
                   <th>Email</th>
-                  <th>Status Login</th>
+                  <th>Aktivitas</th>
+                  <th>Status</th>
                   <th>IP Address</th>
                   <th>Browser</th>
                   <th>Kota</th>
                   <th>Latitude</th>
                   <th>Longitute</th>
                   <th>Tanggal</th>
-                  <th>Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -91,6 +91,7 @@
             }
           },
           {data: 'email', name: 'email'},
+          {data: 'activity', name: 'activity'},
           {data: 'status', name: 'status'},
           {data: 'ip_address', name: 'ip_address'},
           {data: 'user_agent', name: 'user_agent'},
@@ -98,7 +99,7 @@
           {data: 'latitude', name: 'latitude'},
           {data: 'longitude', name: 'longitude'},
           {data: 'created_at', name: 'created_at'},
-          {data: 'action', name: 'action', orderable: false, searchable: false}
+          // {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
         responsive: true,
         lengthChange: false,
