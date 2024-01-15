@@ -4,9 +4,9 @@
     <div class="sidebar-item search-form">
       <h3 class="sidebar-title">Search</h3>
       <form action="{{ route('search') }}" class="mt-3" method="GET" id="search-form">
-        <input type="text" name="query" placeholder="Cari artikel ...">
+        <input type="text" name="query" placeholder="Find article ...">
         <button type="submit" onclick="submitSearchForm()">
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="bi bi-search"></i>
         </button>
       </form>
     </div>
@@ -42,7 +42,7 @@
             @endif
           @endforeach
         @else
-          <p class="fs-6">Belum ada tag.</p>
+          <p class="fs-6">No tags found.</p>
         @endif
       </ul>
     </div>

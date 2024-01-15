@@ -1,83 +1,137 @@
 @extends('layouts.admin_v2.template')
 
 @section('content')
-<section class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Edit Komentar</h1>
-			</div>
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Edit Komentar</li>
-				</ol>
-			</div>
-		</div>
-	</div>
-	<!-- /.container-fluid -->
-</section>
-
-<section class="content">
-	<div class="container-fluid">
+<div class="page-heading">
+	<div class="page-title">
 		<div class="row">
-			<!-- left column -->
-			<div class="col-md-12">
-				<!-- general form elements -->
-				<div class="card">
-					<!-- /.card-header -->
-					@include('includes.admin_v2.alerts')
-					<!-- form start -->
-					<form action="{{ route('komentar.update', $comment->id) }}" method="POST">
-						@method('PATCH')
-						@csrf
-						<div class="card-body">
-							<div class="form-group">
-								<label for="user_name" class="form-label">Nama</label>
-								<input type="text" name="user_name" class="form-control" placeholder="{{ $comment->user_name }}" disabled>
-            	</div>
-            
-							<div class="form-group">
-								<label for="user_email" class="form-label">Email</label>
-								<input type="text" name="user_email" class="form-control" placeholder="{{ $comment->user_email }}" disabled>
-							</div>
-
-							<div class="form-group">
-								<label class="form-label" for="article">Artikel</label><br/>
-								<a href="{{ route('post', $comment->post->slug) }}" target="_blank">{{$comment->post->title}}</a>
-							</div>
-							
-							<div class="form-group">
-								<label for="comment" class="form-label">Komentar</label>
-								
-								<textarea name="content" class="form-control" placeholder="{{ $comment->content }}" disabled></textarea>
-							</div>
-							
-							<div class="form-group clearfix">
-								<label>Tampilkan?</label>
-								<div class="icheck-primary d-inline">
-									<input type="radio" id="radioYes" name="active" value="1" {{ $comment->active == 1 ? 'checked' : '' }}>
-									<label for="radioYes">Ya</label>
-								</div>
-								<div class="icheck-danger d-inline">
-									<input type="radio" id="radioNo" name="active" value="0" {{ $comment->active == 0 ? 'checked' : '' }}>
-									<label for="radioNo">Tidak</label>
-								</div>
-							</div>
-						</div>
-						<!-- /.card-body -->
-						<div class="card-footer">
-							<input type="submit" class="btn btn-block btn-primary" value="Save" />
-						</div>
-					</form>
-				</div>
-				<!-- /.card -->
+			<div class="col-12 col-md-6 order-md-1 order-last">
+				<h3>Features</h3>
 			</div>
-			<!--/.col (left) -->
+			<div class="col-12 col-md-6 order-md-2 order-first">
+				<nav
+					aria-label="breadcrumb"
+					class="breadcrumb-header float-start float-lg-end"
+				>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ route('dashboard') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							Edit Comment
+						</li>
+					</ol>
+				</nav>
+			</div>
 		</div>
-		<!-- /.row -->
 	</div>
-	<!-- /.container-fluid -->
-</section>
 
+	<section id="basic-vertical-layouts">
+		<div class="row match-height">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">Edit Comment</h4>
+					</div>
+					<div class="card-content">
+						<div class="card-body">
+							<form class="form form-vertical" action="{{ route('comment.update', $comment->id) }}" method="POST">
+								@method('PATCH')
+								@csrf
+								<div class="form-body">
+									<div class="row">
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Name</label>
+												<input
+													type="text"
+													class="form-control"
+													placeholder="{{ $comment->user_name }}"
+													disabled
+												/>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Email</label>
+												<input
+													type="text"
+													class="form-control"
+													placeholder="{{ $comment->user_email }}"
+													disabled
+												/>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Article</label>
+												<a
+													href="{{ route('post', $comment->post->slug) }}"
+													target="_blank"
+													class="d-block"
+												>
+													{{ $comment->post->title }}
+												</a>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Comment</label>
+												<textarea class="form-control" cols="30" rows="3" placeholder="{{ $comment->content }}" disabled></textarea>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label class="mb-1">Show comment?</label>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-success"
+														type="radio"
+														name="active"
+														id="radioYes"
+														value="1"
+														{{ $comment->active == 1 ? 'checked' : '' }}
+													/>
+													<label
+														class="form-check-label"
+														for="publishRadio"
+													>
+														Yes
+													</label>
+												</div>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-danger"
+														type="radio"
+														name="active"
+														id="radioNo"
+														value="0"
+														{{ $comment->active == 0 ? 'checked' : '' }}
+													/>
+													<label
+														class="form-check-label"
+														for="unpublishedRadio"
+													>
+														No
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 d-flex justify-content-end">
+											<button
+												type="submit"
+												class="btn btn-primary btn-block me-1 my-2"
+											>
+												Update
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
 @endsection

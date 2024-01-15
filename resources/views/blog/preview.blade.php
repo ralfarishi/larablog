@@ -18,7 +18,7 @@
 
     <h2>Preview Artikel</h2>
     <ol>
-      <li><a href="{{ route('artikel.index') }}">List Artikel</a></li>
+      <li><a href="{{ route('article.index') }}">List Artikel</a></li>
       <li>{{ $post->title }}</li>
     </ol>
 
@@ -45,17 +45,17 @@
           <div class="meta-top">
             <ul>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-user"></i>
+                <i class="bi bi-person"></i>
                 <a href="javascript:void(0)">{{ $post->user->name }}</a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-clock"></i>
+                <i class="bi bi-clock"></i>
                 <a href="javascript:void(0)">
                   <time datetime="2020-01-01">{{ $post->created_at->format('M d, Y') }}</time>
                 </a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-comment-dots"></i>
+                <i class="bi bi-chat-dots"></i>
                 <a href="javascript:void(0)">0 Comments</a>
               </li>
             </ul>

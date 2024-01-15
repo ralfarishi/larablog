@@ -5,35 +5,23 @@
 		@yield('page_css')
 	</head>
 
-	<body class="hold-transition sidebar-mini layout-fixed">
-		<!--wrapper -->
-		<div class="wrapper">
-			<!-- Preloader -->
-			{{-- <div
-				class="preloader flex-column justify-content-center align-items-center"
-			>
-				<img
-					class="animation__shake"
-					src="{{ asset('images/AdminLTELogo.png') }}"
-					alt="AdminLTELogo"
-					height="60"
-					width="60"
-				/>
-			</div> --}}
-
+	<body>
+		<script src="{{ asset('admin_v2/js/initTheme.js') }}"></script>
+		<div id="app">
 			@include('includes.admin_v2.header')
 
-			<!-- page-wrapper -->
-			<div class="content-wrapper">
-
+			<div id="main">
+				<header class="mb-3">
+					<a href="#" class="burger-btn d-block d-xl-none">
+						<i class="bi bi-justify fs-3"></i>
+					</a>
+				</header>
+				
 				@yield('content')
-
 			</div>
-			<!-- /#page-wrapper -->
 		</div>
-		<!-- /#wrapper -->
+		
 		@include('includes.admin_v2.scripts')
-
 		@yield('page_scripts')
 	</body>
 </html>

@@ -1,133 +1,184 @@
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-	<!-- Left navbar links -->
-	<ul class="navbar-nav">
-		<li class="nav-item">
-			<a class="nav-link" data-widget="pushmenu" href="#" role="button"
-				><i class="fa-solid fa-bars"></i
-			></a>
-		</li>
-		<li class="nav-item d-none d-sm-inline-block">
-			<a href="{{ route('dashboard') }}" class="nav-link">Home</a>
-		</li>
-	</ul>
+<div id="sidebar">
+	<div class="sidebar-wrapper active">
+		<div class="sidebar-header position-relative">
+			<div class="d-flex justify-content-between align-items-center">
+				{{-- <div class="logo">
+					<a href="/">
+						<img
+							src="{{ asset('images/logo.svg') }}"
+							alt="Logo"
+							srcset=""
+						/>
+					</a>
+				</div> --}}
+				<div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						aria-hidden="true"
+						role="img"
+						class="iconify iconify--system-uicons"
+						width="20"
+						height="20"
+						preserveAspectRatio="xMidYMid meet"
+						viewBox="0 0 21 21"
+					>
+						<g
+							fill="none"
+							fill-rule="evenodd"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+								opacity=".3"
+							></path>
+							<g transform="translate(-210 -1)">
+								<path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+								<circle cx="220.5" cy="11.5" r="4"></circle>
+								<path
+									d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
+								></path>
+							</g>
+						</g>
+					</svg>
+					<div class="form-check form-switch fs-6">
+						<input
+							class="form-check-input me-0"
+							type="checkbox"
+							id="toggle-dark"
+							style="cursor: pointer"
+						/>
+						<label class="form-check-label"></label>
+					</div>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						aria-hidden="true"
+						role="img"
+						class="iconify iconify--mdi"
+						width="20"
+						height="20"
+						preserveAspectRatio="xMidYMid meet"
+						viewBox="0 0 24 24"
+					>
+						<path
+							fill="currentColor"
+							d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
+						></path>
+					</svg>
+				</div>
+				<div class="sidebar-toggler x">
+					<a href="#" class="sidebar-hide d-xl-none d-block"
+						><i class="bi bi-x bi-middle"></i
+					></a>
+				</div>
+			</div>
+		</div>
+		<div class="sidebar-menu">
+			<ul class="menu">
+				<li class="sidebar-title">Menu</li>
 
-	<ul class="navbar-nav ml-auto">
-		<li class="nav-item">
-			<a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-				<i class="fa-solid fa-sign-out-alt"></i>
-			</a>
-		</li>
-
-		<form
-			id="logout-form"
-			action="{{ route('logout') }}"
-			method="POST"
-			style="display: none"
-		>
-			{{ csrf_field() }}
-		</form>
-	</ul>
-</nav>
-<!-- /.navbar -->
-
-<!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-	<!-- Brand Logo -->
-	<a href="{{ route('home') }}" class="brand-link">
-		<img
-			src="{{ asset('images/AdminLTELogo.png') }}"
-			alt="AdminLTE Logo"
-			class="brand-image img-circle elevation-3"
-			style="opacity: 0.8"
-		/>
-		<span class="brand-text font-weight-light">Sekolah JeWePe</span>
-	</a>
-
-	<!-- Sidebar -->
-	<div class="sidebar">
-		<!-- Sidebar Menu -->
-		<nav class="mt-2">
-			<ul
-				class="nav nav-pills nav-sidebar flex-column"
-				data-widget="treeview"
-				role="menu"
-				data-accordion="false"
-			>
-				<!-- Add icons to the links using the .nav-icon class
-					with font-awesome or any other icon font library -->
-				<li class="nav-item">
-					<a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-						<i class="nav-icon fa-solid fa-gauge"></i>
-						<p>Dashboard</p>
+				<li class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+					<a href="{{ route('dashboard') }}" class="sidebar-link">
+						<i class="bi bi-grid-fill"></i>
+						<span>Dashboard</span>
 					</a>
 				</li>
-				<li class="nav-item">
-					<a href="#" class="nav-link">
-						<i class="nav-icon fa-solid fa-file-lines"></i>
-						<p>
-							Artikel
-							<i class="fa-solid fa-angle-left right"></i>
-							<span class="badge badge-info right">2</span>
-						</p>
+
+				<li class="sidebar-title">Features</li>
+
+				<li
+					class="sidebar-item has-sub
+					{{ request()->routeIs('article.index') || request()->routeIs('article.create') ? 'active' : '' }}"
+				>
+					<a href="#" class="sidebar-link">
+						<i class="bi bi-newspaper"></i>
+						<span>Articles</span>
 					</a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="{{ route('artikel.index') }}" class="nav-link {{ request()->routeIs('artikel.index') ? 'active' : '' }}">
-								<i class="far fa-regular fa-circle nav-icon"></i>
-								<p>Semua Artikel</p>
+
+					<ul class="submenu">
+						<li class="submenu-item {{ request()->routeIs('article.index') ? 'active' : '' }}">
+							<a href="{{ route('article.index') }}" class="submenu-link">
+								Article List
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="{{ route('artikel.create') }}" class="nav-link {{ request()->routeIs('artikel.create') ? 'active' : '' }}">
-								<i class="far fa-regular fa-circle nav-icon"></i>
-								<p>Buat Artikel</p>
+
+						<li class="submenu-item {{ request()->routeIs('article.create') ? 'active' : '' }}">
+							<a href="{{ route('article.create') }}" class="submenu-link">
+								Create Article
 							</a>
 						</li>
 					</ul>
 				</li>
-				<li class="nav-item">
-					<a href="{{ route('komentar.index') }}" class="nav-link {{ request()->routeIs('komentar.index') ? 'active' : '' }}">
-						<i class="nav-icon fa-solid fa-comments"></i>
-						<p>Komentar</p>
+
+				<li class="sidebar-item {{ request()->routeIs('comment.index') ? 'active' : '' }}">
+					<a href="{{ route('comment.index') }}" class="sidebar-link">
+						<i class="bi bi-chat-fill"></i>
+						<span>Comments</span>
 					</a>
 				</li>
+
 				@if (Auth::user()->role == 'admin')
-					<li class="nav-item">
-						<a href="{{ route('kategori.index') }}" class="nav-link {{ request()->routeIs('kategori.index') ? 'active' : '' }}">
-						<i class="nav-icon fa-solid fa-tags"></i>
-							<p>Kategori</p>
+					<li
+						class="sidebar-item
+						{{ request()->routeIs('category.index') || request()->routeIs('category.create') ? 'active' : '' }}"
+					>
+						<a href="{{ route('category.index') }}" class="sidebar-link">
+							<i class="bi bi-tags-fill"></i>
+							<span>Categories</span>
 						</a>
 					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link">
-							<i class="nav-icon fa-solid fa-users"></i>
-							<p>
-								Users
-								<i class="fa-solid fa-angle-left right"></i>
-								<span class="badge badge-info right">2</span>
-							</p>
+
+					<li
+						class="sidebar-item has-sub
+						{{ request()->routeIs('user.index') ||
+						request()->routeIs('login-history.index') ||
+						request()->routeIs('user.create') ? 'active' : '' 
+						}}"
+					>
+						<a href="#" class="sidebar-link">
+							<i class="bi bi-people-fill"></i>
+							<span>Users</span>
 						</a>
-						<ul class="nav nav-treeview">
-							<li class="nav-item">
-									<a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active' : '' }}">
-									<i class="far fa-regular fa-circle nav-icon"></i>
-									<p>Semua Users</p>
+
+						<ul class="submenu">
+							<li class="submenu-item {{ request()->routeIs('user.index') ? 'active' : '' }}">
+								<a href="{{ route('user.index') }}" class="submenu-link">
+									User List
 								</a>
 							</li>
-							<li class="nav-item">
-								<a href="{{ route('login-history.index') }}" class="nav-link {{ request()->routeIs('login-history.index') ? 'active' : '' }}">
-									<i class="far fa-regular fa-circle nav-icon"></i>
-									<p>Login History</p>
+
+							<li class="submenu-item {{ request()->routeIs('login-history.index') ? 'active' : '' }}">
+								<a
+									href="{{ route('login-history.index') }}"
+									class="submenu-link"
+								>
+									Login History
 								</a>
 							</li>
 						</ul>
 					</li>
 				@endif
+
+				<li class="sidebar-item">
+					<a href="{{ route('logout') }}" class="sidebar-link" onclick="event.preventDefault();
+            document.getElementById('logout-form').submit();">
+						<i class="bi bi-box-arrow-left"></i>
+						<span>Logout</span>
+					</a>
+				</li>
+
+				<form
+					id="logout-form"
+					action="{{ route('logout') }}"
+					method="POST"
+					style="display: none"
+				>
+					@csrf
+				</form>
 			</ul>
-		</nav>
-		<!-- /.sidebar-menu -->
+		</div>
 	</div>
-	<!-- /.sidebar -->
-</aside>
+</div>

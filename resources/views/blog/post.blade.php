@@ -8,7 +8,7 @@
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
 
-    <h2>Detail Artikel</h2>
+    <h2>Article Detail</h2>
     <ol>
       <li><a href="{{ route('home') }}">Home</a></li>
       <li>{{ $post->title }}</li>
@@ -35,17 +35,17 @@
           <div class="meta-top">
             <ul>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-user"></i>
+                <i class="bi bi-person"></i>
                 <a href="javascript:void(0)">{{ $post->user->name }}</a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-clock"></i>
+                <i class="bi bi-clock"></i>
                 <a href="javascript:void(0)">
                   <time datetime="{{ $post->created_at }}">{{ formatDate($post->created_at) }}</time>
                 </a>
               </li>
               <li class="d-flex align-items-center">
-                <i class="fa-regular fa-comment-dots"></i>
+                <i class="bi bi-chat-dots"></i>
                 <a href="javascript:void(0)">{{ $totalComments }} Comments</a>
               </li>
             </ul>

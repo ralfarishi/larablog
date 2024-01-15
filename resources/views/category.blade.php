@@ -8,8 +8,9 @@
 <!-- ======= Breadcrumbs ======= -->
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
+    <i class="{{ $category->icon }} fs-1 text-light"></i>
 
-    <h2>Kategori</h2>
+    <h2>Category</h2>
     <ol>
       <li><a href="/">Home</a></li>
       <li>{{ $category->name }}</li>
@@ -42,9 +43,9 @@
 
                 <div class="meta-top">
                   <ul>
-                    <li class="d-flex align-items-center"><i class="fa-regular fa-user"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
-                    <li class="d-flex align-items-center"><i class="fa-regular fa-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
-                    <li class="d-flex align-items-center"><i class="fa-regular fa-comment-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}}
+                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
+                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}}
                         Comments</a></li>
                   </ul>
                 </div>
@@ -67,7 +68,7 @@
             </div>
             @endforeach
           @else
-            <p class="text-center">Belum ada artikel.</p>
+            <p class="text-center">No article found.</p>
           @endif
 
         </div><!-- End blog posts list -->

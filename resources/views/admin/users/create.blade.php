@@ -1,66 +1,107 @@
 @extends('layouts.admin_v2.template')
 
 @section('content')
-<section class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Tambah Pengguna</h1>
+<div class="page-heading">
+	<div class="page-title">
+		<div class="row">
+			<div class="col-12 col-md-6 order-md-1 order-last">
+				<h3>Features</h3>
 			</div>
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Tambah Pengguna</li>
-				</ol>
+			<div class="col-12 col-md-6 order-md-2 order-first">
+				<nav
+					aria-label="breadcrumb"
+					class="breadcrumb-header float-start float-lg-end"
+				>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ route('dashboard') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							Create User
+						</li>
+					</ol>
+				</nav>
 			</div>
 		</div>
 	</div>
-</section>
 
-<section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-12">
+	<section id="basic-vertical-layouts">
+		<div class="row match-height">
+			<div class="col-12">
 				<div class="card">
-					<form action="{{ route('user.store') }}" method="POST">
-            @csrf
-							<div class="card-body">
-								<div class="form-group">
-									<label class="form-label" for="name">Nama*</label>
-									<input type="text" class="form-control" name="name" placeholder="Nama pengguna" />
-									@if ($errors->has('name'))
-										<span class="help-block text-danger">
-											<p>{{ $errors->first('name') }}</p>
-										</span>
-									@endif
+					<div class="card-header">
+						<h4 class="card-title">Create User</h4>
+					</div>
+					<div class="card-content">
+						<div class="card-body">
+							<form class="form form-vertical" action="{{ route('user.store') }}" method="POST">
+								@csrf
+								<div class="form-body">
+									<div class="row">
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Name*</label>
+												<input
+													type="text"
+													class="form-control"
+													name="name"
+													placeholder="User name"
+												/>
+												@if ($errors->has('name'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('name') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Email*</label>
+												<input
+													type="text"
+													class="form-control"
+													name="email"
+													placeholder="User email"
+												/>
+												@if ($errors->has('email'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('email') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Password*</label>
+												<input
+													type="password"
+													class="form-control"
+													name="password"
+													placeholder="Min. 5 characters"
+												/>
+												@if ($errors->has('password'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('password') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12 d-flex justify-content-end">
+											<button
+												type="submit"
+												class="btn btn-primary btn-block me-1 my-2"
+											>
+												Submit
+											</button>
+										</div>
+									</div>
 								</div>
-								<div class="form-group">
-									<label class="form-label" for="email">Email*</label>
-									<input type="email" class="form-control" name="email" placeholder="Email pengguna" />
-									@if ($errors->has('email'))
-										<span class="help-block text-danger">
-											<p>{{ $errors->first('email') }}</p>
-										</span>
-									@endif
-								</div>
-								<div class="form-group">
-									<label class="form-label" for="password">Password*</label>
-									<input type="password" class="form-control" name="password" placeholder="Min. 5 karakter" />
-									@if ($errors->has('password'))
-										<span class="help-block text-danger">
-											<p>{{ $errors->first('password') }}</p>
-										</span>
-									@endif
-								</div>
-							</div>
-						<div class="card-footer">
-							<button type="submit" class="btn btn-block btn-primary">Tambah</button>
+							</form>
 						</div>
-          </form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</div>
 @endsection
-

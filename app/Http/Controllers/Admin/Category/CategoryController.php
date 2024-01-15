@@ -20,7 +20,7 @@ class CategoryController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<div class="d-flex align-items-center">
-							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-auto delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>
+							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-auto delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal"><span class="bi bi-trash-fill"></span></a>
 						</div>
 					';
 				})
@@ -48,7 +48,7 @@ class CategoryController extends Controller
 
 		Categories::create($data);
 
-		return to_route('kategori.index')->with('success', 'Kategori berhasil ditambahkan!');
+		return to_route('category.index')->with('success', 'Category has been created.');
 	}
 
 	public function destroy($id)
@@ -56,11 +56,11 @@ class CategoryController extends Controller
 		$category = Categories::findOrfail($id);
 
 		if ($category->posts->count() > 0) {
-			return to_route('kategori.index')->with('warning', 'Tidak dapat menghapus kategori karena masih ada artikel yang berhubungan.');
+			return to_route('category.index')->with('warning', 'Cannot delete category that has a related article.');
 		}
 
 		$category->delete();
 
-		return to_route('kategori.index')->with('danger', 'Kategori berhasil dihapus!');
+		return to_route('category.index')->with('danger', 'Category has been deleted.');
 	}
 }

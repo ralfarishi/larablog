@@ -15,7 +15,7 @@
   <!-- Vendor CSS Files -->
   <link href="{{ asset("css/artikel_v2/vendor/bootstrap.min.css") }}" rel="stylesheet">
   <link href="{{ asset("css/artikel_v2/vendor/aos.css") }}" rel="stylesheet">
-  <link rel="stylesheet" href="{{ asset('admin_v2/css/fontawesome-free/css/all.min.css') }}" />
+  <link href="{{ asset('css/artikel_v2/vendor/bootstrap-icons.min.css') }}" rel="stylesheet" />
   
   <!-- Template Main CSS File -->
   <link href="{{ asset("css/artikel_v2/main.css") }}" rel="stylesheet">

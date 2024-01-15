@@ -8,142 +8,217 @@
 @endsection
 
 @section('content')
-<!-- Content Header (Page header) -->
-<section class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Buat Artikel</h1>
+<div class="page-heading">
+	<div class="page-title">
+		<div class="row">
+			<div class="col-12 col-md-6 order-md-1 order-last">
+				<h3>Features</h3>
 			</div>
-			<div class="col-sm-6">
-				<ol class="breadcrumb float-sm-right">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item active">Buat Artikel</li>
-				</ol>
+			<div class="col-12 col-md-6 order-md-2 order-first">
+				<nav
+					aria-label="breadcrumb"
+					class="breadcrumb-header float-start float-lg-end"
+				>
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item">
+							<a href="{{ route('dashboard') }}">Dashboard</a>
+						</li>
+						<li class="breadcrumb-item active" aria-current="page">
+							Create Article
+						</li>
+					</ol>
+				</nav>
 			</div>
 		</div>
 	</div>
-	<!-- /.container-fluid -->
-</section>
 
-<!-- Main content -->
-<section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<!-- left column -->
-			<div class="col-md-12">
-				<!-- general form elements -->
+	<section id="basic-vertical-layouts">
+		<div class="row match-height">
+			<div class="col-12">
 				<div class="card">
-					<!-- /.card-header -->
-					<!-- form start -->
-					<form action="{{ route('artikel.store') }}" enctype="multipart/form-data" method="POST" id="createPost">
-						@csrf
+					<div class="card-header">
+						<h4 class="card-title">Create Article</h4>
+					</div>
+					<div class="card-content">
 						<div class="card-body">
-							<div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
-								<label class="form-label" for="title">Title*</label>
-								<input type="text" class="form-control" name="title" placeholder="Judul artikel" />
-								@if ($errors->has('title'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('title') }}</p>
-									</span>
-								@endif
-							</div>
-							<div class="form-group{{ $errors->has('content') ? ' has-error' : '' }}">
-								<label class="form-label">Content*</label>
-								<div id="editor"></div>
-								<input type="hidden" name="content" id="content">
-								@if ($errors->has('content'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('content') }}</p>
-									</span>
-								@endif
-							</div>
-							<div class="form-group">
-								<label>Kategori*</label>
-								<select class="form-control" style="width: 100%;" name="category_id">
-									@foreach ($categories as $category)
-										<option value="{{ $category->id }}">{{ $category->name }}</option>
-									@endforeach
-								</select>
-							</div>
-							<div class="form-group {{ $errors->has('image') ? ' has-error ':''}}">
-								<label class="form-label" for="image">Image*</label>
-								<div class="input-group">
-									<div class="custom-file">
-										<input class="form-control custom-file-input" type="file" name="image" id="image">
-										<label
-											class="custom-file-label"
-											id="file-label"
-											>Choose file</label
-										>
+							<form class="form form-vertical" action="{{ route('article.store') }}" enctype="multipart/form-data" method="POST" id="createPost">
+								@csrf
+								<div class="form-body">
+									<div class="row">
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Title*</label>
+												<input
+													type="text"
+													class="form-control"
+													name="title"
+													placeholder="Article title"
+												/>
+												@if ($errors->has('title'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('title') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="email-id-vertical">Content*</label>
+												<div id="editor"></div>
+												<input type="hidden" name="content" id="content">
+												@if ($errors->has('content'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('content') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="contact-info-vertical">Category*</label>
+												<select class="form-control" style="width: 100%;" name="category_id">
+													@foreach ($categories as $category)
+														<option value="{{ $category->id }}">{{ $category->name }}</option>
+													@endforeach
+												</select>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="password-vertical">Image*</label>
+												<input
+													class="form-control"
+													type="file"
+													id="image"
+													name="image"
+												/>
+											</div>
+
+											<img id="preview_image" class="inputImgPreview w-25 mt-2" src="{{ isset($post) ? $post->image : '' }}" />
+
+											@if ($errors->has('image'))
+												<span class="help-block text-danger">
+													<p>{{ $errors->first('image') }}</p>
+												</span>
+											@endif
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Tags*</label>
+												<input
+													type="text"
+													class="form-control"
+													name="tags"
+													placeholder="Separate tags with comma or Enter"
+													id="tags"
+													data-ub-tag-variant="dark"
+												/>
+
+												@if ($errors->has('tags'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('tags') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+
+										<div class="col-12">
+											<div class="form-group">
+												<label class="mb-1">Allow comment?</label>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-success"
+														type="radio"
+														name="allowed_comment"
+														id="yesComment"
+														value="1"
+														checked
+													/>
+													<label
+														class="form-check-label"
+														for="yesComment"
+													>
+														Yes
+													</label>
+												</div>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-danger"
+														type="radio"
+														name="allowed_comment"
+														id="noComment"
+														value="0"
+													/>
+													<label
+														class="form-check-label"
+														for="noComment"
+													>
+														No
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label class="mb-1">Publish article?</label>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-success"
+														type="radio"
+														name="active"
+														id="publishRadio"
+														value="1"
+													/>
+													<label
+														class="form-check-label"
+														for="publishRadio"
+													>
+														Yes
+													</label>
+												</div>
+												<div class="form-check">
+													<input
+														class="form-check-input form-check-danger"
+														type="radio"
+														name="active"
+														id="unpublishedRadio"
+														value="0"
+														checked
+													/>
+													<label
+														class="form-check-label"
+														for="unpublishedRadio"
+													>
+														No
+													</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-12 d-flex justify-content-end">
+											<button
+												type="submit"
+												class="btn btn-primary btn-block me-1 my-2"
+											>
+												Submit
+											</button>
+										</div>
 									</div>
 								</div>
-								<img id="preview_image" class="inputImgPreview w-25 mt-2" src="{{ isset($post) ? $post->image : '' }}" />
-
-								@if ($errors->has('image'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('image') }}</p>
-									</span>
-								@endif
-							</div>
-
-							<div class="form-group{{ $errors->has('tags') ? ' has-error' : '' }}">
-								<label class="form-label" for="tags">Tags*</label>
-								<input name="tags" class="form-control" id="tags" type="text" placeholder="Pisahkan tags dengan tanda koma atau Enter" data-ub-tag-variant="dark"/>
-								@if ($errors->has('tags'))
-									<span class="help-block text-danger">
-										<p>{{ $errors->first('tags') }}</p>
-									</span>
-								@endif
-							</div>
-
-							{{-- {{ $post->allowed_comment == 1 ? 'checked' : '' }} --}}
-							<div class="form-group clearfix">
-								<label>Buka Komentar : </label>
-								<div class="icheck-primary d-inline">
-									<input type="radio" id="radioYes" name="allowed_comment" value="1" checked>
-									<label for="radioYes">Ya</label>
-								</div>
-								<div class="icheck-danger d-inline">
-									<input type="radio" id="radioNo" name="allowed_comment" value="0">
-									<label for="radioNo">Tidak</label>
-								</div>
-							</div>
-
-							<div class="form-group clearfix">
-								<label>Publish Artikel : </label>
-								<div class="icheck-primary d-inline">
-									<input type="radio" id="radioYesActive" name="active" value="1">
-									<label for="radioYesActive">Ya</label>
-								</div>
-								<div class="icheck-danger d-inline">
-									<input type="radio" id="radioNoActive" name="active" value="0" checked>
-									<label for="radioNoActive">Tidak</label>
-								</div>
-							</div>
+							</form>
 						</div>
-						<!-- /.card-body -->
-						
-						<div class="card-footer">
-							<input type="submit" class="btn btn-block btn-primary" value="Save"/>
-						</div>
-					</form>
+					</div>
 				</div>
-				<!-- /.card -->
 			</div>
-			<!--/.col (left) -->
 		</div>
-		<!-- /.row -->
-	</div>
-	<!-- /.container-fluid -->
-</section>
+	</section>
+</div>
 @endsection
 
 @section('page_scripts')
 	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-editor-all.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-plugin-code-syntax-highlight-all.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('admin_v2/js/use-bootstrap-tag.min.js')}}"></script>
-	<script type="text/javascript" src="{{ asset('back/js/select2.min.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('admin_v2/js/jquery.min.js')}}"></script>
 
 	<script>
 		const { Editor } = toastui;
@@ -166,24 +241,18 @@
 
 	<script type="text/javascript">
 		UseBootstrapTag(document.getElementById('tags'))
-
-		document.getElementById('image').addEventListener('change', function(e) {
-			var fileName = e.target.files[0].name;
-			document.getElementById('file-label').textContent = fileName;
-		});
-
-		function readURL(input) {
+		
+    function readURL(input) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
-				var targetPreview = 'preview_'+$(input).attr('id');
 				reader.onload = function(e) {
-					$('#'+targetPreview).attr('src', e.target.result).show();
+					$('#preview_image').attr('src', e.target.result).show();
 				}
 				reader.readAsDataURL(input.files[0]);
 			}
-		}
-		$("#image").change(function() {
-			readURL(this);
+    }
+		document.getElementById('image').addEventListener('change', function(e) {
+				readURL(this);
 		});
 	</script>
 @endsection

@@ -21,11 +21,18 @@ class CategoryRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
+		$filepath = asset('bootstrap-icons.txt');
+		$getFile = file_get_contents($filepath);
+
+		$iconClasses = json_decode($getFile);
+
+		$pattern = '/^bi bi-' . implode('|', $iconClasses) . '$/';
+
 		return [
 			'name' => 'required|regex:/^[\w]+$/',
 			'icon' => [
 				'required',
-				'regex:/^(fa-solid|fa-regular|fa-brands)\s+[a-z0-9-]+$/i'
+				'regex:' . $pattern
 			]
 		];
 	}
@@ -36,7 +43,7 @@ class CategoryRequest extends FormRequest
 			'name.required' => 'Harap masukkan nama kategori!',
 			'icon.required' => 'Harap masukkan icon!',
 			'name.regex' => 'Nama kategori hanya boleh terdiri dari satu kata tanpa spasi & tanpa simbol apapun!',
-			'icon.regex' => 'Harap input icon berdasarkan class pada font awesome!'
+			'icon.regex' => 'Harap input icon berdasarkan class pada bootstrap icons!'
 		];
 	}
 }

@@ -7,10 +7,10 @@
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
 
-    <h2>Cari Blog</h2>
+    <h2>Find Article</h2>
     <ol>
       <li><a href="/">Home</a></li>
-      <li>Pencarian</li>
+      <li>Search</li>
     </ol>
 
   </div>
@@ -23,7 +23,7 @@
 
       <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
 
-        <h3 class="mb-4">Hasil pencarian untuk "<mark>{{ $query }}</mark>"</h3>
+        <h3 class="mb-4">Search result for "<mark>{{ $query }}</mark>"</h3>
 
         <div class="row gy-5 posts-list">
           @if ($results->isEmpty())
@@ -43,9 +43,9 @@
 
                   <div class="meta-top">
                     <ul>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-user"></i> <a href="{{ route('post', $result->slug) }}">{{ $result->user->name }}</a></li>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-clock"></i> <a href="{{ route('post', $result->slug) }}"><time datetime="2022-01-01">{{ $result->created_at->format('M d, Y') }}</time></a></li>
-                      <li class="d-flex align-items-center"><i class="fa-regular fa-comment-dots"></i> <a href="{{ route('post', $result->slug) }}">{{ $result->comments->count() > 0 ? $result->comments->count() : 0}} Comments</a></li>
+                      <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{{ route('post', $result->slug) }}">{{ $result->user->name }}</a></li>
+                      <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{{ route('post', $result->slug) }}"><time datetime="2022-01-01">{{ $result->created_at->format('M d, Y') }}</time></a></li>
+                      <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{{ route('post', $result->slug) }}">{{ $result->comments->count() > 0 ? $result->comments->count() : 0}} Comments</a></li>
                     </ul>
                   </div>
 

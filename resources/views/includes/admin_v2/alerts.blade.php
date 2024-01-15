@@ -1,44 +1,63 @@
 @if(Session::has('success'))
-	<div class="alert alert-success alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-		<h5>
-			<i class="icon fa-solid fa-check"></i>
-			Success!
-		</h5>
-		{{ Session::get('success') }}
-	</div>
+<div
+	class="alert alert-light-success color-success alert-dismissible fade show"
+	role="alert"
+>
+	<button
+		type="button"
+		class="btn-close"
+		data-bs-dismiss="alert"
+		aria-label="Close"
+	></button>
+
+	<i class="bi bi-check-circle"></i>
+	{{ Session::get('success') }}
+</div>
 @elseif(Session::has('danger'))
-	<div class="alert alert-danger alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-		<h5>
-			<i class="icon fa-solid fa-trash"></i>
-			Deleted!
-		</h5>
-		{{ Session::get('danger') }}
-	</div>
-@elseif(Session::has('error'))
-	<div class="alert alert-danger alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-		{{ Session::get('error') }}
-	</div>
+<div
+	class="alert alert-light-danger color-danger alert-dismissible fade show"
+	role="alert"
+>
+	<button
+		type="button"
+		class="btn-close"
+		data-bs-dismiss="alert"
+		aria-label="Close"
+	></button>
+
+	<i class="bi bi-exclamation-circle"></i>
+	{{ Session::get('danger') }}
+</div>
 @elseif(Session::has('warning'))
-	<div class="alert alert-warning alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-		<h5>
-			<i class="icon fa-solid fa-exclamation-triangle"></i>
-			Warning!
-		</h5>
-		{{ Session::get('warning') }}
-	</div>
+<div
+	class="alert alert-light-warning color-warning alert-dismissible fade show"
+	role="alert"
+>
+	<button
+		type="button"
+		class="btn-close"
+		data-bs-dismiss="alert"
+		aria-label="Close"
+	></button>
+
+	<i class="bi bi-exclamation-triangle"></i>
+	{{ Session::get('warning') }}
+</div>
 @elseif(Session::has('info'))
-	<div class="alert alert-info alert-dismissible">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-		<h5>
-			<i class="icon fa-solid fa-info"></i>
-			Updated!
-		</h5>
-		{{ Session::get('info') }}
-	</div>
+<div
+	class="alert alert-light-info color-info alert-dismissible fade show"
+	role="alert"
+>
+	<button
+		type="button"
+		class="btn-close"
+		data-bs-dismiss="alert"
+		aria-label="Close"
+	></button>
+
+	<i class="bi bi-info-circle"></i>
+	{{ Session::get('info') }}
+</div>
 @endif
 
 

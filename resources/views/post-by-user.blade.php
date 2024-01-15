@@ -41,13 +41,13 @@
                   <div class="meta-top">
                     <ul>
                       <li class="d-flex align-items-center">
-                        <i class="fa-regular fa-user"></i>
+                        <i class="bi bi-person"></i>
                         <a href="{{ route('post-by-user', $post->user->name) }}">
                           {{ $post->user->name }}
                         </a>
                       </li>
                       <li class="d-flex align-items-center">
-                        <i class="fa-regular fa-clock"></i> 
+                        <i class="bi bi-clock"></i> 
                         <a href="{{ route('post', $post->slug) }}">
                           <time datetime="{{ $post->created_at }}">
                             {{ formatDate($post->created_at) }}
@@ -55,7 +55,7 @@
                         </a>
                       </li>
                       <li class="d-flex align-items-center">
-                        <i class="fa-regular fa-comment-dots"></i> 
+                        <i class="bi bi-chat-dots"></i> 
                         <a href="{{ route('post', $post->slug) }}">
                           {{ $post->comments->count() > 0 ? $post->comments->count() : 0}} Comments
                         </a>
@@ -81,7 +81,7 @@
               </div>
             @endforeach
           @else
-            <p class="text-center">Belum ada artikel.</p>
+            <p class="text-center">No artikel found.</p>
           @endif
 
         </div><!-- End blog posts list -->

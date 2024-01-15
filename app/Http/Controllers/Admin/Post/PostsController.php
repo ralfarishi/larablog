@@ -41,9 +41,9 @@ class PostsController extends Controller
 					$id = $model->slug;
 					$link = $request->url() . '/' . $id;
 					return '
-						<a href="' . route('artikel.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="fas fa-edit"></span></a>
-						<a href="' . route('preview', $model->slug) . ' " class="btn btn-warning btn-sm text-white mx-1" title="Preview"><span class="fas fa-eye"></span></a>
-						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-toggle="modal" data-target="#deleteModal" title="Delete"><span class="fas fa-trash"></span></a>
+						<a href="' . route('article.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="bi bi-pencil-square"></span></a>
+						<a href="' . route('preview', $model->slug) . ' " class="btn btn-warning btn-sm text-white mx-1" title="Preview"><span class="bi bi-eye-fill"></span></a>
+						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete"><span class="bi bi-trash3-fill"></span></a>
 					';
 				})
 				->addColumn('comment_count', function ($model) use ($request) {
@@ -83,7 +83,7 @@ class PostsController extends Controller
 
 		Posts::create($data);
 
-		return to_route('artikel.index')->with('success', 'Artikel berhasil dibuat!');
+		return to_route('article.index')->with('success', 'Article has been created.');
 	}
 
 	/**
@@ -122,7 +122,7 @@ class PostsController extends Controller
 
 		$post->update($data);
 
-		return to_route('artikel.index')->with('info', 'Artikel berhasil diupdate!');
+		return to_route('article.index')->with('info', 'Article has been updated.');
 	}
 
 	/**
@@ -133,7 +133,7 @@ class PostsController extends Controller
 		$post = Posts::where('slug', $id)->firstOrFail();
 
 		if ($post->active === 1) {
-			return to_route('artikel.index')->with('warning', 'Artikel sudah di-publish! Ubah status artikel untuk menghapus artikel.');
+			return to_route('article.index')->with('warning', 'This article already published. Set to unpublished first to delete article.');
 		}
 
 		$imagePath = public_path('uploads/' . $post->image);
@@ -144,6 +144,6 @@ class PostsController extends Controller
 
 		$post->delete();
 
-		return to_route('artikel.index')->with('danger', 'Artikel berhasil dihapus!');
+		return to_route('article.index')->with('danger', 'Article has been deleted.');
 	}
 }

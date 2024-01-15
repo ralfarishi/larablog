@@ -28,6 +28,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Route::get('/dashboard', function () {
+// 	return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::middleware(['guest'])->group(function () {
 	Route::get('/login', [LoginController::class, 'index'])->name('login');
 	Route::post('/login', [LoginController::class, 'login'])->name('auth');
@@ -41,26 +45,26 @@ Route::post('/blog/{id}', [PostController::class, 'storeComment'])->name('store-
 
 Route::get('/blog/user/{slug}', [PostController::class, 'postByUser'])->name('post-by-user');
 
-Route::get('/kategori/{kategori}', [CategoryListController::class, 'show'])->name('categories');
+Route::get('/category/{category}', [CategoryListController::class, 'show'])->name('categories');
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('post-by-tag');
 
-Route::middleware('auth')->prefix('dashboard')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
 	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 	Route::resources([
-		'artikel' => PostsController::class,
-		'komentar' => CommentsController::class,
+		'article' => PostsController::class,
+		'comment' => CommentsController::class,
 	]);
 
-	Route::get('/artikel/p/{id}', [PreviewController::class, 'preview'])->name('preview');
+	Route::get('/article/p/{id}', [PreviewController::class, 'preview'])->name('preview');
 
 	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'is.admin'])->prefix('dashboard')->group(function () {
+Route::middleware(['auth', 'is.admin', 'verified'])->prefix('admin')->group(function () {
 	Route::resources([
-		'kategori' => CategoryController::class,
+		'category' => CategoryController::class,
 		'user' => UserController::class
 	]);
 
@@ -69,3 +73,5 @@ Route::middleware(['auth', 'is.admin'])->prefix('dashboard')->group(function () 
 		Route::delete('/login-history/{id}', 'destroy')->name('login-history.destroy');
 	});
 });
+
+require __DIR__ . '/auth.php';

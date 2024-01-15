@@ -30,8 +30,8 @@ class CommentsController extends Controller
 					$link = $request->url() . '/' . $id;
 					return '
 						<div class="d-flex align-items-center">
-							<a href="' . route('komentar.edit', $id) . '" class="btn btn-primary btn-sm"><span class="fas fa-edit"></span></a>
-							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-toggle="modal" data-target="#deleteModal"><span class="fas fa-trash"></span></a>
+							<a href="' . route('comment.edit', $id) . '" class="btn btn-primary btn-sm"><span class="bi bi-pencil-square"></span></a>
+							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-2 delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal"><span class="bi bi-trash-fill"></span></a>
 						</div>
 					';
 				})
@@ -101,7 +101,7 @@ class CommentsController extends Controller
 
 		$comment->save();
 
-		return to_route('komentar.index')->with('info', 'Komentar berhasil diperbarui!');
+		return to_route('comment.index')->with('info', 'Comment has been updated.');
 	}
 
 	/**
@@ -113,6 +113,6 @@ class CommentsController extends Controller
 
 		$comment->delete();
 
-		return to_route('komentar.index')->with('danger', 'Komentar berhasil dihapus!');
+		return to_route('comment.index')->with('danger', 'Comment has been deleted.');
 	}
 }
