@@ -1,4 +1,4 @@
-### Installation
+# Installation
 
 1. Clone this repo & update dependencies using composer.
 
@@ -49,3 +49,18 @@ $ php artisan migrate --seed
 ```sh
 $ php artisan serve
 ```
+
+# Features
+
+- Home
+  - Login & register.
+  - Search article.
+  - Add comment on an article.
+  - Filter article by category, tag, or user.
+- Dashboard
+  - Roles [Admin/Writter].
+  - CRUD article.
+  - Comment management.
+  - Create & delete category. (Admin only)
+  - User management. (Admin only)
+  - Login history. (Admin only)
