@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
 
 		$iconClasses = json_decode($getFile);
 
-		$pattern = '/^bi bi-' . implode('|', $iconClasses) . '$/';
+		$pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
 
 		return [
 			'name' => 'required|regex:/^[\w]+$/',
@@ -34,16 +34,6 @@ class CategoryRequest extends FormRequest
 				'required',
 				'regex:' . $pattern
 			]
-		];
-	}
-
-	public function messages(): array
-	{
-		return [
-			'name.required' => 'Harap masukkan nama kategori!',
-			'icon.required' => 'Harap masukkan icon!',
-			'name.regex' => 'Nama kategori hanya boleh terdiri dari satu kata tanpa spasi & tanpa simbol apapun!',
-			'icon.regex' => 'Harap input icon berdasarkan class pada bootstrap icons!'
 		];
 	}
 }
