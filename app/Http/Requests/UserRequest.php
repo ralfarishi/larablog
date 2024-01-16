@@ -27,16 +27,4 @@ class UserRequest extends FormRequest
 			'password' => 'required|min:5'
 		];
 	}
-
-	public function messages(): array
-	{
-		return [
-			'name.required' => 'Harap mengisi nama!',
-			'name.unique' => 'Nama sudah digunakan. Coba nama lain.',
-			'email.required' => 'Harap mengisi email!',
-			'email.unique' => 'Email sudah digunakan. Coba email lain.',
-			'password.required' => 'Harap mengisi password!',
-			'password.min' => 'Password minimal 5 karakter!',
-		];
-	}
 }

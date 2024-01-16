@@ -43,9 +43,9 @@
           <thead>
             <tr>
               <th>#</th>
-							<th>Nama</th>
+							<th>Name</th>
               <th>Email</th>
-              <th>Artikel Dibuat</th>
+              <th>Article Created</th>
               <th>Action</th>
             </tr>
           </thead>

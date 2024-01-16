@@ -43,14 +43,14 @@
             <tr>
               <th>#</th>
               <th>Email</th>
-              <th>Aktivitas</th>
+              <th>Activity</th>
               <th>Status</th>
               <th>IP Address</th>
               <th>Browser</th>
-              <th>Kota</th>
+              <th>City</th>
               <th>Latitude</th>
               <th>Longitute</th>
-              <th>Tanggal</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>

@@ -35,11 +35,8 @@ class CreatePostRequest extends FormRequest
 	public function messages(): array
 	{
 		return	[
-			'title.required' => 'Judul tidak boleh kosong!',
-			'content.required' => 'Isi artikel tidak boleh kosong!',
-			'image.required' => 'Harap meng-upload gambar!',
-			'tags.required' => 'Harap memasukkan tag minimal 1!',
-			'allowed_comment.required' => 'Harap pilih salah satu!'
+			'image.required' => 'Upload image is required',
+			'tags.required' => 'At lease add 1 tag',
 		];
 	}
 }

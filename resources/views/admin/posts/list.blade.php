@@ -43,11 +43,11 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Judul Artikel</th>
-              <th>Penulis</th>
-              <th>Kategori</th>
+              <th>Title</th>
+              <th>Writter</th>
+              <th>Category</th>
               <th>Tags</th>
-              <th>Jumlah Komentar</th>
+              <th>Total Comment</th>
               <th>Status</th>
               <th>Action</th>
             </tr>

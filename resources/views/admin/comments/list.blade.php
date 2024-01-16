@@ -44,8 +44,8 @@
               <th>#</th>
 							<th>Username</th>
 							<th>Email</th>
-							<th>Artikel</th>
-							<th>Komentar</th>
+							<th>Article</th>
+							<th>Comment</th>
 							<th>Status</th>
 							<th>Action</th>
             </tr>
