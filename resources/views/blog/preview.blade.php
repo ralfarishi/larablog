@@ -63,7 +63,7 @@
           <!-- End meta top -->
 
           <div class="content">
-            {!! Str::markdown($post->content) !!}
+            {!! $post->content !!}
           </div>
           <!-- End post content -->
 

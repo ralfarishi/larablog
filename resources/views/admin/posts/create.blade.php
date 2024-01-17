@@ -1,10 +1,14 @@
 @extends('layouts.admin_v2.template')
 
 @section('page_css')
-	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-editor.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/prism.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('admin_v2/css/toastui-editor/toastui-plugin-code-syntax-highlight.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('admin_v2/css/use-bootstrap-tag.min.css') }}">
+
+	<style>
+		.ck-editor__editable_inline:not(.ck-comment__input *) {
+			height: 300px;
+			overflow-y: auto;
+		}
+	</style>
 @endsection
 
 @section('content')
@@ -64,8 +68,7 @@
 										<div class="col-12">
 											<div class="form-group">
 												<label for="email-id-vertical">Content*</label>
-												<div id="editor"></div>
-												<input type="hidden" name="content" id="content">
+												<textarea name="content" id="content"></textarea>
 												@if ($errors->has('content'))
 													<span class="help-block text-danger">
 														<p>{{ $errors->first('content') }}</p>
@@ -215,28 +218,17 @@
 @endsection
 
 @section('page_scripts')
-	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-editor-all.min.js')}}"></script>
-	<script type="text/javascript" src="{{ asset('admin_v2/js/toastui-editor/toastui-plugin-code-syntax-highlight-all.min.js')}}"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+
 	<script type="text/javascript" src="{{ asset('admin_v2/js/use-bootstrap-tag.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('admin_v2/js/jquery.min.js')}}"></script>
 
 	<script>
-		const { Editor } = toastui;
-		const { codeSyntaxHighlight } = Editor.plugin;
-
-		const editor = new Editor({
-			el: document.querySelector('#editor'),
-			height: '450px',
-			initialEditType: 'markdown',
-  		previewStyle: 'vertical',
-			plugins: [codeSyntaxHighlight]
-		});
-
-		document.querySelector('#createPost').addEventListener('submit', e => {
-			e.preventDefault();
-			document.querySelector('#content').value = editor.getMarkdown();
-			e.target.submit();
-		});
+		ClassicEditor
+			.create(document.querySelector('#content'))
+			.catch(error => {
+				console.error(error);
+			});
 	</script>
 
 	<script type="text/javascript">
