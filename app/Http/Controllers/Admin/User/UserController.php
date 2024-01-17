@@ -25,10 +25,10 @@ class UserController extends Controller
 					return $data->posts->count();
 				})
 				->addColumn('actions', function ($data) use ($request) {
-					$id = $data->id;
-					$link = $request->url() . '/' . $id;
+					$slug = $data->slug;
+					$link = $request->url() . '/' . $slug;
 					return '
-						<a href="' . route('user.edit', $id) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="bi bi-pencil-square"></span></a>
+						<a href="' . route('user.edit', $slug) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="bi bi-pencil-square"></span></a>
 						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete"><span class="bi bi-trash-fill"></span></a>
 					';
 				})
@@ -75,7 +75,7 @@ class UserController extends Controller
 	 */
 	public function edit(string $id)
 	{
-		$user = User::where('id', $id)->firstOrFail();
+		$user = User::where('slug', $id)->firstOrFail();
 
 		return view('admin.users.edit', compact('user'));
 	}
@@ -90,11 +90,6 @@ class UserController extends Controller
 				'name' => 'required|string',
 				'email' => 'required|email',
 				'password' => 'nullable|sometimes|min:5'
-			],
-			[
-				'name.required' => 'Harap mengisi nama!',
-				'email.required' => 'Harap mengisi email!',
-				'password.min' => 'Password minimal 5 karakter!',
 			]
 		);
 
@@ -120,7 +115,7 @@ class UserController extends Controller
 	 */
 	public function destroy(string $id)
 	{
-		$data = User::findOrFail($id);
+		$data = User::where('slug', $id)->firstOrFail();
 
 		if ($data->role == 'admin') {
 			return to_route('user.index')->with('warning', 'Cannot delete an ADMIN.');

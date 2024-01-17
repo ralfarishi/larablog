@@ -4,7 +4,7 @@
   {!! SEO::generate(true) !!}
 
   <!-- Favicons -->
-  <link href="{{ asset('favicon.ico') }}" rel="icon">
+  <link href="{{ asset('images/favicon.ico') }}" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
