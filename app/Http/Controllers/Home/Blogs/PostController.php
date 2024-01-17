@@ -6,7 +6,6 @@ use DOMDocument;
 use App\Models\Posts;
 use App\Models\Comments;
 use App\Models\Categories;
-use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\User;
@@ -65,10 +64,12 @@ class PostController extends Controller
 		 * Generate on page SEO
 		*/
 		// get blog description
-		$content = Str::markdown($post->content);
+		$content = $post->content;
 
 		$dom = new DOMDocument();
+		libxml_use_internal_errors(true); // suppress DOMDocument warnings (handle HTML 5 element)
 		$dom->loadHTML($content);
+		libxml_clear_errors(); // clear errors after loading HTML
 
 		// get <p> tag only
 		$pTag = null;
