@@ -21,7 +21,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-4. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for login credential.
+4. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for admin login credential.
 
 ```php
 DB::table('users')->insert([
