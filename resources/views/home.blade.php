@@ -63,9 +63,13 @@
                     </ul>
                   </div>
 
+                  @php
+                    $pTag = getParagraphTagOnly($post->content);
+                  @endphp
+
                   <div class="content">
                     <p>
-                      {!! Str::limit(strip_tags($post->content), 280) !!}
+                      {!! Str::limit(strip_tags($pTag), 280) !!}
                     </p>
                   </div>
 

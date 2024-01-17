@@ -10,7 +10,7 @@ class SearchController extends Controller
 {
 	public function index(Request $request)
 	{
-		$query = $request->input('query');
+		$query = $request->input('q');
 
 		$results = Posts::with(['user', 'comments'])
 			->where('active', 1)

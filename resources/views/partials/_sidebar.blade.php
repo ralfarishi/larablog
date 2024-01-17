@@ -4,7 +4,7 @@
     <div class="sidebar-item search-form">
       <h3 class="sidebar-title">Search</h3>
       <form action="{{ route('search') }}" class="mt-3" method="GET" id="search-form">
-        <input type="text" name="query" placeholder="Find article ...">
+        <input type="text" name="q" placeholder="Find article ...">
         <button type="submit" onclick="submitSearchForm()">
           <i class="bi bi-search"></i>
         </button>
@@ -60,12 +60,12 @@
      * Highlight searched text result
      */
     function highlightText() {
-      const searchQuery = new URLSearchParams(window.location.search).get("query");
+      const searchQuery = new URLSearchParams(window.location.search).get("q");
 
       if (searchQuery) {
-          const postsList = new Mark(document.querySelector(".posts-list"));
-          postsList.unmark();
-          postsList.mark(searchQuery);
+        const postsList = new Mark(document.querySelector(".posts-list"));
+        postsList.unmark();
+        postsList.mark(searchQuery);
       }
     }
 

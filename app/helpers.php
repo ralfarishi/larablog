@@ -16,7 +16,6 @@ function formatDate($date)
     $carbonDate->format('d F Y');
 }
 
-
 function getSidebarData()
 {
   $categories = Categories::withCount(['posts' => function ($query) {
@@ -24,10 +23,26 @@ function getSidebarData()
   }])->get();
 
   $tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
-    return explode(',', $tags);
+    return array_map('strtolower', explode(',', $tags));
   })->unique()->reject(function ($tag) {
     return empty($tag);
   });
 
   return compact('categories', 'tags');
+}
+
+function getParagraphTagOnly($s)
+{
+  $dom = new DOMDocument();
+  libxml_use_internal_errors(true);
+  $dom->loadHTML($s);
+  libxml_clear_errors();
+
+  $pTag = null;
+  foreach ($dom->getElementsByTagName('p') as $p) {
+    $pTag = $p->nodeValue;
+    break;
+  }
+
+  return $pTag;
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Home\Blogs;
 
-use DOMDocument;
 use App\Models\Posts;
 use App\Models\Comments;
 use App\Models\Categories;
@@ -55,7 +54,7 @@ class PostController extends Controller
 
 		// get all tags
 		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
-			return explode(',', $tags);
+			return array_map('strtolower', explode(',', $tags));
 		})->unique()->reject(function ($tag) {
 			return empty($tag); // Hapus tag yang kosong
 		});
@@ -66,17 +65,7 @@ class PostController extends Controller
 		// get blog description
 		$content = $post->content;
 
-		$dom = new DOMDocument();
-		libxml_use_internal_errors(true); // suppress DOMDocument warnings (handle HTML 5 element)
-		$dom->loadHTML($content);
-		libxml_clear_errors(); // clear errors after loading HTML
-
-		// get <p> tag only
-		$pTag = null;
-		foreach ($dom->getElementsByTagName('p') as $p) {
-			$pTag = $p->nodeValue;
-			break;
-		}
+		$pTag = getParagraphTagOnly($content);
 
 		$firstPeriodPosition = strpos($pTag, '.'); // find the first '.' (dot) symbol in content
 
