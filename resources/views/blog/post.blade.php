@@ -210,3 +210,11 @@
   </div>
 </section>
 @endsection
+
+@section('page_scripts')
+  <script>
+    $(document).ready(function() {
+      $("table").addClass("table table-striped table-bordered");
+    });
+  </script>
+@endsection
