@@ -3,7 +3,7 @@
 1. Clone this repo & update dependencies using composer.
 
 ```sh
-$ cd sekolah-jewepe
+$ cd larablog
 $ composer update
 ```
 
@@ -28,7 +28,7 @@ DB::table('users')->insert([
 	'name' => 'admin', // user name
 	'email' => 'admin@google.com', // user email
 	'role' => 'admin', // role
-	'password' => Hash::make("12345") // password
+	'password' => Hash::make("12345678") // password
 ]);
 ```
 
