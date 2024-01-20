@@ -45,7 +45,7 @@
 												<input
 													type="text"
 													class="form-control"
-													placeholder="{{ $comment->user_name }}"
+													placeholder="{{ $comment->user->name }}"
 													disabled
 												/>
 											</div>
@@ -56,7 +56,7 @@
 												<input
 													type="text"
 													class="form-control"
-													placeholder="{{ $comment->user_email }}"
+													placeholder="{{ $comment->user->email }}"
 													disabled
 												/>
 											</div>

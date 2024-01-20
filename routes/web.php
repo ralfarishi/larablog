@@ -28,16 +28,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Route::get('/dashboard', function () {
-// 	return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware(['guest'])->group(function () {
-	Route::get('/login', [LoginController::class, 'index'])->name('login');
-	Route::post('/login', [LoginController::class, 'login'])->name('auth');
-	Route::post('/register', [LoginController::class, 'register'])->name('register');
-});
-
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::get('/blog/{id}', [PostController::class, 'show'])->name('post');
@@ -49,7 +39,7 @@ Route::get('/category/{category}', [CategoryListController::class, 'show'])->nam
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('post-by-tag');
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,writter'])->prefix('admin')->group(function () {
 	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 	Route::resources([
@@ -62,7 +52,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
 	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'is.admin', 'verified'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
 	Route::resources([
 		'category' => CategoryController::class,
 		'user' => UserController::class

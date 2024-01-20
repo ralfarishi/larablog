@@ -17,7 +17,7 @@ class CommentsController extends Controller
 	{
 		if ($request->ajax()) {
 			if (Auth::user()->role == 'admin') {
-				$model = Comments::with('post')->orderBy('active', 'DESC')->latest();
+				$model = Comments::with(['post', 'user'])->orderBy('active', 'DESC')->latest();
 			} else {
 				$model = Comments::whereHas('post', function ($query) {
 					$query->where('user_id', Auth::user()->id);
@@ -25,6 +25,12 @@ class CommentsController extends Controller
 			}
 
 			return DataTables::of($model)
+				->addColumn('username', function ($model) use ($request) {
+					return $model->user->name;
+				})
+				->addColumn('email', function ($model) use ($request) {
+					return $model->user->email;
+				})
 				->addColumn('actions', function ($model) use ($request) {
 					$id = $model->id;
 					$link = $request->url() . '/' . $id;
@@ -36,7 +42,7 @@ class CommentsController extends Controller
 					';
 				})
 				->addColumn('post', function ($model) use ($request) {
-					//Show Post title on which user has Commented
+					// Show Post title on which user has Commented
 					return $model->post->title;
 				})
 				->filterColumn('post', function ($query, $keyword) {

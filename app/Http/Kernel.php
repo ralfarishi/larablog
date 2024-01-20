@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
 		'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 		'ip.whitelist' => \App\Http\Middleware\RouteWhiteListMiddleware::class,
 		'is.admin' => \App\Http\Middleware\IsAdmin::class,
+		'role' => \App\Http\Middleware\RoleMiddleware::class
 	];
 }

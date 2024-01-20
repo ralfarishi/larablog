@@ -46,6 +46,7 @@
 													class="form-control"
 													name="name"
 													placeholder="Category name"
+													value="{{ old('name') }}"
 												/>
 												@if ($errors->has('name'))
 													<span class="help-block text-danger">
@@ -62,6 +63,7 @@
 													class="form-control"
 													name="icon"
 													placeholder="Ex: bi bi-people-fill (bootstrap icons)"
+													value="{{ old('icon') }}"
 												/>
 												@if ($errors->has('icon'))
 													<span class="help-block text-danger">

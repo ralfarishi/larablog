@@ -89,7 +89,7 @@ class UserController extends Controller
 			[
 				'name' => 'required|string',
 				'email' => 'required|email',
-				'password' => 'nullable|sometimes|min:5'
+				'password' => 'nullable|sometimes|min:8'
 			]
 		);
 

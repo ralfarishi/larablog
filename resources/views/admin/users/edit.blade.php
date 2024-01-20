@@ -74,13 +74,10 @@
 										<div class="col-12">
 											<div class="form-group">
 												<label for="first-name-vertical">Role</label>
-												<input
-													type="text"
-													class="form-control"
-													name="role"
-													value="{{ Str::upper($user->role) }}"
-													disabled
-												/>
+												<select name="role" id="" class="form-control">
+													<option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
+													<option value="writter" {{ $user->role === 'writter' ? 'selected' : '' }}>Writter</option>
+												</select>
 												@if ($errors->has('role'))
 													<span class="help-block text-danger">
 														<p>{{ $errors->first('role') }}</p>
@@ -90,12 +87,12 @@
 										</div>
 										<div class="col-12">
 											<div class="form-group">
-												<label for="first-name-vertical">Email*</label>
+												<label for="first-name-vertical">Password*</label>
 												<input
 													type="password"
 													class="form-control"
 													name="password"
-													placeholder="Min. 5 characters"
+													placeholder="Min. 8 characters"
 												/>
 												<small class="text-warning">Leave it blank if you're not changing password</small>
 												@if ($errors->has('password'))

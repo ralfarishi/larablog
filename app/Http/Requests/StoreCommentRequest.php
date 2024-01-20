@@ -22,18 +22,7 @@ class StoreCommentRequest extends FormRequest
 	public function rules(): array
 	{
 		return [
-			'user_name' => 'required|string|max:100',
-			'user_email' => 'required|email|max:100',
 			'content' => 'required|string',
-		];
-	}
-
-	public function messages(): array
-	{
-		return [
-			'user_name.required' => 'Nama tidak boleh kosong!',
-			'user_email.required' => 'Email tidak boleh kosong!',
-			'content.required' => 'Komentar tidak boleh kosong!',
 		];
 	}
 }

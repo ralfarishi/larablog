@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -107,6 +108,8 @@ class PostController extends Controller
 	public function storeComment(StoreCommentRequest $request, $id)
 	{
 		$data = $request->validated();
+
+		$data['user_id'] = Auth::user()->id;
 
 		// escape html char for each inputs
 		foreach ($data as $key => $value) {

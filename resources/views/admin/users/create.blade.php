@@ -46,6 +46,7 @@
 													class="form-control"
 													name="name"
 													placeholder="User name"
+													value="{{ old('name') }}"
 												/>
 												@if ($errors->has('name'))
 													<span class="help-block text-danger">
@@ -58,14 +59,29 @@
 											<div class="form-group">
 												<label for="first-name-vertical">Email*</label>
 												<input
-													type="text"
+													type="email"
 													class="form-control"
 													name="email"
 													placeholder="User email"
+													value="{{ old('email') }}"
 												/>
 												@if ($errors->has('email'))
 													<span class="help-block text-danger">
 														<p>{{ $errors->first('email') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">As a</label>
+												<select name="role" id="role" class="form-control">
+													<option value="user">User</option>
+													<option value="writter">Writter</option>
+												</select>
+												@if ($errors->has('role'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('role') }}</p>
 													</span>
 												@endif
 											</div>
@@ -77,11 +93,27 @@
 													type="password"
 													class="form-control"
 													name="password"
-													placeholder="Min. 5 characters"
+													placeholder="Min. 8 characters"
 												/>
 												@if ($errors->has('password'))
 													<span class="help-block text-danger">
 														<p>{{ $errors->first('password') }}</p>
+													</span>
+												@endif
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="form-group">
+												<label for="first-name-vertical">Confirm Password*</label>
+												<input
+													type="password"
+													class="form-control"
+													name="password_confirmation"
+													placeholder="Min. 8 characters"
+												/>
+												@if ($errors->has('password_confirmation'))
+													<span class="help-block text-danger">
+														<p>{{ $errors->first('password_confirmation') }}</p>
 													</span>
 												@endif
 											</div>

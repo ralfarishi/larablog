@@ -86,14 +86,31 @@
 
           <h4 class="comments-count">{{ $totalComments > 0 ? $totalComments : 0}} Comments</h4>
 
+
           @foreach ($activeComments as $comment)
+          
+            @php
+              if ($comment->user->role === 'user') {
+                $badgeColor = "primary";
+              } else {
+                $badgeColor = "success";
+              }
+            @endphp
+
             <div id="comment-1" class="comment">
               <div class="d-flex">
                 <div class="comment-img">
-                  <img src="https://ui-avatars.com/api/?name={{ Str::slug($comment->user_name, '+') }}" alt="">
+                  <img src="https://ui-avatars.com/api/?name={{ Str::slug($comment->user->name, '+') }}" alt="">
                 </div>
                 <div>
-                  <h5><a href="">{{ $comment->user_name }}</a></h5>
+                  <h5>
+                    <a href="">
+                      {{ $comment->user->name }}
+                    </a>
+                    @if ($comment->user->role !== 'admin')
+                      <span class="badge rounded-pill text-bg-{{ $badgeColor }}">{{ Str::lower($comment->user->role) }}</span>
+                    @endif
+                  </h5>
                   <time datetime="2020-01-01">{{ $comment->created_at->format('M d, Y') }}</time>
                   <p>
                     {{ $comment->content }}
@@ -112,39 +129,47 @@
 
             <h4>Leave a Reply</h4>
             <p>Your email address will not be published. Required fields are marked * </p>
-            <form action="{{ route('store-comment', $post->slug) }}#comment-section" method="POST" id="comment-section">
-              @method('POST')
-              @csrf
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input name="user_name" type="text" class="form-control" placeholder="Your Name*" {{ $disabledForm }}>
-                  @if ($errors->has('user_name'))
-                    <span class="help-block text-danger">
-                      <p>{{ $errors->first('user_name') }}</p>
-                    </span>
-                  @endif
+            @guest
+             <a href="{{ route('login') }}" class="btn btn-primary">Login to comment</a>   
+            @endguest
+
+            @auth
+              <form action="{{ route('store-comment', $post->slug) }}#comment-section" method="POST" id="comment-section">
+                @method('POST')
+                @csrf
+                {{-- <div class="row">
+                  <div class="col-md-6 form-group">
+                    <input name="user_name" type="text" class="form-control" placeholder="Your Name*" {{ $disabledForm }}>
+                    @if ($errors->has('user_name'))
+                      <span class="help-block text-danger">
+                        <p>{{ $errors->first('user_name') }}</p>
+                      </span>
+                    @endif
+                  </div>
+                  <div class="col-md-6 form-group">
+                    <input name="user_email" type="text" class="form-control" placeholder="Your Email*" {{ $disabledForm }}>
+                    @if ($errors->has('user_email'))
+                      <span class="help-block text-danger">
+                        <p>{{ $errors->first('user_email') }}</p>
+                      </span>
+                    @endif
+                  </div>
+                </div> --}}
+                {{-- <input type="hidden" name="user_name" class="form-control" value="{{ Auth::user()->name }}">
+                <input type="hidden" name="user_email" class="form-control" value="{{ Auth::user()->email }}"> --}}
+                <div class="row">
+                  <div class="col form-group">
+                    <textarea name="content" class="form-control" placeholder="Your Comment*" rows="6" {{ $disabledForm }}></textarea>
+                    @if ($errors->has('content'))
+                      <span class="help-block text-danger">
+                        <p>{{ $errors->first('content') }}</p>
+                      </span>
+                    @endif
+                  </div>
                 </div>
-                <div class="col-md-6 form-group">
-                  <input name="user_email" type="text" class="form-control" placeholder="Your Email*" {{ $disabledForm }}>
-                  @if ($errors->has('user_email'))
-                    <span class="help-block text-danger">
-                      <p>{{ $errors->first('user_email') }}</p>
-                    </span>
-                  @endif
-                </div>
-              </div>
-              <div class="row">
-                <div class="col form-group">
-                  <textarea name="content" class="form-control" placeholder="Your Comment*" rows="6" {{ $disabledForm }}></textarea>
-                  @if ($errors->has('content'))
-                    <span class="help-block text-danger">
-                      <p>{{ $errors->first('content') }}</p>
-                    </span>
-                  @endif
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary" {{ $disabledForm }}>Post Comment</button>
-            </form>
+                <button type="submit" class="btn btn-primary" {{ $disabledForm }}>Post Comment</button>
+              </form>
+            @endauth
           </div>
         </div>
         <!-- End blog comments -->

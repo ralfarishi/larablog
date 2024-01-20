@@ -25,13 +25,45 @@
         @endguest
 
         @auth
-          <li>
-            <a href="{{ route('dashboard') }}">
-              Dashboard
-            </a>
-          </li>
+          @if (Auth::user()->role !== 'user')
+            <li>
+              <a href="{{ route('dashboard') }}">
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ route('logout') }}"
+                onclick="
+                  event.preventDefault();
+                  document.getElementById('logout-form').submit();"
+              >
+                Logout
+              </a>
+            </li>
+          @else
+            <li>
+              <a
+                href="{{ route('logout') }}"
+                onclick="
+                  event.preventDefault();
+                  document.getElementById('logout-form').submit();"
+              >
+                Logout
+              </a>
+            </li>
+          @endif
         @endauth
       </ul>
+
+      <form
+        id="logout-form"
+        action="{{ route('logout') }}"
+        method="POST"
+        style="display: none"
+      >
+        @csrf
+      </form>
     </nav><!-- .navbar -->
 
   </div>

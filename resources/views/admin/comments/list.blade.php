@@ -116,8 +116,8 @@
 							return start + meta.row + 1;
 						}
 					},
-					{data: 'user_name', name: 'user_name'},
-					{data: 'user_email', name: 'user_email'},
+					{data: 'username', name: 'username'},
+					{data: 'email', name: 'email'},
 					{data: 'post', name: 'post'},
 					{data: 'content', name: 'content'},
 					{data: 'status', name: 'status'},

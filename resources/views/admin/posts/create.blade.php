@@ -57,6 +57,7 @@
 													class="form-control"
 													name="title"
 													placeholder="Article title"
+													value="{{ old('title') }}"
 												/>
 												@if ($errors->has('title'))
 													<span class="help-block text-danger">
@@ -68,7 +69,9 @@
 										<div class="col-12">
 											<div class="form-group">
 												<label for="email-id-vertical">Content*</label>
-												<textarea name="content" id="content"></textarea>
+												<textarea name="content" id="content">
+													{!! old('content') !!}
+												</textarea>
 												@if ($errors->has('content'))
 													<span class="help-block text-danger">
 														<p>{{ $errors->first('content') }}</p>
@@ -115,6 +118,7 @@
 													placeholder="Separate tags with comma or Enter"
 													id="tags"
 													data-ub-tag-variant="dark"
+													value="{{ old('tags') }}"
 												/>
 
 												@if ($errors->has('tags'))
