@@ -218,7 +218,7 @@
 @endsection
 
 @section('page_scripts')
-	<script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+	<script type="text/javascript" src="{{ asset('admin_v2/js/ckeditor.js')}}"></script>
 
 	<script type="text/javascript" src="{{ asset('admin_v2/js/use-bootstrap-tag.min.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('admin_v2/js/jquery.min.js')}}"></script>
