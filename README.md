@@ -7,13 +7,25 @@ $ cd larablog
 $ composer update
 ```
 
-2. Copy the .env.example file.
+2. Install NPM dependencies:
+
+```sh
+$ npm install
+```
+
+3. Build Vite using NPM:
+
+```sh
+$ npm run build
+```
+
+4. Copy the .env.example file.
 
 ```sh
 $ cp .env.example .env
 ```
 
-3. Create a new MySQL database dan set up the new database in .env file.
+5. Create a new MySQL database dan set up the new database in .env file.
 
 ```sh
 DB_DATABASE=database_name
@@ -21,7 +33,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-4. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for admin login credential.
+6. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for admin login credential.
 
 ```php
 DB::table('users')->insert([
@@ -32,19 +44,19 @@ DB::table('users')->insert([
 ]);
 ```
 
-5. Create the application key:
+7. Create the application key:
 
 ```sh
 $ php artisan key:generate
 ```
 
-6. Run migration & seed:
+8. Run migration & seed:
 
 ```sh
 $ php artisan migrate --seed
 ```
 
-7. Run the project:
+9. Run the project:
 
 ```sh
 $ php artisan serve
