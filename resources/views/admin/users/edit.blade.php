@@ -74,9 +74,10 @@
 										<div class="col-12">
 											<div class="form-group">
 												<label for="first-name-vertical">Role</label>
-												<select name="role" id="" class="form-control">
+												<select name="role" id="" class="form-select" {{ $user->role === 'admin' ? 'disabled' : '' }}>
 													<option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
 													<option value="writter" {{ $user->role === 'writter' ? 'selected' : '' }}>Writter</option>
+													<option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
 												</select>
 												@if ($errors->has('role'))
 													<span class="help-block text-danger">
