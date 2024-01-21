@@ -21,18 +21,18 @@ class CategoryRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
-		$filepath = asset('bootstrap-icons.txt');
-		$getFile = file_get_contents($filepath);
+		// $filepath = asset('bootstrap-icons.txt');
+		// $getFile = file_get_contents($filepath);
 
-		$iconClasses = json_decode($getFile);
+		// $iconClasses = json_decode($getFile);
 
-		$pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
+		// $pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
 
 		return [
 			'name' => 'required|regex:/^[\w]+$/',
 			'icon' => [
 				'required',
-				'regex:' . $pattern
+				'regex:/^bi bi-/'
 			]
 		];
 	}
