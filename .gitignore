@@ -25,11 +25,3 @@ yarn-error.log
 /resources/views/admin/contact
 
 /resources/views/profile
-
-/resources/views/components/*
-
-!/resources/views/components/application-logo.blade.php
-!/resources/views/components/input-label.blade.php
-!/resources/views/components/input-error.blade.php
-!/resources/views/components/primary-button.blade.php
-!/resources/views/components/text-input.blade.php
