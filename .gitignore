@@ -33,8 +33,3 @@ yarn-error.log
 !/resources/views/components/input-error.blade.php
 !/resources/views/components/primary-button.blade.php
 !/resources/views/components/text-input.blade.php
-
-/app/Http/Controllers/Auth/*
-
-!/app/Http/Controllers/Auth/AuthenticatedSessionController.php
-!/app/Http/Controllers/Auth/RegisteredUserController.php
