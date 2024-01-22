@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class IconsSeeder extends Seeder
 {
@@ -21,9 +19,11 @@ class IconsSeeder extends Seeder
 		$icons = json_decode($icons, true);
 
 		foreach ($icons as $icon) {
-			DB::table('icons')->insert([
-				'name' => $icon,
-			]);
+			$iconsData[] = [
+				'name' => $icon
+			];
 		}
+
+		DB::table('icons')->insert($iconsData);
 	}
 }
