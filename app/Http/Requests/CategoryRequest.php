@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class CategoryRequest extends FormRequest
 {
@@ -21,19 +22,18 @@ class CategoryRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
-		// $filepath = asset('bootstrap-icons.txt');
-		// $getFile = file_get_contents($filepath);
+		$iconClasses = DB::table('icons')->pluck('name')->toArray();
 
-		// $iconClasses = json_decode($getFile);
-
-		// $pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
+		$pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
 
 		return [
 			'name' => 'required|regex:/^[\w]+$/',
 			'icon' => [
 				'required',
-				'regex:/^bi bi-/'
+				'regex:' . $pattern
 			]
 		];
 	}
+
+	// /^bi bi-/
 }
