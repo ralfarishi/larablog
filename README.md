@@ -33,14 +33,16 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-6. Open the seeder file located in `database/seeders/DatabaseSeeder.php` for admin login credential.
+6. Open the seeder file located in `database/seeders/AdminSeeder.php` for admin login credential.
 
 ```php
+$name = 'admin'; // username
 DB::table('users')->insert([
-	'name' => 'admin', // user name
-	'email' => 'admin@google.com', // user email
-	'role' => 'admin', // role
-	'password' => Hash::make("12345678") // password
+  'name' => $name,
+  'slug' => Str::slug($name),
+  'email' => 'admin@jewepe.com', // email
+  'role' => 'admin', // role
+  'password' => Hash::make("12345678") // password
 ]);
 ```
 
