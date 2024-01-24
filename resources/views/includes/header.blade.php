@@ -23,23 +23,31 @@
             </a>
           </li>
         @endguest
-
+          
         @auth
           @if (Auth::user()->role !== 'user')
-            <li>
-              <a href="{{ route('dashboard') }}">
-                Dashboard
+            <li class="dropdown">
+              <a href="#">
+                <span>{{ Auth::user()->name }}</span>
+                <i class="bi bi-chevron-down dropdown-indicator"></i>
               </a>
-            </li>
-            <li>
-              <a
-                href="{{ route('logout') }}"
-                onclick="
-                  event.preventDefault();
-                  document.getElementById('logout-form').submit();"
-              >
-                Logout
-              </a>
+              <ul>
+                <li>
+                  <a href="{{ route('dashboard') }}">
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="{{ route('logout') }}"
+                    onclick="
+                      event.preventDefault();
+                      document.getElementById('logout-form').submit();"
+                  >
+                    Logout
+                  </a>
+                </li>
+              </ul>
             </li>
           @else
             <li>
