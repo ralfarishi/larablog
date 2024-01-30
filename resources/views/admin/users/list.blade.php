@@ -124,12 +124,12 @@
         lengthChange: false,
         autoWidth: false,
         paging: true,
-        pageLength: 5,
+        pageLength: 10,
         drawCallback: function (settings) {
           var api = this.api();
           var startIndex = api.context[0]._iDisplayStart;
           api.column(0, {order: 'applied', search: 'applied'}).nodes().each(function (cell, i) {
-              cell.innerHTML = startIndex + i + 1;
+            cell.innerHTML = startIndex + i + 1;
           });
         }
       });

@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
 
 	Route::controller(LoginHistoryController::class)->group(function () {
 		Route::get('/login-history', 'index')->name('login-history.index');
-		Route::delete('/login-history/{id}', 'destroy')->name('login-history.destroy');
+		Route::delete('/login-history', 'destroy')->name('login-history.destroy');
 	});
 });
 

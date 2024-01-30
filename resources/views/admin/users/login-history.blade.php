@@ -2,6 +2,7 @@
 
 @section('page_css')
   <link rel="stylesheet" href="{{ asset('admin_v2/css/dataTables.bootstrap5.min.css') }}">
+	<link href="{{ asset('admin_v2/css/iconly.css') }}" rel="stylesheet" type="text/css">
 @endsection
 
 @section('content')
@@ -30,10 +31,73 @@
   </div>
 </div>
 
-<section class="section">
+<div class="page-content">
   @include('includes.admin_v2.alerts')
+	<section class="row justify-content-center">
+		<div class="col-6 col-lg-4 col-md-6">
+			<div class="card">
+				<div class="card-body px-4 py-4-5">
+					<div class="row">
+						<div
+							class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
+						>
+							<div class="stats-icon purple mb-2">
+								<i class="iconly-boldPaper"></i>
+							</div>
+						</div>
+						<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+							<h6 class="text-muted font-semibold">Total Data</h6>
+							<h6 class="font-extrabold mb-0">{{ $totalData }}</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 col-lg-4 col-md-6">
+			<div class="card">
+				<div class="card-body px-4 py-4-5">
+					<div class="row">
+						<div
+							class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
+						>
+							<div class="stats-icon green mb-2">
+								<i class="iconly-boldShield-Done"></i>
+							</div>
+						</div>
+						<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+							<h6 class="text-muted font-semibold">Login Success</h6>
+							<h6 class="font-extrabold mb-0">{{ $loginSuccess }}</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6 col-lg-4 col-md-6">
+			<div class="card">
+				<div class="card-body px-4 py-4-5">
+					<div class="row">
+						<div
+							class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start"
+						>
+							<div class="stats-icon red mb-2">
+								<i class="iconly-boldShield-Fail"></i>
+							</div>
+						</div>
+						<div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+							<h6 class="text-muted font-semibold">Login Failed</h6>
+							<h6 class="font-extrabold mb-0">{{ $loginFailed }}</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </section>
+</div>
+
+<section class="section">
   <div class="card">
     <div class="card-header">
+      <a href="#" class="btn btn-danger float-end delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete last 10 records</a>
       <h5 class="card-title">Login History</h5>
     </div>
     <div class="card-body">
@@ -84,7 +148,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Are you sure want to delete this login history?</p>
+          <p>Are you sure want to delete login history datas?</p>
         </div>
         <div class="modal-footer justify-content-center">
           <form action="{{ url('admin/login-history/') }}" method="post" id="data-delete-form">
@@ -134,12 +198,12 @@
         lengthChange: false,
         autoWidth: false,
         paging: true,
-        pageLength: 5,
+        pageLength: 10,
         drawCallback: function (settings) {
           var api = this.api();
           var startIndex = api.context[0]._iDisplayStart;
           api.column(0, {order: 'applied', search: 'applied'}).nodes().each(function (cell, i) {
-              cell.innerHTML = startIndex + i + 1;
+            cell.innerHTML = startIndex + i + 1;
           });
         }
       });

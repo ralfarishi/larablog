@@ -11,6 +11,10 @@ class LoginHistoryController extends Controller
 {
 	public function index(Request $request)
 	{
+		$totalData = LoginHistory::count();
+		$loginSuccess = LoginHistory::where('status', 1)->count();
+		$loginFailed = LoginHistory::where('status', 0)->count();
+
 		if ($request->ajax()) {
 			$data = LoginHistory::latest();
 
@@ -32,15 +36,25 @@ class LoginHistoryController extends Controller
 				->make(true);
 		}
 
-		return view('admin.users.login-history');
+		return view('admin.users.login-history', compact('totalData', 'loginSuccess', 'loginFailed'));
 	}
 
-	public function destroy($id)
+	public function destroy()
 	{
-		$loginHistory = LoginHistory::findOrFail($id);
+		$dataCount = LoginHistory::count();
 
-		$loginHistory->delete();
+		if ($dataCount <= 10) {
+			LoginHistory::truncate();
 
-		return to_route('login-history.index')->with('danger', 'Data history login berhasil dihapus!');
+			return to_route('login-history.index')->with('danger', 'The all login history data has been deleted!');
+		} else {
+			$loginHistory = LoginHistory::orderBy('id', 'desc')->limit(10)->get();
+
+			foreach ($loginHistory as $history) {
+				$history->delete();
+			}
+		}
+
+		return to_route('login-history.index')->with('danger', 'The last 10 login history data has been deleted!');
 	}
 }
