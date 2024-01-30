@@ -48,4 +48,11 @@
 			</x-primary-button>
 		</div>
 	</form>
+
+	@section('page-scripts')
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	@endsection
+
+	@include('includes.toast')
 </x-guest-layout>
+

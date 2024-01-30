@@ -40,9 +40,7 @@ class AuthenticatedSessionController extends Controller
 		if (!$isLoginSuccess) {
 			$this->storeLoginHistory($request, false, 'Log in failed');
 
-			throw ValidationException::withMessages([
-				'email' => trans('auth.failed'),
-			]);
+			return back()->with('tdanger', "The credentials does not match in our record!");
 		}
 
 		$request->session()->regenerate();

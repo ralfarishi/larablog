@@ -13,6 +13,8 @@
 
         <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -29,4 +31,6 @@
             </div>
         </div>
     </body>
+    @yield('page-scripts')
 </html>
+

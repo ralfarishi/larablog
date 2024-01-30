@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -40,8 +38,10 @@ class RegisteredUserController extends Controller
 
 		event(new Registered($user));
 
-		Auth::login($user);
+		// Auth::login($user);
 
-		return redirect(RouteServiceProvider::HOME);
+		// return redirect(RouteServiceProvider::HOME);
+
+		return to_route('login')->with('tsuccess', 'Account has been created!');
 	}
 }

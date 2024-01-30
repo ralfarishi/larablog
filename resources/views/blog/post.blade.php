@@ -1,5 +1,9 @@
 @extends('layouts.templates')
 
+@section('page_css')
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+@endsection
+
 @section('content-id')
 <div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
   <div class="container position-relative d-flex flex-column align-items-center">
@@ -237,9 +241,13 @@
 @endsection
 
 @section('page_scripts')
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
   <script>
     $(document).ready(function() {
       $("table").addClass("table table-striped table-bordered");
     });
   </script>
 @endsection
+
+@include('includes.toast')
