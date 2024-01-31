@@ -7,6 +7,7 @@ use App\Models\Comments;
 use App\Models\Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
+use App\Models\Notifications;
 use App\Models\User;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Support\Facades\Auth;
@@ -109,7 +110,8 @@ class PostController extends Controller
 	{
 		$data = $request->validated();
 
-		$data['user_id'] = Auth::user()->id;
+		$userId = Auth::user()->id;
+		$data['user_id'] = $userId;
 
 		// escape html char for each inputs
 		foreach ($data as $key => $value) {
@@ -123,6 +125,16 @@ class PostController extends Controller
 		$comment->post_id = $post->id;
 
 		$comment->save();
+
+		// create notification
+		if ($post->user_id !== $userId) {
+			Notifications::create([
+				'user_id' => $post->user_id,
+				'post_id' => $post->id,
+				'message' => 'memberikan komentar di artikel',
+				'commenter_id' => $userId
+			]);
+		}
 
 		return back()->with('tsuccess', 'Comment successfully sent!');
 	}

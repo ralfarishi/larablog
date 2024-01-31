@@ -13,6 +13,7 @@ use App\Http\Controllers\Home\Blogs\SearchController;
 use App\Http\Controllers\Home\CategoryListController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Home\TagsController;
+use App\Http\Controllers\NotificationsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/notifications/{id}/read', [NotificationsController::class, 'markAsRead'])->name('mark-as-read');
+Route::patch('/notifications/read-all', [NotificationsController::class, 'readAll'])->name('read-all-notifications');
+Route::delete('/notifications/{id}', [NotificationsController::class, 'destroy'])->name('delete-notification');
+Route::post('/notifications/delete-all', [NotificationsController::class, 'destroyAllNotifications'])->name('delete-all-notifications');
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
