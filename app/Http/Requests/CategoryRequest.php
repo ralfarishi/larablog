@@ -22,15 +22,16 @@ class CategoryRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
-		$iconClasses = DB::table('icons')->pluck('name')->toArray();
-
-		$pattern = '/^bi bi-(' . implode('|', $iconClasses) . ')$/';
-
 		return [
 			'name' => 'required|regex:/^[\w]+$/',
 			'icon' => [
 				'required',
-				'regex:' . $pattern
+				function ($attribute, $value, $fail) {
+					$icon = str_replace('bi bi-', '', $value);
+					if (!DB::table('icons')->where('name', $icon)->exists()) {
+						$fail($attribute . ' is invalid.');
+					}
+				},
 			]
 		];
 	}
