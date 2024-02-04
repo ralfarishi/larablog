@@ -94,7 +94,7 @@
           @foreach ($activeComments as $comment)
           
             @php
-              if ($comment->user->role === 'user') {
+              if ($comment->user->role === 'reader') {
                 $badgeColor = "primary";
               } else {
                 $badgeColor = "success";

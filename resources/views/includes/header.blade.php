@@ -25,7 +25,7 @@
         @endguest
           
         @auth
-          @if (Auth::user()->role !== 'user')
+          @if (Auth::user()->role !== 'reader')
             <li class="dropdown">
               <a href="#">
                 <span>{{ Auth::user()->name }}</span>

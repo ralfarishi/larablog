@@ -76,8 +76,8 @@
 											<div class="form-group">
 												<label for="first-name-vertical">As a</label>
 												<select name="role" id="role" class="form-control">
-													<option value="user">User</option>
 													<option value="writter">Writter</option>
+													<option value="reader">Reader</option>
 												</select>
 												@if ($errors->has('role'))
 													<span class="help-block text-danger">
