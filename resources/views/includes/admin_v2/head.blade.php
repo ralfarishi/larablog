@@ -1,10 +1,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Sekolah JeWePe | Admin ">
+<meta name="description" content="Sekolah JeWePe | Dashboard ">
 <meta name="author" content="">
 
-<title>Sekolah JeWePe | Admin</title>
+<title>Sekolah JeWePe | Dashboard</title>
 
 <link href="{{ asset('images/favicon.ico') }}" rel="icon">
 

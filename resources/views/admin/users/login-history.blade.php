@@ -151,7 +151,7 @@
           <p>Are you sure want to delete login history datas?</p>
         </div>
         <div class="modal-footer justify-content-center">
-          <form action="{{ url('admin/login-history/') }}" method="post" id="data-delete-form">
+          <form action="{{ url('dashboard/login-history/') }}" method="post" id="data-delete-form">
             @method('DELETE')
             @csrf
             <button type="submit" class="btn btn-danger">Delete</button>
