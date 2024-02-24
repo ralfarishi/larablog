@@ -26,6 +26,7 @@ class UserRequest extends FormRequest
 			'name' => ['required', 'string', 'max:255'],
 			'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
 			'role' => ['required'],
+			'display_picture' => ['sometimes|nullable', 'max:500'],
 			'password' => ['required', 'confirmed', Password::defaults()]
 		];
 	}

@@ -1825,6 +1825,7 @@ section {
 
 .blog .comments .comment .comment-img img {
 	width: 60px;
+	height: 60px;
 }
 
 .blog .comments .comment h5 {
@@ -2156,5 +2157,5 @@ section {
 }
 
 mark {
-	padding: .5px !important;
+	padding: 0.5px !important;
 }

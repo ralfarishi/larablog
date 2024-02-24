@@ -104,7 +104,11 @@
             <div id="comment-1" class="comment">
               <div class="d-flex">
                 <div class="comment-img">
-                  <img src="https://ui-avatars.com/api/?name={{ Str::slug($comment->user->name, '+') }}" alt="">
+                  @if (filter_var($comment->user->display_picture, FILTER_VALIDATE_URL))
+                    <img src="{{ $comment->user->display_picture }}" alt="Avatar" class="rounded-circle">
+                  @else
+                    <img src="{{ asset('uploads/' . $comment->user->display_picture) }}" alt="Avatar" class="rounded-circle">
+                  @endif
                 </div>
                 <div>
                   <h5>

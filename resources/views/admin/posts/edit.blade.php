@@ -83,9 +83,11 @@
 											<div class="form-group">
 												<label for="contact-info-vertical">Category*</label>
 												<select class="form-control" style="width: 100%;" name="category_id">
-													<option value="{{ $post->id }}">{{ $post->category->name }}</option>
+													<option value="{{ $post->category_id }}">{{ $post->category->name }}</option>
 													@foreach ($categories as $category)
-														<option value="{{ $category->id }}">{{ $category->name }}</option>
+														@if ($category->id !== $post->category_id)
+															<option value="{{ $category->id }}">{{ $category->name }}</option>
+														@endif
 													@endforeach
 												</select>
 											</div>

@@ -24,6 +24,22 @@ class UserController extends Controller
 				->addColumn('total_posts', function ($data) use ($request) {
 					return $data->posts->count();
 				})
+				->addColumn('image', function ($data) use ($request) {
+					$image = $data->display_picture;
+					if (filter_var($image, FILTER_VALIDATE_URL)) {
+						return '
+							<div class="avatar avatar-lg">
+								<img src="' . $image . '" alt="Avatar" id="preview_image"/>
+							</div>
+						';
+					} else {
+						return '
+							<div class="avatar avatar-lg">
+								<img src="' . asset('uploads/' . $image) . '" alt="Avatar" id="preview_image"/>
+							</div>
+						';
+					}
+				})
 				->addColumn('actions', function ($data) use ($request) {
 					$slug = $data->slug;
 					$link = $request->url() . '/' . $slug;
@@ -32,7 +48,7 @@ class UserController extends Controller
 						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete"><span class="bi bi-trash-fill"></span></a>
 					';
 				})
-				->rawColumns(['actions'])
+				->rawColumns(['image', 'actions'])
 				->make(true);
 		}
 
@@ -89,7 +105,8 @@ class UserController extends Controller
 			[
 				'name' => 'required|string',
 				'email' => 'required|email',
-				'password' => 'nullable|sometimes|min:8'
+				'display_picture' => 'nullable|sometimes|mimes:png,jpg,jpeg|max:500',
+				'password' => 'nullable|sometimes|min:8',
 			]
 		);
 
@@ -99,6 +116,37 @@ class UserController extends Controller
 
 		$data['slug'] = Str::slug($request->name);
 
+		$isDefaultImageChecked = $request->input('default-image');
+		$randomHexColor = sprintf('%06X', rand(0, 0xFFFFFF));
+		$defaultDisplayPicture = 'https://ui-avatars.com/api/?name=' . Str::slug($request->name, '+') . '&size=100&color=fff&background=' . $randomHexColor;
+
+		if ($isDefaultImageChecked) {
+			$imagePath = public_path('uploads/' . $user->display_picture);
+
+			if (file_exists($imagePath)) {
+				unlink($imagePath);
+			}
+
+			$data['display_picture'] = $defaultDisplayPicture;
+		} else {
+			if ($request->hasFile('display_picture')) {
+				$data['display_picture'] = $request->file('display_picture')->store('images/users', 'public');
+			}
+		}
+
+		if (filter_var($user->display_picture, FILTER_VALIDATE_URL)) {
+			$urlParts = parse_url($user->display_picture);
+			parse_str($urlParts['query'], $queryParams);
+
+			$newName = str_replace('-', '+', Str::lower($data['name']));
+
+			$queryParams['name'] = $newName;
+
+			$updatedUrl = $urlParts['scheme'] . '://' . $urlParts['host'] . $urlParts['path'] . '?' . http_build_query($queryParams);
+
+			$data['display_picture'] = $updatedUrl;
+		}
+
 		if ($request->password) {
 			$data['password'] = Hash::make($request->password);
 		} else {
@@ -107,7 +155,9 @@ class UserController extends Controller
 
 		$user->update($data);
 
-		return to_route('user.index')->with('info', 'User data has been updated.');
+		$newUrl = url('/dashboard/user/' . $user->slug . '/edit');
+
+		return redirect($newUrl)->with('info', 'User data has been updated.');
 	}
 
 	/**
@@ -119,6 +169,12 @@ class UserController extends Controller
 
 		if ($data->role == 'admin') {
 			return to_route('user.index')->with('warning', 'Cannot delete an ADMIN.');
+		}
+
+		$imagePath = public_path('uploads/' . $data->display_picture);
+
+		if (file_exists($imagePath)) {
+			unlink($imagePath);
 		}
 
 		$data->delete();
