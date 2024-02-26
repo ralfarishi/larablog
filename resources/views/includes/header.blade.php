@@ -66,7 +66,11 @@
                       <a class="dropdown-item d-flex align-items-center" href="{{ route('mark-as-read', $notification->id) }}">
                         <div class="me-3">
                           <div class="user-image">
-                            <img src="https://ui-avatars.com/api/?name={{ $notification->commenter->slug }}" alt="">
+                            @if (filter_var($notification->commenter->display_picture, FILTER_VALIDATE_URL))
+                              <img src="{{ $notification->commenter->display_picture }}" alt="">
+                            @else
+                              <img src="{{ asset('uploads/' . $notification->commenter->display_picture) }}" alt="">
+                            @endif
                           </div>
                         </div>
                         <div>
