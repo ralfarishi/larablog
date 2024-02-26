@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notifications;
 use App\Models\Posts;
+
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
