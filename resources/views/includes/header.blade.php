@@ -25,51 +25,86 @@
         @endguest
           
         @auth
-          @if (Auth::user()->role !== 'user')
+          @if (Auth::user()->role !== 'reader')
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="false">
                 <i class="bi bi-bell-fill fs-5"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge bg-danger badge-counter rounded-pill">2+</span>
+                @php
+                  $countUnread = $notifications->where('is_read', false)->count()
+                @endphp
+                @if ($countUnread)
+                  <span class="badge bg-danger badge-counter rounded-pill">
+                    {{
+                      $countUnread > 3 ? $countUnread . '+' : $countUnread
+                    }}
+                </span>
+                @endif
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header text-uppercase fw-bold fs-6">
-                  Notifications
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="me-3">
-                    <div class="user-image">
-                      <img src="https://ui-avatars.com/api/?name=julian+alfares" alt="">
+                <div class="dropdown-list-header">
+                  <h6 class="dropdown-header text-uppercase fw-bold fs-6">
+                    Notifications
+                  </h6>
+                </div>
+                <div class="dropdown-list-content">
+                  @foreach ($notifications as $notification)
+                    <div class="dropdown-delete-container d-flex align-items-center">
+                      <div class="dropdown-delete">
+                        {{-- <a href="{{ route('delete-notification', $notification->id) }}">
+                          <i class="bi bi-trash-fill text-danger fs-5"></i>
+                        </a> --}}
+                       <form action="{{ route('delete-notification', $notification->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                          <button class="btn btn-sm btn-danger" type="submit">
+                            <i class="bi bi-trash-fill"></i>
+                          </button>
+                       </form>
+                      </div>
+                      <a class="dropdown-item d-flex align-items-center" href="{{ route('mark-as-read', $notification->id) }}">
+                        <div class="me-3">
+                          <div class="user-image">
+                            <img src="https://ui-avatars.com/api/?name={{ $notification->commenter->slug }}" alt="">
+                          </div>
+                        </div>
+                        <div>
+                          <div class="small text-secondary">{{ $notification->created_at->diffForHumans() }}</div>
+                          <span class="text-black {{ $notification->is_read ? '' : 'fw-bold' }}">
+                            {{
+                              $notification->commenter->name . ' ' . $notification->message . ' ' . $notification->posts->title
+                            }}
+                          </span>
+                        </div>
+                        <div class="me-3">
+                          <div class="post-image">
+                            <img src="{{ asset('uploads/' . $notification->posts->image) }}" alt="">
+                          </div>
+                        </div>
+                      </a>
                     </div>
-                  </div>
-                  <div>
-                    <div class="small text-secondary">December 12, 2019</div>
-                    <span class="fw-bold text-black">Julian Alfares commented on your post!</span>
-                  </div>
-                  <div class="me-3">
-                    <div class="post-image">
-                      <img src="http://sekolah-jewepe.test/uploads/images/blogs/nRpfV6FASF1SlZMRfv7uYHFvWVJsdJd0h0zbXT4G.png" alt="">
+                  @endforeach
+                </div>
+                <div class="dropdown-list-footer d-flex align-items-center m-2 gap-2">
+                  {{-- <a class="text-center small text-primary" href="{{ route('read-all-notifications') }}">Read all</a> --}}
+                  @if ($notifications->count() > 0)
+                    <form action="{{ route('read-all-notifications') }}" method="POST">
+                      @csrf
+                      @method('PATCH')
+                      <button class="btn btn-sm btn-primary" type="submit">Read All</button>
+                    </form>
+                    <form action="{{ route('delete-all-notifications') }}" method="POST">
+                      @csrf
+                      @method('POST')
+                      <button class="btn btn-sm btn-danger" type="submit">Delete All</button>
+                    </form>
+                  @else
+                    <div class="small text-secondary mx-auto">
+                      No notifications
                     </div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="me-3">
-                    <div class="user-image">
-                      <img src="https://ui-avatars.com/api/?name=mikayla+sandra" alt="">
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-secondary">December 12, 2019</div>
-                    <span class="text-black">A new monthly report is ready to download!</span>
-                  </div>
-                  <div class="me-3">
-                    <div class="post-image">
-                      <img src="http://sekolah-jewepe.test/uploads/images/blogs/gnXkCHNIdpDtxnW6EKwRI3AJ0zxkgnO4vUseUYXi.jpg" alt="">
-                    </div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-secondary" href="#">Show All Alerts</a>
+                  @endif
+                </div>
               </div>
             </li>
             <li class="dropdown">

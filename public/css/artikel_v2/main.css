@@ -389,9 +389,17 @@ section {
 
 	.navbar .dropdown-list {
 		padding: 0;
-		width: 25rem !important;
+		width: 35rem !important;
 		border: none;
-		overflow: hidden;
+	}
+
+	.dropdown-list .dropdown-list-content {
+		max-height: 500px;
+		overflow: auto;
+	}
+
+	.dropdown-list-content .dropdown-delete button {
+		margin-left: 20px !important;
 	}
 
 	.navbar .dropdown-list .dropdown-header {
