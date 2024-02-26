@@ -24,101 +24,145 @@
 			</div>
 		</div>
 	</div>
-
-	<section id="basic-vertical-layouts">
-		<div class="row match-height">
-			<div class="col-12">
+	<section class="section">
+		<div class="row">
+			@include('includes.admin_v2.alerts')
+			<div class="col-12 col-lg-4">
 				<div class="card">
-					<div class="card-header">
-						<h4 class="card-title">Edit User</h4>
-					</div>
-					<div class="card-content">
-						<div class="card-body">
-							<form class="form form-vertical" action="{{ route('user.update', $user->id) }}" method="POST">
+					<div class="card-body">
+						<div
+							class="d-flex justify-content-center align-items-center flex-column"
+						>
+							<div class="avatar avatar-2xl">
+								@if (filter_var($user->display_picture, FILTER_VALIDATE_URL))
+									<img src="{{ $user->display_picture }}" alt="Avatar" id="preview_image"/>
+								@else
+									<img src="{{ asset('uploads/' . $user->display_picture) }}" alt="Avatar" id="preview_image"/>
+								@endif
+							</div>
+							
+							<h3 class="mt-3">{{ $user->name }}</h3>
+							<form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data">
 								@csrf
 								@method('PATCH')
-								<div class="form-body">
-									<div class="row">
-										<div class="col-12">
-											<div class="form-group">
-												<label for="first-name-vertical">Name*</label>
-												<input
-													type="text"
-													class="form-control"
-													name="name"
-													value="{{ $user->name }}"
-												/>
-												@if ($errors->has('name'))
-													<span class="help-block text-danger">
-														<p>{{ $errors->first('name') }}</p>
-													</span>
-												@endif
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="form-group">
-												<label for="first-name-vertical">Email*</label>
-												<input
-													type="text"
-													class="form-control"
-													name="email"
-													value="{{ $user->email }}"
-												/>
-												@if ($errors->has('email'))
-													<span class="help-block text-danger">
-														<p>{{ $errors->first('email') }}</p>
-													</span>
-												@endif
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="form-group">
-												<label for="first-name-vertical">Role</label>
-												<select name="role" id="" class="form-select" {{ $user->role === 'admin' ? 'disabled' : '' }}>
-													<option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
-													<option value="writter" {{ $user->role === 'writter' ? 'selected' : '' }}>Writter</option>
-													<option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
-												</select>
-												@if ($errors->has('role'))
-													<span class="help-block text-danger">
-														<p>{{ $errors->first('role') }}</p>
-													</span>
-												@endif
-											</div>
-										</div>
-										<div class="col-12">
-											<div class="form-group">
-												<label for="first-name-vertical">Password*</label>
-												<input
-													type="password"
-													class="form-control"
-													name="password"
-													placeholder="Min. 8 characters"
-												/>
-												<small class="text-warning">Leave it blank if you're not changing password</small>
-												@if ($errors->has('password'))
-													<span class="help-block text-danger">
-														<p>{{ $errors->first('password') }}</p>
-													</span>
-												@endif
-											</div>
-										</div>
-										<div class="col-12 d-flex justify-content-end">
-											<button
-												type="submit"
-												class="btn btn-primary btn-block me-1 my-2"
-											>
-												Update
-											</button>
+								
+								<div class="form-group mx-2 my-2">
+									<label for="password-vertical">Update Image</label>
+									<div class="form-check float-end">
+										<div class="checkbox">
+											@if (!filter_var($user->display_picture, FILTER_VALIDATE_URL))
+												<input type="checkbox" id="checkbox1" class="form-check-input" name="default-image">
+												<small for="checkbox1">Use default image</small>
+											@endif
 										</div>
 									</div>
+									<input
+										class="form-control"
+										type="file"
+										id="image"
+										name="display_picture"
+									/>
 								</div>
-							</form>
 						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-lg-8">
+				<div class="card">
+					<div class="card-body">
+						
+							<div class="form-group">
+								<label for="name" class="form-label">Name</label>
+								<input
+									type="text"
+									name="name"
+									class="form-control"
+									placeholder="My Name"
+									value="{{ $user->name }}"
+								/>
+								@if ($errors->has('name'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('name') }}</p>
+									</span>
+								@endif
+							</div>
+							<div class="form-group">
+								<label for="email" class="form-label">Email</label>
+								<input
+									type="text"
+									name="email"
+									class="form-control"
+									placeholder="My Email"
+									value="{{ $user->email }}"
+								/>
+								@if ($errors->has('email'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('email') }}</p>
+									</span>
+								@endif
+							</div>
+							@if (Auth::user()->role == 'admin')
+								<div class="form-group">
+								<label for="role" class="form-label">Role</label>
+								<select name="role" class="form-select" {{ $user->role == 'admin' ? 'disabled' : '' }}>
+									@if ($user->role == 'admin')
+										<option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+									@endif
+									<option value="reader" {{ $user->role == 'reader' ? 'selected' : '' }}>Reader</option>
+									<option value="writter" {{ $user->role == 'writter' ? 'selected' : '' }}>Writter</option>
+								</select>
+								@if ($errors->has('role'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('role') }}</p>
+									</span>
+								@endif
+							</div>
+							@endif
+							<div class="form-group">
+								<label for="password" class="form-label">Password</label>
+								<input
+									type="password"
+									name="password"
+									class="form-control"
+									placeholder="Minimum 8 characters"
+								/>
+								<small class="text-warning">Leave it blank if you're not changing password</small>
+								@if ($errors->has('password'))
+									<span class="help-block text-danger">
+										<p>{{ $errors->first('password') }}</p>
+									</span>
+								@endif
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-block btn-primary me-1 my-2">
+									Update
+								</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 </div>
+@endsection
+
+@section('page_scripts')
+	<script type="text/javascript" src="{{ asset('admin_v2/js/jquery.min.js')}}"></script>
+
+	<script>
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				var targetPreview = 'preview_'+$(input).attr('id');
+				reader.onload = function(e) {
+					$('#' + targetPreview).attr('src', e.target.result).show();
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$("#image").change(function() {
+			readURL(this);
+		});
+	</script>
 @endsection

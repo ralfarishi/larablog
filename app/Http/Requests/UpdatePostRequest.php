@@ -31,15 +31,4 @@ class UpdatePostRequest extends FormRequest
 			'category_id' => 'required|exists:categories,id'
 		];
 	}
-
-	public function messages(): array
-	{
-		return    [
-			'title.required' => 'Judul tidak boleh kosong!',
-			'content.required' => 'Isi artikel tidak boleh kosong!',
-			'image.required' => 'Harap meng-upload gambar!',
-			'tags.required' => 'Harap memasukkan tag minimal 1!',
-			'allowed_comment.required' => 'Harap pilih salah satu!'
-		];
-	}
 }

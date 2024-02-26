@@ -45,12 +45,13 @@ Route::get('/category/{category}', [CategoryListController::class, 'show'])->nam
 
 Route::get('/tag/{tag}', [TagsController::class, 'index'])->name('post-by-tag');
 
-Route::middleware(['auth', 'verified', 'role:admin,writter'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin,writter'])->prefix('dashboard')->group(function () {
 	Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 	Route::resources([
 		'article' => PostsController::class,
 		'comment' => CommentsController::class,
+		'user' => UserController::class
 	]);
 
 	Route::get('/article/p/{id}', [PreviewController::class, 'preview'])->name('preview');
@@ -58,10 +59,9 @@ Route::middleware(['auth', 'verified', 'role:admin,writter'])->prefix('admin')->
 	Route::post("/logout", [LoginController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('dashboard')->group(function () {
 	Route::resources([
 		'category' => CategoryController::class,
-		'user' => UserController::class
 	]);
 
 	Route::controller(LoginHistoryController::class)->group(function () {

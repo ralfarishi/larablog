@@ -91,7 +91,7 @@
 
 				<li
 					class="sidebar-item has-sub
-					{{ request()->routeIs('article.index') || request()->routeIs('article.create') ? 'active' : '' }}"
+					{{ request()->routeIs('article*') ? 'active' : '' }}"
 				>
 					<a href="#" class="sidebar-link">
 						<i class="bi bi-newspaper"></i>
@@ -113,7 +113,7 @@
 					</ul>
 				</li>
 
-				<li class="sidebar-item {{ request()->routeIs('comment.index') ? 'active' : '' }}">
+				<li class="sidebar-item {{ request()->routeIs('comment*') ? 'active' : '' }}">
 					<a href="{{ route('comment.index') }}" class="sidebar-link">
 						<i class="bi bi-chat-fill"></i>
 						<span>Comments</span>
@@ -135,7 +135,7 @@
 						class="sidebar-item has-sub
 						{{ request()->routeIs('user.index') ||
 						request()->routeIs('login-history.index') ||
-						request()->routeIs('user.create') ? 'active' : '' 
+						request()->routeIs('user.create') ? 'active' : ''
 						}}"
 					>
 						<a href="#" class="sidebar-link">
@@ -161,6 +161,16 @@
 						</ul>
 					</li>
 				@endif
+
+				<li
+						class="sidebar-item
+						{{ request()->routeIs('user.edit')  ? 'active' : '' }}"
+					>
+						<a href="{{ route('user.edit', Auth::user()->slug) }}" class="sidebar-link">
+							<i class="bi bi-gear-fill"></i>
+							<span>Settings</span>
+						</a>
+					</li>
 
 				<li class="sidebar-item">
 					<a href="{{ route('logout') }}" class="sidebar-link" onclick="event.preventDefault();

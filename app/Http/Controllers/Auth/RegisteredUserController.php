@@ -34,6 +34,11 @@ class RegisteredUserController extends Controller
 		$data['slug'] = Str::slug($request->name);
 		$data['password'] = Hash::make($request->password);
 
+		$randomHexColor = sprintf('%06X', rand(0, 0xFFFFFF));
+		$defaultDisplayPicture = 'https://ui-avatars.com/api/?name=' . Str::slug($request->name, '+') . '&size=100&color=fff&background=' . $randomHexColor;
+
+		$data['display_picture'] = $defaultDisplayPicture;
+
 		$user = User::create($data);
 
 		event(new Registered($user));

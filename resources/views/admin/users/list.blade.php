@@ -44,6 +44,7 @@
             <tr>
               <th>#</th>
 							<th>Name</th>
+							<th>Image</th>
               <th>Email</th>
               <th>Article Created</th>
               <th>Action</th>
@@ -116,6 +117,7 @@
             }
           },
           {data: 'name', name: 'name'},
+          {data: 'image', name: 'image'},
           {data: 'email', name: 'email'},
           {data: 'total_posts', name: 'total_posts'},
           {data: 'actions', name: 'actions', orderable: false, searchable: false}
