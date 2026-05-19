@@ -1,257 +1,230 @@
-@extends('layouts.templates')
+@extends ('layouts.templates')
 
-@section('page_css')
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+@section ('page_css')
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+  />
 @endsection
 
-@section('content-id')
-<div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
-  <div class="container position-relative d-flex flex-column align-items-center">
+@section ('page-title', $post->title)
 
-    <h2>Article Detail</h2>
-    <ol>
-      <li><a href="{{ route('home') }}">Home</a></li>
-      <li>{{ $post->title }}</li>
-    </ol>
-
-  </div>
-</div>
-
-<section id="blog" class="blog">
-  <div class="container" data-aos="fade-up">
-
-    <div class="row g-5">
-
-      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-
-        <article class="blog-details">
-
-          <div class="post-img">
-            <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="img-fluid">
-          </div>
-
-          <h2 class="title">{{ $post->title }}</h2>
-
-          <div class="meta-top">
-            <ul>
-              <li class="d-flex align-items-center">
-                <i class="bi bi-person"></i>
-                <a href="javascript:void(0)">{{ $post->user->name }}</a>
-              </li>
-              <li class="d-flex align-items-center">
-                <i class="bi bi-clock"></i>
-                <a href="javascript:void(0)">
-                  <time datetime="{{ $post->created_at }}">{{ formatDate($post->created_at) }}</time>
-                </a>
-              </li>
-              <li class="d-flex align-items-center">
-                <i class="bi bi-chat-dots"></i>
-                <a href="javascript:void(0)">{{ $totalComments }} Comments</a>
-              </li>
-            </ul>
-          </div>
-          <!-- End meta top -->
-
-          <div class="content">
-            {!! $post->content !!}
-          </div>
-          <!-- End post content -->
-
-          <div class="meta-bottom">
-            <i class="{{ $post->category->icon }}"></i>
-            <ul class="cats">
-              <li><a href="{{ route('categories', Str::lower($post->category->name)) }}">{{ $post->category->name }}</a></li>
-            </ul>
-
-            <i class="bi bi-tags"></i>
-            <ul class="tags">
-              @if (!empty(array_filter($postTags)))
-                @foreach ($postTags as $postTag)
-                  @if (!empty($postTag))
-                    <li>
-                      <a href="{{ route('post-by-tag', $postTag) }}">
-                        {{ Str::title($postTag) }}
-                      </a>
-                    </li>
-                  @endif
-                @endforeach
-              @else
-                <li>
-                  <a href="javascript:void(0)">Belum ada tag.</a>
-                </li>
-              @endif
-            </ul>
-          </div>
-          <!-- End meta bottom -->
-        </article>
-        <!-- End blog post -->
-
-        <div class="comments">
-
-          <h4 class="comments-count">{{ $totalComments > 0 ? $totalComments : 0}} Comments</h4>
-
-
-          @foreach ($activeComments as $comment)
-          
-            @php
-              if ($comment->user->role === 'reader') {
-                $badgeColor = "primary";
-              } else {
-                $badgeColor = "success";
-              }
-            @endphp
-
-            <div id="comment-1" class="comment">
-              <div class="d-flex">
-                <div class="comment-img">
-                  @if (filter_var($comment->user->display_picture, FILTER_VALIDATE_URL))
-                    <img src="{{ $comment->user->display_picture }}" alt="Avatar" class="rounded-circle">
-                  @else
-                    <img src="{{ asset('uploads/' . $comment->user->display_picture) }}" alt="Avatar" class="rounded-circle">
-                  @endif
-                </div>
-                <div>
-                  <h5>
-                    <a href="">
-                      {{ $comment->user->name }}
-                    </a>
-                    @if ($comment->user->role !== 'admin')
-                      <span class="badge rounded-pill text-bg-{{ $badgeColor }}">{{ Str::lower($comment->user->role) }}</span>
-                    @endif
-                  </h5>
-                  <time datetime="2020-01-01">{{ $comment->created_at->format('M d, Y') }}</time>
-                  <p>
-                    {{ $comment->content }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          @endforeach
-          <!-- End comment -->
-
-          @php
-            $disabledForm = $post->allowed_comment ? '' : 'disabled';
-          @endphp
-
-          <div class="reply-form">
-
-            <h4>Leave a Reply</h4>
-            <p>Your email address will not be published. Required fields are marked * </p>
-            @guest
-             <a href="{{ route('login') }}" class="btn btn-primary">Login to comment</a>   
-            @endguest
-
-            @auth
-              <form action="{{ route('store-comment', $post->slug) }}#comment-section" method="POST" id="comment-section">
-                @method('POST')
-                @csrf
-                {{-- <div class="row">
-                  <div class="col-md-6 form-group">
-                    <input name="user_name" type="text" class="form-control" placeholder="Your Name*" {{ $disabledForm }}>
-                    @if ($errors->has('user_name'))
-                      <span class="help-block text-danger">
-                        <p>{{ $errors->first('user_name') }}</p>
-                      </span>
-                    @endif
-                  </div>
-                  <div class="col-md-6 form-group">
-                    <input name="user_email" type="text" class="form-control" placeholder="Your Email*" {{ $disabledForm }}>
-                    @if ($errors->has('user_email'))
-                      <span class="help-block text-danger">
-                        <p>{{ $errors->first('user_email') }}</p>
-                      </span>
-                    @endif
-                  </div>
-                </div> --}}
-                {{-- <input type="hidden" name="user_name" class="form-control" value="{{ Auth::user()->name }}">
-                <input type="hidden" name="user_email" class="form-control" value="{{ Auth::user()->email }}"> --}}
-                <div class="row">
-                  <div class="col form-group">
-                    <textarea name="content" class="form-control" placeholder="Your Comment*" rows="6" {{ $disabledForm }}></textarea>
-                    @if ($errors->has('content'))
-                      <span class="help-block text-danger">
-                        <p>{{ $errors->first('content') }}</p>
-                      </span>
-                    @endif
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary" {{ $disabledForm }}>Post Comment</button>
-              </form>
-            @endauth
-          </div>
-        </div>
-        <!-- End blog comments -->
+@section ('content-id')
+  <section class="bg-background min-h-screen pb-20">
+    <!-- Article Header -->
+    <header
+      class="mx-auto max-w-4xl px-4 pt-20 pb-12 text-center sm:px-6 sm:pt-32 sm:pb-16 lg:px-8"
+    >
+      <div class="mb-8 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="{{ route('categories', strtolower($post->category->name)) }}"
+          class="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center rounded-full px-4 py-1.5 text-xs font-bold tracking-widest uppercase transition-colors"
+        >
+          {{ $post->category->name }}
+        </a>
+        <time
+          datetime="{{ $post->created_at }}"
+          class="text-muted-foreground text-sm font-semibold tracking-widest uppercase"
+          >{{
+            $post->created_at->format(
+              'M d, Y',
+            )
+          }}</time
+        >
       </div>
 
-      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+      <h1
+        class="text-foreground mb-10 font-sans text-4xl leading-tight font-black tracking-tight sm:text-5xl md:text-6xl"
+      >
+        {{ $post->title }}
+      </h1>
 
-        <div class="sidebar ps-lg-4">
-
-          <div class="sidebar-item categories">
-            <h3 class="sidebar-title">Categories</h3>
-            <ul class="mt-3">
-              @foreach ($categories as $category)
-                <li>
-                  <a href="{{ route('categories', Str::lower($category->name)) }}">
-                    {{ $category->name }}
-                    <span>
-                      ({{ $category->posts_count }})
-                    </span>
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          </div><!-- End sidebar categories-->
-
-          <div class="sidebar-item recent-posts">
-            <h3 class="sidebar-title">Related Posts</h3>
-
-            <div class="mt-3">
-
-              @foreach ($relatedPosts as $relatedPost)
-                @if ($relatedPost->active == 1)
-                  <div class="post-item">
-                    <img src="{{ asset('uploads/' . $relatedPost->image) }}" alt="" class="flex-shrink-0">
-                    <div>
-                      <h4><a href="{{ route('post', $relatedPost->slug) }}">{{ $relatedPost->title }}</a></h4>
-                      <time datetime="2020-01-01">{{ $relatedPost->created_at->format('M d, Y') }}</time>
-                    </div>
-                  </div>
-                @endif
-              @endforeach
-              <!-- End recent post item-->
-            </div>
+      <div class="flex items-center justify-center gap-4">
+        <img
+          src="{{ $post->user->profile_picture_url }}"
+          alt="{{ $post->user->name }}"
+          class="ring-border h-14 w-14 rounded-full object-cover shadow-sm ring-2"
+        />
+        <div class="text-left">
+          <div class="text-foreground text-lg font-bold">
+            <a
+              href="{{ route('post-by-user', $post->user->slug) }}"
+              class="hover:text-primary transition-colors"
+              >{{ $post->user->name }}</a
+            >
           </div>
-          <!-- End sidebar recent posts-->
-
-          <div class="sidebar-item tags">
-            <h3 class="sidebar-title">Tags</h3>
-            <ul class="mt-3">
-              @foreach ($tags as $tag)
-                <li>
-                  <a href="{{ route('post-by-tag', $tag) }}">
-                    {{ Str::title($tag) }}
-                  </a>
-                </li>
-              @endforeach
-            </ul>
-          </div>
+          <div class="text-muted-foreground text-sm font-medium">Author</div>
         </div>
-        <!-- End Blog Sidebar -->
+      </div>
+
+      {{-- Bookmark Button --}}
+      <livewire:blog.bookmark-toggle :post="$post" />
+    </header>
+
+    <!-- Hero Image -->
+    <div class="mx-auto mb-16 max-w-6xl px-4 sm:mb-24 sm:px-6 lg:px-8">
+      <div
+        class="ring-border bg-muted/50 relative aspect-video w-full overflow-hidden rounded-4xl shadow-2xl ring-1 sm:rounded-[3rem] md:aspect-21/9"
+      >
+        @if ($post->image_url && !str_contains($post->image_url, 'placehold.co'))
+          <img src="{{ $post->image_url }}" alt="" class="h-full w-full object-contain" />
+        @else
+          <div class="flex h-full w-full items-center justify-center">
+            <i class="ph ph-image-square text-muted-foreground/20 text-7xl"></i>
+          </div>
+        @endif
       </div>
     </div>
-  </div>
-</section>
+
+    <!-- Main Content -->
+    <article class="mx-auto mb-24 max-w-3xl px-4 sm:px-6 lg:px-8">
+      <div
+        class="prose prose-lg dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-8 prose-img:rounded-[2.5rem] prose-img:shadow-2xl prose-img:w-full prose-li:text-foreground/90 prose-li:mb-2 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:text-lg prose-blockquote:font-medium prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-3xl prose-code:text-primary prose-code:bg-primary/10 prose-code:px-2 prose-code:py-1.5 prose-code:rounded-xl prose-code:before:hidden prose-code:after:hidden prose-pre:bg-card prose-pre:ring-1 prose-pre:ring-border prose-pre:text-foreground prose-pre:rounded-2xl prose-strong:font-black max-w-none"
+      >
+        {!!
+          \App\Support\ContentRenderer::render(
+            $post->content,
+          )
+        !!}
+      </div>
+    </article>
+
+    <!-- Comments Section -->
+    <div class="mx-auto mb-24 max-w-3xl px-4 sm:px-6 lg:px-8">
+      <livewire:blog.post-comments :post="$post" />
+    </div>
+
+    <!-- Related Posts -->
+    @if ($relatedPosts->isNotEmpty())
+      <div class="mx-auto mt-24 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="border-border mb-10 flex items-center justify-between border-b pb-6">
+          <h3 class="text-foreground text-3xl font-black">Read Next</h3>
+        </div>
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          @foreach ($relatedPosts as $relatedPost)
+            <article
+              class="bg-card ring-border group relative flex flex-col overflow-hidden rounded-[2.5rem] shadow-sm ring-1 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg"
+            >
+              <a
+                href="{{ route('post', $relatedPost->slug) }}"
+                class="relative block h-48 overflow-hidden"
+              >
+                <img
+                  src="{{ $relatedPost->image_url }}"
+                  alt="{{ $relatedPost->title }}"
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div
+                  class="absolute inset-0 bg-black/10 opacity-0 transition-opacity group-hover:opacity-100"
+                ></div>
+              </a>
+              <div class="flex flex-1 flex-col p-6">
+                @if ($relatedPost->category)
+                  <a
+                    href="{{ route('categories', strtolower($relatedPost->category->name)) }}"
+                    class="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground mb-3 inline-flex items-center self-start rounded-full px-3 py-1 text-[10px] font-black tracking-widest uppercase transition-colors"
+                  >
+                    {{ $relatedPost->category->name }}
+                  </a>
+                @endif
+                <h4
+                  class="text-foreground group-hover:text-primary mb-3 line-clamp-2 text-lg leading-snug font-bold transition-colors"
+                >
+                  <a
+                    href="{{ route('post', $relatedPost->slug) }}"
+                    class="before:absolute before:inset-0"
+                    >{{ $relatedPost->title }}</a
+                  >
+                </h4>
+                <div class="mt-auto flex items-center justify-between pt-4">
+                  <time
+                    class="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+                    datetime="{{ $relatedPost->created_at }}"
+                  >
+                    {{
+                      $relatedPost->created_at->format(
+                        'M d, Y',
+                      )
+                    }}
+                  </time>
+                  <span class="text-muted-foreground flex items-center gap-1 text-xs font-bold">
+                    <i class="ph ph-chat-circle"></i> {{ $relatedPost->comments_count }}
+                  </span>
+                </div>
+              </div>
+            </article>
+          @endforeach
+        </div>
+      </div>
+    @endif
+  </section>
 @endsection
 
-@section('page_scripts')
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
+@section ('page_scripts')
   <script>
-    $(document).ready(function() {
-      $("table").addClass("table table-striped table-bordered");
+    document.addEventListener('DOMContentLoaded', function () {
+      // ── Summernote prose table styling (vanilla JS) ──────────────
+      document
+        .querySelectorAll('.prose table')
+        .forEach((el) =>
+          el.classList.add(
+            'min-w-full',
+            'divide-y',
+            'divide-border',
+            'border',
+            'border-border',
+            'rounded-xl',
+            'mt-6',
+            'mb-6',
+            'overflow-hidden',
+          ),
+        );
+      document
+        .querySelectorAll('.prose th')
+        .forEach((el) =>
+          el.classList.add(
+            'bg-muted',
+            'px-4',
+            'py-3',
+            'text-left',
+            'text-xs',
+            'font-bold',
+            'text-foreground',
+            'uppercase',
+            'tracking-wider',
+            'border-b',
+            'border-border',
+          ),
+        );
+      document
+        .querySelectorAll('.prose td')
+        .forEach((el) =>
+          el.classList.add(
+            'px-4',
+            'py-3',
+            'whitespace-nowrap',
+            'text-sm',
+            'text-muted-foreground',
+            'border-b',
+            'border-border',
+          ),
+        );
+    });
+
+    // ── Toast integration for Livewire ────────────────────────────
+    window.addEventListener('toast', (event) => {
+      if (typeof Toastify !== 'undefined') {
+        Toastify({
+          text: event.detail.message,
+          duration: 2500,
+          gravity: 'bottom',
+          position: 'right',
+          style: { background: 'oklch(65% 0.15 45)', borderRadius: '1rem', fontWeight: 'bold' },
+        }).showToast();
+      }
     });
   </script>
 @endsection
 
-@include('includes.toast')
+@include ('includes.toast')

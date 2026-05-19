@@ -1,61 +1,110 @@
-<x-guest-layout>
-	<form method="POST" action="{{ route('register') }}">
-		@csrf
+<x-guest-layout title="Join Us">
+  <div class="mb-10 text-center lg:text-left">
+    <h2 class="text-foreground mb-3 text-3xl font-black tracking-tight">Join the Community.</h2>
+    <p class="text-muted-foreground font-medium">Create an account to start sharing your stories.</p>
+  </div>
 
-		<!-- Name -->
-		<div>
-			<x-input-label for="name" :value="__('Name')" />
-			<x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-			<x-input-error :messages="$errors->get('name')" class="mt-2" />
-		</div>
+  <form method="POST" action="{{ route('register') }}" class="space-y-6">
+    @csrf
 
-		<!-- Email Address -->
-		<div class="mt-4">
-			<x-input-label for="email" :value="__('Email')" />
-			<x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-			<x-input-error :messages="$errors->get('email')" class="mt-2" />
-		</div>
+    <!-- Name -->
+    <div class="space-y-2">
+      <x-input-label for="name" :value="__('Full Name')" />
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-user text-xl"></i>
+        </div>
+        <x-text-input
+          id="name"
+          class="pl-12"
+          type="text"
+          name="name"
+          :value="old('name')"
+          required
+          autofocus
+          placeholder="John Doe"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    </div>
 
-		<div class="mt-4">
-			<x-input-label for="role" :value="__('As a')" />
-			<select name="role" id="role" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-				<option value="reader">Reader</option>
-				<option value="writter">Writter</option>
-			</select>
-			<x-input-error :messages="$errors->get('role')" class="mt-2" />
-		</div>
+    <!-- Email Address -->
+    <div class="space-y-2">
+      <x-input-label for="email" :value="__('Email Address')" />
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-envelope-simple text-xl"></i>
+        </div>
+        <x-text-input
+          id="email"
+          class="pl-12"
+          type="email"
+          name="email"
+          :value="old('email')"
+          required
+          placeholder="name@example.com"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
 
-		<!-- Password -->
-		<div class="mt-4">
-			<x-input-label for="password" :value="__('Password')" />
+    <!-- Password -->
+    <div class="space-y-2">
+      <x-input-label for="password" :value="__('Create Password')" />
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-lock-simple text-xl"></i>
+        </div>
+        <x-text-input
+          id="password"
+          class="pl-12"
+          type="password"
+          name="password"
+          required
+          placeholder="••••••••"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
 
-			<x-text-input id="password" class="block mt-1 w-full"
-				type="password"
-				name="password"
-				required autocomplete="new-password" />
+    <!-- Confirm Password -->
+    <div class="space-y-2">
+      <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-lock-simple-open text-xl"></i>
+        </div>
+        <x-text-input
+          id="password_confirmation"
+          class="pl-12"
+          type="password"
+          name="password_confirmation"
+          required
+          placeholder="••••••••"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+    </div>
 
-			<x-input-error :messages="$errors->get('password')" class="mt-2" />
-		</div>
+    <div class="pt-4">
+      <x-primary-button class="h-14 w-full"> {{ __('Create Account') }} </x-primary-button>
+    </div>
 
-		<!-- Confirm Password -->
-		<div class="mt-4">
-			<x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-			<x-text-input id="password_confirmation" class="block mt-1 w-full"
-				type="password"
-				name="password_confirmation" required autocomplete="new-password" />
-
-			<x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-		</div>
-
-		<div class="flex items-center justify-end mt-4">
-			<a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-				{{ __('Already registered?') }}
-			</a>
-
-			<x-primary-button class="ms-4">
-				{{ __('Register') }}
-			</x-primary-button>
-		</div>
-	</form>
+    <div class="mt-8 text-center">
+      <p class="text-muted-foreground text-sm font-medium">
+        Already have an account?
+        <a href="{{ route('login') }}" class="text-primary font-bold hover:underline"
+          >Sign In instead</a
+        >
+      </p>
+    </div>
+  </form>
 </x-guest-layout>

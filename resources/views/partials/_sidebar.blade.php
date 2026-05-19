@@ -1,78 +1,64 @@
-<div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-
-  <div class="sidebar ps-lg-4">
-    <div class="sidebar-item search-form">
-      <h3 class="sidebar-title">Search</h3>
-      <form action="{{ route('search') }}" class="mt-3" method="GET" id="search-form">
-        <input type="text" name="q" placeholder="Find article ...">
-        <button type="submit" onclick="submitSearchForm()">
-          <i class="bi bi-search"></i>
+<div class="bg-card ring-border mb-12 rounded-3xl p-6 shadow-sm ring-1 md:p-8">
+  <div class="grid grid-cols-1 gap-8 md:grid-cols-3 items-start">
+    <!-- Search Box -->
+    <div class="w-full">
+      <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">
+        Discover
+      </h3>
+      <form action="{{ route('search') }}" method="GET" id="search-form" class="group relative">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search articles..."
+          class="border-border bg-background text-foreground focus-visible:border-primary focus-visible:ring-primary/20 h-12 w-full rounded-xl border-2 pr-12 pl-5 font-medium transition-all focus-visible:ring-4 focus-visible:outline-none"
+        />
+        <button
+          type="submit"
+          class="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground absolute top-1.5 right-2 bottom-1.5 flex w-9 items-center justify-center rounded-lg transition-colors"
+        >
+          <i class="ph ph-magnifying-glass text-lg font-bold"></i>
         </button>
       </form>
     </div>
-    <!-- End sidebar search formn-->
 
-    <div class="sidebar-item categories">
-      <h3 class="sidebar-title">Categories</h3>
-      <ul class="mt-3">
+    <!-- Categories Widget -->
+    <div class="w-full">
+      <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">
+        Topics
+      </h3>
+      <div class="flex flex-wrap gap-2">
         @foreach ($categories as $category)
-          <li>
-            <a href="{{ route('categories', Str::lower($category->name)) }}">{{ $category->name }}
-              <span>
-                ({{ $category->posts_count }})
-              </span>
-            </a>
-          </li>
+          <a
+            href="{{ route('categories', strtolower($category->name)) }}"
+            class="bg-muted text-foreground hover:bg-primary hover:text-primary-foreground inline-flex items-center rounded-xl border border-transparent px-4 py-2 text-sm font-bold transition-all hover:-translate-y-0.5 hover:shadow-md"
+          >
+            {{ $category->name }}
+            <span
+              class="bg-background/50 ml-2 rounded-full px-2 py-0.5 text-xs"
+              >{{ $category->posts_count }}</span
+            >
+          </a>
         @endforeach
-      </ul>
+      </div>
     </div>
-    <!-- End sidebar categories-->
 
-    <div class="sidebar-item tags">
-      <h3 class="sidebar-title">Tags</h3>
-      <ul class="mt-3">
+    <!-- Tags Widget -->
+    <div class="w-full">
+      <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">
+        Trending Tags
+      </h3>
+      <div class="flex flex-wrap gap-2">
         @if (!$tags->isEmpty())
-          @foreach ($tags as $tag)
-            @if (!empty($tag))
-              <li>
-                <a href="{{ route('post-by-tag', $tag) }}">
-                  {{ Str::title($tag) }}
-                </a>
-              </li>
-            @endif
+          @foreach ($tags->take(8) as $tag)
+            <a
+              href="{{ route('post-by-tag', $tag->slug) }}"
+              class="text-muted-foreground hover:text-foreground ring-border hover:ring-primary hover:bg-primary/5 inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-semibold ring-1 transition-all"
+            >
+              #{{ ucwords($tag->name) }}
+            </a>
           @endforeach
-        @else
-          <p class="fs-6">No tags found.</p>
         @endif
-      </ul>
+      </div>
     </div>
-
   </div>
-  <!-- End Blog Sidebar -->
-
 </div>
-
-@section('page_scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
-  <script>
-    /**
-     * Highlight searched text result
-     */
-    function highlightText() {
-      const searchQuery = new URLSearchParams(window.location.search).get("q");
-
-      if (searchQuery) {
-        const postsList = new Mark(document.querySelector(".posts-list"));
-        postsList.unmark();
-        postsList.mark(searchQuery);
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", highlightText);
-
-    function submitSearchForm() {
-      document.getElementById("search-form").submit();
-    }
-  </script>
-@endsection

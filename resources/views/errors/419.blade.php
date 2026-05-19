@@ -1,14 +1,8 @@
-@extends('errors::layout')
+@extends ('errors.minimal')
 
-@section('title', __('Page Expired'))
-
-@section('code', '419')
-
-@section('message')
-<p>
-  Please log in again. Your authentication session has expired. Make sure you enter your login details correctly.
-</p>
-<a href="{{ route('login') }}">Return to login page</a>
-@endsection
-
-
+@section ('title', 'Page Expired')
+@section ('code', '419')
+@section ('icon', 'ph-hourglass-medium')
+@section ('message', 'Time Expired')
+@section ('description',
+  'Your session has timed out due to inactivity. For security, please refresh and try again. Your progress may have been saved.')

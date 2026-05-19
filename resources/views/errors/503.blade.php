@@ -1,7 +1,8 @@
-@extends('errors::layout')
+@extends ('errors.minimal')
 
-@section('title', __('Service Unavailable'))
-
-@section('code', '503')
-
-@section('message', __("Sorry, this service is currently unavailable. We are undergoing maintenance. Please try again later."))
+@section ('title', 'Service Unavailable')
+@section ('code', '503')
+@section ('icon', 'ph-wrench')
+@section ('message', 'Under Maintenance')
+@section ('description',
+  'We are performing scheduled maintenance. The system will be back shortly. Thank you for your patience during this brief intermission.')

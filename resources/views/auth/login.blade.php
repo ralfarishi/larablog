@@ -1,58 +1,110 @@
-<x-guest-layout>
-	<!-- Session Status -->
-	<x-auth-session-status class="mb-4" :status="session('status')" />
+<x-guest-layout title="Login">
+  <div class="mb-10 text-center lg:text-left">
+    <h2 class="text-foreground mb-3 text-3xl font-black tracking-tight">Welcome Back.</h2>
+    <p class="text-muted-foreground font-medium">Log in to your account to continue.</p>
+  </div>
 
-	<form method="POST" action="{{ route('login') }}">
-		@csrf
+  <!-- Session Status -->
+  <x-auth-session-status
+    class="mb-6 rounded-2xl border border-green-100 bg-green-50 p-4 text-sm font-bold text-green-600"
+    :status="session('status')"
+  />
 
-		<!-- Email Address -->
-		<div>
-			<x-input-label for="email" :value="__('Email')" />
-			<x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-			<x-input-error :messages="$errors->get('email')" class="mt-2" />
-		</div>
+  <form method="POST" action="{{ route('login') }}" class="space-y-6">
+    @csrf
 
-		<!-- Password -->
-		<div class="mt-4">
-			<x-input-label for="password" :value="__('Password')" />
+    <!-- Email Address -->
+    <div class="space-y-2">
+      <x-input-label for="email" :value="__('Email Address')" />
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-envelope-simple text-xl"></i>
+        </div>
+        <x-text-input
+          id="email"
+          class="pl-12"
+          type="email"
+          name="email"
+          :value="old('email')"
+          required
+          autofocus
+          placeholder="name@example.com"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
 
-			<x-text-input id="password" class="block mt-1 w-full"
-				type="password"
-				name="password"
-				required autocomplete="current-password" />
+    <!-- Password -->
+    <div class="space-y-2">
+      <div class="flex items-center justify-between">
+        <x-input-label for="password" :value="__('Password')" />
+        @if (\Illuminate\Support\Facades\Route::has('password.request'))
+          <a
+            class="text-primary text-xs font-bold tracking-widest uppercase hover:underline"
+            href="{{ route('password.request') }}"
+          >
+            {{ __('Forgot?') }}
+          </a>
+        @endif
+      </div>
+      <div class="group relative">
+        <div
+          class="text-muted-foreground group-focus-within:text-primary absolute top-1/2 left-5 -translate-y-1/2 transition-colors"
+        >
+          <i class="ph ph-lock-simple text-xl"></i>
+        </div>
+        <x-text-input
+          id="password"
+          class="pl-12"
+          type="password"
+          name="password"
+          required
+          placeholder="••••••••"
+        />
+      </div>
+      <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
 
-			<x-input-error :messages="$errors->get('password')" class="mt-2" />
-		</div>
+    <!-- Remember Me -->
+    <div class="flex items-center justify-between">
+      <label for="remember_me" class="group inline-flex cursor-pointer items-center">
+        <div class="relative flex items-center">
+          <input
+            id="remember_me"
+            type="checkbox"
+            class="peer border-border bg-background text-primary focus:ring-primary focus:ring-offset-background checked:bg-primary checked:border-primary h-5 w-5 cursor-pointer appearance-none rounded-md border-2 transition-all"
+            name="remember"
+          />
+          <i
+            class="ph ph-check pointer-events-none absolute left-1 text-xs text-white opacity-0 transition-opacity peer-checked:opacity-100"
+          ></i>
+        </div>
+        <span
+          class="text-muted-foreground group-hover:text-foreground ms-3 text-sm font-bold transition-colors"
+          >{{ __('Keep me logged in') }}</span
+        >
+      </label>
+    </div>
 
-		<!-- Remember Me -->
-		<div class="block mt-4">
-			<label for="remember_me" class="inline-flex items-center">
-				<input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-				<span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-			</label>
-		</div>
+    <div class="pt-2">
+      <x-primary-button class="h-14 w-full"> {{ __('Sign In') }} </x-primary-button>
+    </div>
 
-		<div class="flex items-center justify-end mt-4">
-			<a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('register') }}">
-					{{ __("Create an account?") }}
-				</a>
+    <div class="mt-8 text-center">
+      <p class="text-muted-foreground text-sm font-medium">
+        Don't have an account?
+        <a href="{{ route('register') }}" class="text-primary font-bold hover:underline"
+          >Create one for free</a
+        >
+      </p>
+    </div>
+  </form>
 
-			{{-- @if (Route::has('password.request'))
-				<a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-					{{ __('Forgot your password?') }}
-				</a>
-			@endif --}}
+  @section ('page-scripts')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  @endsection
 
-			<x-primary-button class="ms-3">
-				{{ __('Log in') }}
-			</x-primary-button>
-		</div>
-	</form>
-
-	@section('page-scripts')
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-	@endsection
-
-	@include('includes.toast')
+  @include ('includes.toast')
 </x-guest-layout>
-

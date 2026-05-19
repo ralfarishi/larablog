@@ -1,194 +1,322 @@
-<div id="sidebar">
-	<div class="sidebar-wrapper active">
-		<div class="sidebar-header position-relative">
-			<div class="d-flex justify-content-between align-items-center">
-				{{-- <div class="logo">
-					<a href="/">
-						<img
-							src="{{ asset('images/logo.svg') }}"
-							alt="Logo"
-							srcset=""
-						/>
-					</a>
-				</div> --}}
-				<div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						xmlns:xlink="http://www.w3.org/1999/xlink"
-						aria-hidden="true"
-						role="img"
-						class="iconify iconify--system-uicons"
-						width="20"
-						height="20"
-						preserveAspectRatio="xMidYMid meet"
-						viewBox="0 0 21 21"
-					>
-						<g
-							fill="none"
-							fill-rule="evenodd"
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<path
-								d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
-								opacity=".3"
-							></path>
-							<g transform="translate(-210 -1)">
-								<path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
-								<circle cx="220.5" cy="11.5" r="4"></circle>
-								<path
-									d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"
-								></path>
-							</g>
-						</g>
-					</svg>
-					<div class="form-check form-switch fs-6">
-						<input
-							class="form-check-input me-0"
-							type="checkbox"
-							id="toggle-dark"
-							style="cursor: pointer"
-						/>
-						<label class="form-check-label"></label>
-					</div>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						xmlns:xlink="http://www.w3.org/1999/xlink"
-						aria-hidden="true"
-						role="img"
-						class="iconify iconify--mdi"
-						width="20"
-						height="20"
-						preserveAspectRatio="xMidYMid meet"
-						viewBox="0 0 24 24"
-					>
-						<path
-							fill="currentColor"
-							d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"
-						></path>
-					</svg>
-				</div>
-				<div class="sidebar-toggler x">
-					<a href="#" class="sidebar-hide d-xl-none d-block"
-						><i class="bi bi-x bi-middle"></i
-					></a>
-				</div>
-			</div>
-		</div>
-		<div class="sidebar-menu">
-			<ul class="menu">
-				<li class="sidebar-title">Menu</li>
+<!-- Sidebar Mobile Overlay -->
+<div
+  x-show="sidebarOpen"
+  x-transition:enter="transition-opacity ease-linear duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="transition-opacity ease-linear duration-300"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  class="bg-background/80 fixed inset-0 z-40 backdrop-blur-sm lg:hidden"
+  @click="sidebarOpen = false"
+  style="display: none"
+></div>
 
-				<li class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-					<a href="{{ route('dashboard') }}" class="sidebar-link">
-						<i class="bi bi-grid-fill"></i>
-						<span>Dashboard</span>
-					</a>
-				</li>
+<!-- Sidebar Sidebar -->
+<aside
+  class="bg-card border-border fixed inset-y-0 left-0 z-50 flex h-screen transform flex-col border-r transition-all duration-300 lg:translate-x-0"
+  :class="{
+    'translate-x-0': sidebarOpen,
+    '-translate-x-full': !sidebarOpen,
+    'w-72': !sidebarCollapsed,
+    'w-24': sidebarCollapsed,
+  }"
+>
+  <!-- Sidebar Header -->
+  <div
+    class="border-border flex h-20 shrink-0 items-center justify-between border-b px-4 transition-all duration-300"
+  >
+    <a href="/" class="group flex items-center gap-3">
+      <div
+        class="bg-primary text-primary-foreground shadow-primary/20 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl shadow-lg"
+      >
+        <i class="ph-bold ph-graduation-cap text-2xl"></i>
+      </div>
+      <h1
+        class="text-foreground group-hover:text-primary text-xl font-black tracking-tighter whitespace-nowrap transition-all duration-300"
+        x-show="!sidebarCollapsed"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 -translate-x-4"
+        x-transition:enter-end="opacity-100 translate-x-0"
+      >
+        Lara<span class="text-primary">Blog.</span>
+      </h1>
+    </a>
 
-				<li class="sidebar-title">Features</li>
+    <!-- Collapse Toggle (Desktop) - At boundary between sidebar and main content -->
+    <button
+      @click="sidebarCollapsed = !sidebarCollapsed"
+      class="bg-muted text-muted-foreground hover:text-primary border-border bg-card ring-background absolute z-[100] hidden h-8 w-8 items-center justify-center rounded-lg border shadow-lg ring-4 transition-all duration-300 lg:flex"
+      style="top: 1.5rem; right: -1rem"
+    >
+      <i
+        class="ph-bold transition-transform duration-300"
+        :class="sidebarCollapsed ? 'ph-caret-double-right' : 'ph-caret-double-left'"
+      ></i>
+    </button>
 
-				<li
-					class="sidebar-item has-sub
-					{{ request()->routeIs('article*') ? 'active' : '' }}"
-				>
-					<a href="#" class="sidebar-link">
-						<i class="bi bi-newspaper"></i>
-						<span>Articles</span>
-					</a>
+    <!-- Close Button (Mobile) -->
+    <button
+      @click="sidebarOpen = false"
+      class="bg-muted text-foreground hover:text-primary flex h-8 w-8 items-center justify-center rounded-full transition-colors lg:hidden"
+    >
+      <i class="ph ph-x text-lg"></i>
+    </button>
+  </div>
 
-					<ul class="submenu">
-						<li class="submenu-item {{ request()->routeIs('article.index') ? 'active' : '' }}">
-							<a href="{{ route('article.index') }}" class="submenu-link">
-								Article List
-							</a>
-						</li>
+  <!-- Navigation Menu -->
+  <div class="no-scrollbar flex flex-1 flex-col overflow-y-auto p-4" data-lenis-prevent>
+    <ul class="flex-1 space-y-2">
+      <li
+        class="px-4 pb-2 transition-opacity duration-300"
+        :class="sidebarCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+      >
+        <span
+          class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
+          >Main Menu</span
+        >
+      </li>
 
-						<li class="submenu-item {{ request()->routeIs('article.create') ? 'active' : '' }}">
-							<a href="{{ route('article.create') }}" class="submenu-link">
-								Create Article
-							</a>
-						</li>
-					</ul>
-				</li>
+      <li>
+        <a
+          href="{{ route('dashboard') }}"
+          class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('dashboard') ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+          :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+          title="Dashboard"
+        >
+          <i
+            class="ph ph-squares-four text-xl {{ request()->routeIs('dashboard') ? '' : 'group-hover:scale-110 transition-transform' }}"
+          ></i>
+          <span
+            x-show="!sidebarCollapsed"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-x-4"
+            x-transition:enter-end="opacity-100 translate-x-0"
+            class="whitespace-nowrap"
+            >Dashboard</span
+          >
+        </a>
+      </li>
 
-				<li class="sidebar-item {{ request()->routeIs('comment*') ? 'active' : '' }}">
-					<a href="{{ route('comment.index') }}" class="sidebar-link">
-						<i class="bi bi-chat-fill"></i>
-						<span>Comments</span>
-					</a>
-				</li>
+      <li
+        class="px-4 pt-6 pb-2 transition-opacity duration-300"
+        :class="sidebarCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+      >
+        <span
+          class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
+          >Features</span
+        >
+      </li>
 
-				@if (Auth::user()->role == 'admin')
-					<li
-						class="sidebar-item
-						{{ request()->routeIs('category.index') || request()->routeIs('category.create') ? 'active' : '' }}"
-					>
-						<a href="{{ route('category.index') }}" class="sidebar-link">
-							<i class="bi bi-tags-fill"></i>
-							<span>Categories</span>
-						</a>
-					</li>
+      <!-- Articles -->
+      <li x-data="{ open: {{ request()->routeIs('article*') ? 'true' : 'false' }} }">
+        <button
+          @click="sidebarCollapsed ? (sidebarCollapsed = false) : (open = !open)"
+          class="w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('article*') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+          :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+          title="Articles"
+        >
+          <div class="flex items-center gap-4">
+            <i class="ph ph-newspaper text-xl"></i>
+            <span
+              x-show="!sidebarCollapsed"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 -translate-x-4"
+              x-transition:enter-end="opacity-100 translate-x-0"
+              class="whitespace-nowrap"
+              >Articles</span
+            >
+          </div>
+          <i
+            x-show="!sidebarCollapsed"
+            class="ph ph-caret-down text-xs transition-transform duration-200"
+            :class="open ? 'rotate-180' : ''"
+          ></i>
+        </button>
+        <div
+          x-show="open && !sidebarCollapsed"
+          x-collapse
+          style="display: none"
+          class="mt-2 ml-4 space-y-1"
+        >
+          <a
+            href="{{ route('article.index') }}"
+            class="block px-8 py-2.5 rounded-xl text-sm font-bold {{ request()->routeIs('article.index') ? 'text-primary' : 'text-muted-foreground hover:text-foreground' }}"
+          >
+            Article List
+          </a>
+          <a
+            href="{{ route('article.create') }}"
+            class="block px-8 py-2.5 rounded-xl text-sm font-bold {{ request()->routeIs('article.create') ? 'text-primary' : 'text-muted-foreground hover:text-foreground' }}"
+          >
+            Create New
+          </a>
+        </div>
+      </li>
 
-					<li
-						class="sidebar-item has-sub
-						{{ request()->routeIs('user.index') ||
-						request()->routeIs('login-history.index') ||
-						request()->routeIs('user.create') ? 'active' : ''
-						}}"
-					>
-						<a href="#" class="sidebar-link">
-							<i class="bi bi-people-fill"></i>
-							<span>Users</span>
-						</a>
+      <li>
+        <a
+          href="{{ route('comment.index') }}"
+          class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('comment.index') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+          :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+          title="Comments"
+        >
+          <i class="ph ph-chat-circle-dots text-xl"></i>
+          <span
+            x-show="!sidebarCollapsed"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-x-4"
+            x-transition:enter-end="opacity-100 translate-x-0"
+            class="whitespace-nowrap"
+            >Comments</span
+          >
+        </a>
+      </li>
 
-						<ul class="submenu">
-							<li class="submenu-item {{ request()->routeIs('user.index') ? 'active' : '' }}">
-								<a href="{{ route('user.index') }}" class="submenu-link">
-									User List
-								</a>
-							</li>
+      @if (auth()->user()->role == 'admin')
+        <!-- Categories -->
+        <li>
+          <a
+            href="{{ route('category.index') }}"
+            class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('category.index') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+            :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+            title="Categories"
+          >
+            <i class="ph ph-bookmarks text-xl"></i>
+            <span
+              x-show="!sidebarCollapsed"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 -translate-x-4"
+              x-transition:enter-end="opacity-100 translate-x-0"
+              class="whitespace-nowrap"
+              >Categories</span
+            >
+          </a>
+        </li>
+        <!-- User Control -->
+        <li
+          x-data="{ open: {{ request()->routeIs('user*') || request()->routeIs('login-history*') ? 'true' : 'false' }} }"
+        >
+          <button
+            @click="sidebarCollapsed ? (sidebarCollapsed = false) : (open = !open)"
+            class="w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('user*') || request()->routeIs('login-history*') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+            :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+            title="User Control"
+          >
+            <div class="flex items-center gap-4">
+              <i class="ph ph-users text-xl"></i>
+              <span
+                x-show="!sidebarCollapsed"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 -translate-x-4"
+                x-transition:enter-end="opacity-100 translate-x-0"
+                class="whitespace-nowrap"
+                >User Control</span
+              >
+            </div>
+            <i
+              x-show="!sidebarCollapsed"
+              class="ph ph-caret-down text-xs transition-transform duration-200"
+              :class="open ? 'rotate-180' : ''"
+            ></i>
+          </button>
+          <div
+            x-show="open && !sidebarCollapsed"
+            x-collapse
+            style="display: none"
+            class="mt-2 ml-4 space-y-1"
+          >
+            <a
+              href="{{ route('user.index') }}"
+              class="block px-8 py-2.5 rounded-xl text-sm font-bold {{ request()->routeIs('user.index') ? 'text-primary' : 'text-muted-foreground hover:text-foreground' }}"
+            >
+              User List
+            </a>
+            <a
+              href="{{ route('login-history.index') }}"
+              class="block px-8 py-2.5 rounded-xl text-sm font-bold {{ request()->routeIs('login-history.index') ? 'text-primary' : 'text-muted-foreground hover:text-foreground' }}"
+            >
+              Login History
+            </a>
+          </div>
+        </li>
+        {{-- Analytics --}}
+        <li>
+          <a
+            href="{{ route('analytics.index') }}"
+            class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('analytics.*') ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+            :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+            title="Analytics"
+          >
+            <i
+              class="ph ph-chart-bar text-xl {{ request()->routeIs('analytics.*') ? '' : 'group-hover:scale-110 transition-transform' }}"
+            ></i>
+            <span
+              x-show="!sidebarCollapsed"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 -translate-x-4"
+              x-transition:enter-end="opacity-100 translate-x-0"
+              class="whitespace-nowrap"
+              >Analytics</span
+            >
+          </a>
+        </li>
+      @endif
 
-							<li class="submenu-item {{ request()->routeIs('login-history.index') ? 'active' : '' }}">
-								<a
-									href="{{ route('login-history.index') }}"
-									class="submenu-link"
-								>
-									Login History
-								</a>
-							</li>
-						</ul>
-					</li>
-				@endif
+      <li
+        class="px-4 pt-6 pb-2 transition-opacity duration-300"
+        :class="sidebarCollapsed ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+      >
+        <span
+          class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
+          >Account</span
+        >
+      </li>
 
-				<li
-						class="sidebar-item
-						{{ request()->routeIs('user.edit')  ? 'active' : '' }}"
-					>
-						<a href="{{ route('user.edit', Auth::user()->slug) }}" class="sidebar-link">
-							<i class="bi bi-gear-fill"></i>
-							<span>Settings</span>
-						</a>
-					</li>
+      <li>
+        <a
+          href="{{ route('user.edit', auth()->user()->slug) }}"
+          class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('user.edit') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
+          :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+          title="Settings"
+        >
+          <i class="ph ph-gear text-xl"></i>
+          <span
+            x-show="!sidebarCollapsed"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-x-4"
+            x-transition:enter-end="opacity-100 translate-x-0"
+            class="whitespace-nowrap"
+            >Settings</span
+          >
+        </a>
+      </li>
+    </ul>
 
-				<li class="sidebar-item">
-					<a href="{{ route('logout') }}" class="sidebar-link" onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-						<i class="bi bi-box-arrow-left"></i>
-						<span>Logout</span>
-					</a>
-				</li>
-
-				<form
-					id="logout-form"
-					action="{{ route('logout') }}"
-					method="POST"
-					style="display: none"
-				>
-					@csrf
-				</form>
-			</ul>
-		</div>
-	</div>
-</div>
+    <div class="border-border mt-8 shrink-0 border-t pt-6">
+      <a
+        href="{{ route('admin.logout') }}"
+        onclick="
+          event.preventDefault();
+          document.getElementById('logout-form').submit();
+        "
+        class="group flex items-center gap-4 rounded-2xl px-4 py-3.5 text-sm font-bold text-red-500 transition-all hover:bg-red-50"
+        :class="sidebarCollapsed ? 'justify-center px-0' : ''"
+        title="Sign Out"
+      >
+        <i class="ph ph-sign-out text-xl transition-transform group-hover:-translate-x-1"></i>
+        <span
+          x-show="!sidebarCollapsed"
+          x-transition:enter="transition ease-out duration-300"
+          x-transition:enter-start="opacity-0 -translate-x-4"
+          x-transition:enter-end="opacity-100 translate-x-0"
+          class="whitespace-nowrap"
+          >Sign Out</span
+        >
+      </a>
+      <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="hidden">
+        @csrf
+      </form>
+    </div>
+  </div>
+</aside>

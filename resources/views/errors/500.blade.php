@@ -1,7 +1,8 @@
-@extends('errors::layout')
+@extends ('errors.minimal')
 
-@section('title', __('Server Error'))
-
-@section('code', '500')
-
-@section('message', __("An internal server error occurred. Our team has been notified of the issue. We apologize for any inconvenience."))
+@section ('title', 'Server Error')
+@section ('code', '500')
+@section ('icon', 'ph-hard-drives')
+@section ('message', 'Something Went Wrong')
+@section ('description',
+  'An unexpected error has occurred on our end. Our team has been notified and is working on a fix. Please try again shortly.')

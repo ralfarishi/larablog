@@ -1,94 +1,54 @@
-@extends('layouts.templates')
+@extends ('layouts.templates')
 
-@section('page-title')
+@section ('page-title')
   {{ $category->name }}
 @endsection
 
-@section('content-id')
-<!-- ======= Breadcrumbs ======= -->
-<div class="breadcrumbs d-flex align-items-center" style="background-image: url({{ asset('images/blog-header.jpg') }});">
-  <div class="container position-relative d-flex flex-column align-items-center">
-    <i class="{{ $category->icon }} fs-1 text-light"></i>
+@section ('content-id')
+  <section class="bg-background min-h-screen py-12 sm:py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <!-- Editorial Header -->
+      <header
+        class="border-border mb-12 flex flex-col justify-between border-b pb-8 text-center md:mb-20 md:flex-row md:items-end md:text-left"
+      >
+        <div>
+          <div
+            class="text-primary mb-3 flex items-center gap-2 text-sm font-bold tracking-widest uppercase"
+          >
+            <i class="{{ $category->icon }} text-lg"></i>
+            Category
+          </div>
+          <h1 class="text-foreground font-sans text-5xl font-black tracking-tight md:text-7xl">
+            {{ $category->name }}
+          </h1>
+        </div>
+      </header>
 
-    <h2>Category</h2>
-    <ol>
-      <li><a href="/">Home</a></li>
-      <li>{{ $category->name }}</li>
-    </ol>
+      <!-- Horizontal Discover Bar -->
+      @include ('partials._sidebar', ['categories' => $categories, 'tags' => $tags])
 
-  </div>
-</div>
-
-<section id="blog" class="blog">
-  <div class="container" data-aos="fade-up">
-
-    <div class="row g-5">
-
-      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-
-        <div class="row gy-5 posts-list">
-
+      <!-- Bento Grid Layout -->
+      <div class="posts-list">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           @if (count($posts) > 0)
             @foreach ($posts as $post)
-            <div class="col-lg-6">
-              <article class="d-flex flex-column">
-
-                <div class="post-img">
-                  <img src="{{ asset('uploads/' . $post->image) }}" alt="" class="img-fluid">
-                </div>
-
-                <h2 class="title">
-                  <a href="{{ route('post', $post->slug) }}">{{ $post->title }}</a>
-                </h2>
-
-                <div class="meta-top">
-                  <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->user->name }}</a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{{ route('post', $post->slug) }}"><time datetime="2022-01-01">{{ $post->created_at->format('M d, Y') }}</time></a></li>
-                    <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a href="{{ route('post', $post->slug) }}">{{ $post->comments->count() > 0 ? $post->comments->count() : 0}}
-                        Comments</a></li>
-                  </ul>
-                </div>
-
-                <div class="content">
-                  <p>
-                    {!! Str::limit(strip_tags($post->content), 280) !!}
-                  </p>
-                </div>
-
-                <div class="read-more mt-auto align-self-end">
-                  <a href="{{ route('post', $post->slug) }}">Read More <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-
-              </article>
-            </div>
+              <x-ui.post-card :post="$post" />
             @endforeach
           @else
-            <p class="text-center">No article found.</p>
+            <div
+              class="text-muted-foreground bg-card border-border col-span-full flex flex-col items-center justify-center rounded-3xl border border-dashed py-24 text-center"
+            >
+              <i class="ph ph-files mb-4 text-6xl opacity-20"></i>
+              <h3 class="text-foreground mb-2 text-xl font-bold">
+                No articles found in this category
+              </h3>
+              <p>Explore our other topics above.</p>
+            </div>
           @endif
-
-        </div><!-- End blog posts list -->
-
-        <div class="blog-pagination">
-          <ul class="justify-content-center">
-            @for ($i = 1; $i <= $posts->lastPage(); $i++)
-              <li class="{{ $i === $posts->currentPage() ? 'active' : '' }}">
-                <a href="{{ $posts->url($i) }}">{{ $i }}</a>
-              </li>
-            @endfor
-          </ul>
         </div>
-        <!-- End blog pagination -->
-
       </div>
 
-      @include('partials._sidebar', [
-        'categories' => $categories,
-        'tags' => $tags
-      ])
-
+      <x-ui.pagination :paginator="$posts" />
     </div>
-
-  </div>
-</section>
+  </section>
 @endsection

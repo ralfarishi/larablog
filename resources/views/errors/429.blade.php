@@ -1,8 +1,8 @@
-@extends('errors::layout')
+@extends ('errors.minimal')
 
-@section('title', __('Too Many Requests'))
-
-@section('code', '429')
-
-@section('message', __("We've received too many requests from your IP address. Please wait a moment and try again later."))
-
+@section ('title', 'Too Many Requests')
+@section ('code', '429')
+@section ('icon', 'ph-warning-octagon')
+@section ('message', 'Slow Down')
+@section ('description',
+  'You have made too many requests in a short time. Our servers need a moment to catch their breath. Please wait before trying again.')

@@ -1,12 +1,8 @@
-@extends('errors::layout')
+@extends ('errors.minimal')
 
-@section('title', __('Payment Required'))
-
-@section('code', '402')
-
-@section('message')
-<p>
-  You must make a payment before accessing this content. Please proceed with the required payment.
-</p>
-<a href="{{ route('home') }}">Homepage</a>
-@endsection
+@section ('title', 'Payment Required')
+@section ('code', '402')
+@section ('icon', 'ph-credit-card')
+@section ('message', 'Premium Territory')
+@section ('description',
+  'This content requires an active subscription. Please complete your payment to unlock full access to this feature.')
