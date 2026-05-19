@@ -104,7 +104,7 @@ class ContentRenderer
         return "<blockquote class=\"border-l-4 border-primary pl-6 py-3 my-6 italic text-lg text-muted-foreground bg-muted/30 rounded-r-lg\">{$content}</blockquote>";
       case 'codeBlock':
         $escapedContent = htmlspecialchars($content);
-        return '<pre class="bg-muted/50 text-foreground border border-border/50 rounded-xl p-4 md:p-5 my-6 text-[13px] sm:text-sm font-mono leading-relaxed whitespace-pre-wrap break-words"><code>' .
+        return '<pre class="bg-muted/50 text-foreground border border-border/50 rounded-xl p-4 md:p-5 my-6 text-[13px] sm:text-sm font-mono leading-relaxed whitespace-pre-wrap wrap-break-word"><code>' .
           $escapedContent .
           '</code></pre>';
       case 'image':
@@ -133,7 +133,7 @@ class ContentRenderer
       case 'strike':
         return "<s class=\"line-through text-muted-foreground\">{$text}</s>";
       case 'code':
-        return '<code class="bg-muted text-foreground border border-border/50 rounded-md px-1.5 py-[2px] text-[0.825em] font-mono font-semibold inline-block align-middle max-w-full break-words leading-normal my-0.5">' .
+        return '<code class="bg-muted text-foreground border border-border/50 rounded-md px-1.5 py-[2px] text-[0.825em] font-mono font-semibold inline-block align-middle max-w-full wrap-break-word leading-normal my-0.5">' .
           $text .
           '</code>';
       case 'link':

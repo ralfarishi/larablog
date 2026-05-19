@@ -3,6 +3,7 @@
 <head>
   @include ('includes.head')
   @yield ('page_css')
+  @livewireStyles
 </head>
 <body class="bg-background text-foreground flex min-h-screen flex-col pt-16">
   <!--start-header-->
@@ -23,5 +24,6 @@
   @include ('includes.scripts')
 
   @yield ('page_scripts')
+  @livewireScripts
 </body>
 </html>

@@ -78,7 +78,7 @@
   }
 
   code:not(pre code) {
-    @apply bg-muted border-border/50 text-foreground max-w-full inline-block rounded-md border px-1.5 py-[2px] align-middle font-mono text-[0.825em] font-semibold leading-normal break-words my-0.5;
+    @apply bg-muted border-border/50 text-foreground max-w-full inline-block rounded-md border px-1.5 py-[2px] align-middle font-mono text-[0.825em] font-semibold leading-normal wrap-break-word my-0.5;
   }
 }
 
@@ -121,7 +121,7 @@
     @apply m-0 flex list-none flex-wrap items-center justify-end gap-1 p-0;
   }
   .dataTables_wrapper .page-item .page-link {
-    @apply hover:bg-muted hover:text-foreground text-muted-foreground flex h-10 min-w-[2.5rem] cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-3 text-sm font-black transition-all;
+    @apply hover:bg-muted hover:text-foreground text-muted-foreground flex h-10 min-w-10 cursor-pointer items-center justify-center rounded-xl border-2 border-transparent bg-transparent px-3 text-sm font-black transition-all;
   }
   .dataTables_wrapper .page-item.active .page-link {
     @apply bg-primary border-primary shadow-primary/20 hover:bg-primary/90 text-white shadow-sm hover:text-white;

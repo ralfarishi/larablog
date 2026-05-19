@@ -44,7 +44,7 @@
           x-cloak
           x-transition
           @click.outside="open = false"
-          class="bg-card ring-border absolute right-0 z-50 mt-4 w-72 rounded-[2rem] p-6 shadow-2xl ring-1"
+          class="bg-card ring-border absolute right-0 z-50 mt-4 w-72 rounded-4xl p-6 shadow-2xl ring-1"
         >
           <h4 class="text-foreground mb-4 text-sm font-black">New Category</h4>
           <form wire:submit="createCategory" class="space-y-4">

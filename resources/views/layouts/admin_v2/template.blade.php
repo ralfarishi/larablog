@@ -143,7 +143,7 @@
   <!-- Global Delete Modal -->
   <div
     id="deleteModal"
-    class="fixed inset-0 z-[999] hidden overflow-y-auto"
+    class="fixed inset-0 z-999 hidden overflow-y-auto"
     aria-labelledby="modal-title"
     role="dialog"
     aria-modal="true"

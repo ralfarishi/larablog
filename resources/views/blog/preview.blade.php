@@ -10,7 +10,7 @@
       @apply ring-border mx-auto my-20 h-auto max-w-full rounded-[3rem] shadow-2xl ring-1;
     }
     .prose pre {
-      @apply border-border my-12 overflow-x-auto rounded-[2rem] border bg-[#282c34] shadow-2xl !important;
+      @apply border-border my-12 overflow-x-auto rounded-4xl border bg-[#282c34] shadow-2xl !important;
     }
     .prose blockquote {
       @apply bg-muted/30 text-foreground relative overflow-hidden rounded-[2.5rem] border-l-0 px-12 py-10 font-medium italic;
@@ -37,7 +37,7 @@
   >
     <!-- PREVIEW Banner (Fixed Top) -->
     <div
-      class="bg-foreground text-background bg-opacity-95 fixed top-0 left-0 z-[200] flex w-full items-center justify-between border-b border-white/5 px-8 py-4 shadow-2xl backdrop-blur-md"
+      class="bg-foreground text-background bg-opacity-95 fixed top-0 left-0 z-200 flex w-full items-center justify-between border-b border-white/5 px-8 py-4 shadow-2xl backdrop-blur-md"
     >
       <div class="flex items-center gap-6">
         <div class="flex items-center gap-3">
@@ -108,7 +108,7 @@
           </div>
 
           <h1
-            class="text-foreground reveal-element mb-12 w-full text-5xl leading-[0.95] font-black tracking-tighter break-words opacity-0 sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl"
+            class="text-foreground reveal-element mb-12 w-full text-5xl leading-[0.95] font-black tracking-tighter wrap-break-word opacity-0 sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl"
           >
             {{ $post->title }}
           </h1>
@@ -138,13 +138,13 @@
             class="bg-primary/5 pointer-events-none absolute -inset-10 rounded-[5rem] opacity-40 blur-[80px]"
           ></div>
           <div
-            class="ring-border bg-muted/50 relative aspect-[16/10] w-full overflow-hidden rounded-[3rem] shadow-[0_48px_96px_-16px_rgba(0,0,0,0.12)] ring-1 md:aspect-[21/9]"
+            class="ring-border bg-muted/50 relative aspect-16/10 w-full overflow-hidden rounded-[3rem] shadow-[0_48px_96px_-16px_rgba(0,0,0,0.12)] ring-1 md:aspect-21/9"
           >
             @if ($post->image_url && !str_contains($post->image_url, 'placehold.co'))
               <img
                 src="{{ $post->image_url }}"
                 alt="{{ $post->title }}"
-                class="h-full w-full object-contain transition-transform duration-[2000ms] ease-out group-hover:scale-105"
+                class="h-full w-full object-contain transition-transform duration-2000 ease-out group-hover:scale-105"
                 loading="lazy"
               />
             @else
@@ -153,7 +153,7 @@
               </div>
             @endif
             <div
-              class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"
+              class="pointer-events-none absolute inset-0 bg-linear-to-t from-black/20 via-transparent to-transparent"
             ></div>
           </div>
         </div>
@@ -222,7 +222,7 @@
         </aside>
 
         <!-- Main Body -->
-        <main class="reveal-element min-w-0 break-words opacity-0 lg:col-span-8">
+        <main class="reveal-element min-w-0 wrap-break-word opacity-0 lg:col-span-8">
           <div
             class="prose prose-lg dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-8 prose-img:rounded-[2.5rem] prose-img:shadow-2xl prose-img:w-full prose-li:text-foreground/90 prose-li:mb-2 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:text-lg prose-blockquote:font-medium prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-3xl prose-code:text-primary prose-code:bg-primary/10 prose-code:px-2 prose-code:py-1.5 prose-code:rounded-xl prose-code:before:hidden prose-code:after:hidden prose-pre:bg-card prose-pre:ring-1 prose-pre:ring-border prose-pre:text-foreground prose-pre:rounded-2xl prose-strong:font-black max-w-none overflow-hidden"
           >
