@@ -1,11 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Facade;
-use Illuminate\Support\ServiceProvider;
-
 return [
-
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -16,9 +12,9 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+  'name' => env('APP_NAME', 'Laravel'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
@@ -29,9 +25,9 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+  'env' => env('APP_ENV', 'production'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
     |--------------------------------------------------------------------------
@@ -42,9 +38,9 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+  'debug' => (bool) env('APP_DEBUG', false),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
@@ -55,11 +51,11 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+  'url' => env('APP_URL', 'http://localhost'),
 
-    'asset_url' => env('ASSET_URL'),
+  'asset_url' => env('ASSET_URL'),
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
@@ -70,9 +66,9 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Jakarta',
+  'timezone' => 'Asia/Jakarta',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
@@ -83,9 +79,9 @@ return [
     |
     */
 
-    'locale' => 'en',
+  'locale' => 'en',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
     |--------------------------------------------------------------------------
@@ -96,9 +92,9 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+  'fallback_locale' => 'en',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Faker Locale
     |--------------------------------------------------------------------------
@@ -109,9 +105,9 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+  'faker_locale' => 'en_US',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Encryption Key
     |--------------------------------------------------------------------------
@@ -122,11 +118,11 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+  'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+  'cipher' => 'AES-256-CBC',
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
@@ -139,12 +135,12 @@ return [
     |
     */
 
-    'maintenance' => [
-        'driver' => 'file',
-        // 'store'  => 'redis',
-    ],
+  'maintenance' => [
+    'driver' => 'file',
+    // 'store'  => 'redis',
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
@@ -155,38 +151,7 @@ return [
     |
     */
 
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
-		* Package Service Providers...
-		*/
-        Yajra\DataTables\DataTablesServiceProvider::class,
-        Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
-        Stevebauman\Location\LocationServiceProvider::class,
-
-        /*
-		* Application Service Providers...
-		*/
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-    ])->toArray(),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Class Aliases
-    |--------------------------------------------------------------------------
-    |
-    | This array of class aliases will be registered when this application
-    | is started. However, feel free to register as many as you wish as
-    | the aliases are "lazy" loaded so they don't hinder performance.
-    |
-    */
-
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
-        'Location' => 'Stevebauman\Location\Facades\Location',
-    ])->toArray(),
-
+  'aliases' => [
+    'Location' => 'Stevebauman\Location\Facades\Location',
+  ],
 ];

@@ -1,65 +1,76 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\HasMediaUrlAttribute;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class User extends Authenticatable
+#[Fillable(['name', 'email', 'password', 'role', 'slug', 'display_picture'])]
+#[Hidden(['password', 'remember_token'])]
+class User extends Authenticatable implements HasMedia
 {
-	use HasApiTokens, HasFactory, Notifiable;
+  use HasApiTokens, HasFactory, HasMediaUrlAttribute, Notifiable, InteractsWithMedia;
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $fillable = [
-		'name',
-		'slug',
-		'email',
-		'display_picture',
-		'role',
-		'password',
-	];
+  protected function casts(): array
+  {
+    return [
+      'email_verified_at' => 'datetime',
+      'password' => 'hashed',
+    ];
+  }
 
-	/**
-	 * The attributes that should be hidden for serialization.
-	 *
-	 * @var array<int, string>
-	 */
-	protected $hidden = [
-		'password',
-		'remember_token',
-	];
+  public function registerMediaCollections(): void
+  {
+    $this->addMediaCollection('avatar')
+      ->singleFile()
+      ->useFallbackUrl(
+        'https://ui-avatars.com/api/?name=' .
+          urlencode($this->name) .
+          '&size=100&color=fff&background=00B4A7',
+      );
+  }
 
-	/**
-	 * The attributes that should be cast.
-	 *
-	 * @var array<string, string>
-	 */
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-		'password' => 'hashed',
-	];
+  public function registerMediaConversions(?Media $media = null): void
+  {
+    $this->addMediaConversion('preview')->fit(Fit::Crop, 300, 300)->nonQueued();
+  }
 
-	public function posts(): HasMany
-	{
-		return $this->hasMany(Posts::class);
-	}
+  public function getProfilePictureUrlAttribute(): string
+  {
+    return $this->resolveMediaUrl(
+      collection: 'avatar',
+      conversion: 'preview',
+      legacyColumn: $this->display_picture,
+      fallback: 'https://ui-avatars.com/api/?name=' .
+        urlencode($this->name) .
+        '&size=100&color=fff&background=00B4A7',
+    );
+  }
 
-	public function comments(): HasMany
-	{
-		return $this->hasMany(Comments::class);
-	}
+  public function posts(): HasMany
+  {
+    return $this->hasMany(Post::class);
+  }
 
-	public function notifications(): HasMany
-	{
-		return $this->hasMany(Notifications::class);
-	}
+  public function comments(): HasMany
+  {
+    return $this->hasMany(Comment::class);
+  }
+
+  public function bookmarks(): HasMany
+  {
+    return $this->hasMany(Bookmark::class);
+  }
 }

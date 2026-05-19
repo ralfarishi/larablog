@@ -1,184 +1,118 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin\User;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
-	/**
-	 * Display a listing of the resource.
-	 */
-	public function index(Request $request)
-	{
-		if ($request->ajax()) {
-			$data = User::get();
+  public function index(Request $request): View
+  {
+    return view('admin.users.list');
+  }
 
-			return DataTables::of($data)
-				->addColumn('total_posts', function ($data) use ($request) {
-					return $data->posts->count();
-				})
-				->addColumn('image', function ($data) use ($request) {
-					$image = $data->display_picture;
-					if (filter_var($image, FILTER_VALIDATE_URL)) {
-						return '
-							<div class="avatar avatar-lg">
-								<img src="' . $image . '" alt="Avatar" id="preview_image"/>
-							</div>
-						';
-					} else {
-						return '
-							<div class="avatar avatar-lg">
-								<img src="' . asset('uploads/' . $image) . '" alt="Avatar" id="preview_image"/>
-							</div>
-						';
-					}
-				})
-				->addColumn('actions', function ($data) use ($request) {
-					$slug = $data->slug;
-					$link = $request->url() . '/' . $slug;
-					return '
-						<a href="' . route('user.edit', $slug) . ' " class="btn btn-primary btn-sm" title="Edit"><span class="bi bi-pencil-square"></span></a>
-						<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal" title="Delete"><span class="bi bi-trash-fill"></span></a>
-					';
-				})
-				->rawColumns(['image', 'actions'])
-				->make(true);
-		}
+  public function create(): View
+  {
+    return view('admin.users.create');
+  }
 
-		return view('admin.users.list');
-	}
+  public function store(UserRequest $request): RedirectResponse
+  {
+    $data = $request->validated();
 
-	/**
-	 * Show the form for creating a new resource.
-	 */
-	public function create()
-	{
-		return view('admin.users.create');
-	}
+    $data['slug'] = Str::slug($data['name']);
+    $data['password'] = Hash::make($data['password']);
 
-	/**
-	 * Store a newly created resource in storage.
-	 */
-	public function store(UserRequest $request)
-	{
-		$data = $request->validated();
+    $avatar = $request->file('display_picture');
+    unset($data['display_picture']);
 
-		$data['slug'] = Str::slug($request->name);
-		$data['password'] = Hash::make($request->password);
+    $user = User::create($data);
 
-		User::create($data);
+    if ($avatar) {
+      $user->addMedia($avatar)->toMediaCollection('avatar');
+    }
 
-		return to_route('user.index')->with('success', 'New user has been created.');
-	}
+    return to_route('user.index')->with('success', 'User has been created.');
+  }
 
-	/**
-	 * Display the specified resource.
-	 */
-	public function show(string $id)
-	{
-		//
-	}
+  public function edit(string $slug): View
+  {
+    $user = User::where('slug', $slug)->firstOrFail();
 
-	/**
-	 * Show the form for editing the specified resource.
-	 */
-	public function edit(string $id)
-	{
-		$user = User::where('slug', $id)->firstOrFail();
+    return view('admin.users.edit', compact('user'));
+  }
 
-		return view('admin.users.edit', compact('user'));
-	}
+  public function update(UpdateUserRequest $request, string $slug): RedirectResponse
+  {
+    $user = User::where('slug', $slug)->firstOrFail();
+    $data = $request->validated();
 
-	/**
-	 * Update the specified resource in storage.
-	 */
-	public function update(Request $request, string $id)
-	{
-		$request->validate(
-			[
-				'name' => 'required|string',
-				'email' => 'required|email',
-				'display_picture' => 'nullable|sometimes|mimes:png,jpg,jpeg|max:500',
-				'password' => 'nullable|sometimes|min:8',
-			]
-		);
+    $data['slug'] = Str::slug($data['name']);
 
-		$data = $request->all();
+    if ($request->filled('password')) {
+      $data['password'] = Hash::make($data['password']);
+    } else {
+      unset($data['password']);
+    }
 
-		$user = User::findOrFail($id);
+    if ($request->hasFile('display_picture')) {
+      $user->addMedia($request->file('display_picture'))->toMediaCollection('avatar');
+      $data['display_picture'] = null;
+    } elseif ($request->boolean('default-image')) {
+      $user->clearMediaCollection('avatar');
+      $randomBg = sprintf('%06X', random_int(0, 0xffffff));
+      $nameForAvatar = urlencode($data['name'] ?? $user->name);
+      $data[
+        'display_picture'
+      ] = "https://ui-avatars.com/api/?name={$nameForAvatar}&size=100&color=fff&background={$randomBg}";
+    } else {
+      unset($data['display_picture']);
+    }
 
-		$data['slug'] = Str::slug($request->name);
+    unset($data['default-image']);
+    $user->update($data);
 
-		$isDefaultImageChecked = $request->input('default-image');
-		$randomHexColor = sprintf('%06X', rand(0, 0xFFFFFF));
-		$defaultDisplayPicture = 'https://ui-avatars.com/api/?name=' . Str::slug($request->name, '+') . '&size=100&color=fff&background=' . $randomHexColor;
+    return back()->with('info', 'Profile has been updated.');
+  }
 
-		if ($isDefaultImageChecked) {
-			$imagePath = public_path('uploads/' . $user->display_picture);
+  public function destroy(
+    Request $request,
+    string $slug,
+  ): \Illuminate\Http\JsonResponse|RedirectResponse {
+    $user = User::where('slug', $slug)->firstOrFail();
 
-			if (file_exists($imagePath)) {
-				unlink($imagePath);
-			}
+    if ($user->id === auth()->id()) {
+      if ($request->expectsJson()) {
+        return response()->json(
+          [
+            'success' => false,
+            'message' => 'You cannot delete your own account.',
+          ],
+          422,
+        );
+      }
+      return to_route('user.index')->with('warning', 'You cannot delete your own account.');
+    }
 
-			$data['display_picture'] = $defaultDisplayPicture;
-		} else {
-			if ($request->hasFile('display_picture')) {
-				$data['display_picture'] = $request->file('display_picture')->store('images/users', 'public');
-			}
-		}
+    $user->delete();
 
-		if (filter_var($user->display_picture, FILTER_VALIDATE_URL)) {
-			$urlParts = parse_url($user->display_picture);
-			parse_str($urlParts['query'], $queryParams);
+    if ($request->expectsJson()) {
+      return response()->json([
+        'success' => true,
+        'message' => 'User has been deleted.',
+      ]);
+    }
 
-			$newName = str_replace('-', '+', Str::lower($data['name']));
-
-			$queryParams['name'] = $newName;
-
-			$updatedUrl = $urlParts['scheme'] . '://' . $urlParts['host'] . $urlParts['path'] . '?' . http_build_query($queryParams);
-
-			$data['display_picture'] = $updatedUrl;
-		}
-
-		if ($request->password) {
-			$data['password'] = Hash::make($request->password);
-		} else {
-			unset($data['password']);
-		}
-
-		$user->update($data);
-
-		$newUrl = url('/dashboard/user/' . $user->slug . '/edit');
-
-		return redirect($newUrl)->with('info', 'User data has been updated.');
-	}
-
-	/**
-	 * Remove the specified resource from storage.
-	 */
-	public function destroy(string $id)
-	{
-		$data = User::where('slug', $id)->firstOrFail();
-
-		if ($data->role == 'admin') {
-			return to_route('user.index')->with('warning', 'Cannot delete an ADMIN.');
-		}
-
-		$imagePath = public_path('uploads/' . $data->display_picture);
-
-		if (file_exists($imagePath)) {
-			unlink($imagePath);
-		}
-
-		$data->delete();
-
-		return to_route('user.index')->with('danger', 'User has been deleted.');
-	}
+    return to_route('user.index')->with('danger', 'User has been deleted.');
+  }
 }

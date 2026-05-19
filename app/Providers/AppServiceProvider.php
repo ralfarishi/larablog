@@ -1,32 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use App\Models\Notifications;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register any application services.
-	 */
-	public function register(): void
-	{
-		//
-	}
+  public function register(): void {}
 
-	/**
-	 * Bootstrap any application services.
-	 */
-	public function boot(): void
-	{
-		view()->composer('includes.header', function ($view) {
-			$notifications = Notifications::with(['commenter', 'posts'])
-				->where('user_id', auth()->id())
-				->orderBy('created_at', 'desc')
-				->get();
+  public function boot(): void
+  {
+    // ── Event Listeners (consolidated from EventServiceProvider) ──────
+    Event::listen(Registered::class, SendEmailVerificationNotification::class);
 
-			$view->with('notifications', $notifications);
-		});
-	}
+    // ── Rate Limiting (consolidated from RouteServiceProvider) ────────
+    RateLimiter::for('api', function (Request $request) {
+      return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+    });
+  }
 }

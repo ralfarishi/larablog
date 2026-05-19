@@ -1,8 +1,7 @@
 <?php
 
 return [
-
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Driver
     |--------------------------------------------------------------------------
@@ -11,9 +10,9 @@ return [
     |
     */
 
-    'driver' => Stevebauman\Location\Drivers\IpApi::class,
+  'driver' => Stevebauman\Location\Drivers\IpApi::class,
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Driver Fallbacks
     |--------------------------------------------------------------------------
@@ -25,13 +24,13 @@ return [
     |
     */
 
-    'fallbacks' => [
-        Stevebauman\Location\Drivers\IpInfo::class,
-        Stevebauman\Location\Drivers\GeoPlugin::class,
-        Stevebauman\Location\Drivers\MaxMind::class,
-    ],
+  'fallbacks' => [
+    Stevebauman\Location\Drivers\IpInfo::class,
+    Stevebauman\Location\Drivers\GeoPlugin::class,
+    Stevebauman\Location\Drivers\MaxMind::class,
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Position
     |--------------------------------------------------------------------------
@@ -42,9 +41,9 @@ return [
     |
     */
 
-    'position' => Stevebauman\Location\Position::class,
+  'position' => Stevebauman\Location\Position::class,
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Localhost Testing
     |--------------------------------------------------------------------------
@@ -56,12 +55,12 @@ return [
     |
     */
 
-    'testing' => [
-        'ip' => '66.102.0.0',
-        'enabled' => true,
-    ],
+  'testing' => [
+    'ip' => '66.102.0.0',
+    'enabled' => true,
+  ],
 
-    /*
+  /*
     |--------------------------------------------------------------------------
     | MaxMind Configuration
     |--------------------------------------------------------------------------
@@ -75,34 +74,37 @@ return [
     |
     */
 
-    'maxmind' => [
-        'web' => [
-            'enabled' => false,
-            'user_id' => env('MAXMIND_USER_ID'),
-            'license_key' => env('MAXMIND_LICENSE_KEY'),
-            'options' => ['host' => 'geoip.maxmind.com'],
-        ],
-
-        'local' => [
-            'type' => 'city',
-            'path' => database_path('maxmind/GeoLite2-City.mmdb'),
-            'url' => sprintf('https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=%s&suffix=tar.gz', env('MAXMIND_LICENSE_KEY')),
-        ],
+  'maxmind' => [
+    'web' => [
+      'enabled' => false,
+      'user_id' => env('MAXMIND_USER_ID'),
+      'license_key' => env('MAXMIND_LICENSE_KEY'),
+      'options' => ['host' => 'geoip.maxmind.com'],
     ],
 
-    'ip_api' => [
-        'token' => env('IP_API_TOKEN'),
+    'local' => [
+      'type' => 'city',
+      'path' => database_path('maxmind/GeoLite2-City.mmdb'),
+      'url' => sprintf(
+        'https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=%s&suffix=tar.gz',
+        env('MAXMIND_LICENSE_KEY'),
+      ),
     ],
+  ],
 
-    'ipinfo' => [
-        'token' => env('IPINFO_TOKEN'),
-    ],
+  'ip_api' => [
+    'token' => env('IP_API_TOKEN'),
+  ],
 
-    'ipdata' => [
-        'token' => env('IPDATA_TOKEN'),
-    ],
+  'ipinfo' => [
+    'token' => env('IPINFO_TOKEN'),
+  ],
 
-    /*
+  'ipdata' => [
+    'token' => env('IPDATA_TOKEN'),
+  ],
+
+  /*
     |--------------------------------------------------------------------------
     | Kloudend ~ ipapi.co Configuration
     |--------------------------------------------------------------------------
@@ -111,10 +113,7 @@ return [
     |
     */
 
-    'kloudend' => [
-
-        'token' => env('KLOUDEND_TOKEN'),
-
-    ],
-
+  'kloudend' => [
+    'token' => env('KLOUDEND_TOKEN'),
+  ],
 ];

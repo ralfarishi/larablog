@@ -1,156 +1,152 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Home\Blogs;
 
-use App\Models\Posts;
-use App\Models\Comments;
-use App\Models\Categories;
+use App\Events\CommentPosted;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
-use App\Models\Notifications;
+use App\Models\Bookmark;
+use App\Models\Category;
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
+use App\Notifications\CommentReceived;
 use Artesaos\SEOTools\Facades\SEOTools;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PostController extends Controller
 {
-	public function show($slug)
-	{
-		$post = Posts::where('slug', $slug)->where('active', 1)->firstOrFail();
+  public function show(string $slug): View
+  {
+    $post = Post::where('slug', $slug)->where('status', 'published')->firstOrFail();
 
-		$activeComments = $post->comments()->where('active', 1)->get();
-		$totalComments = $activeComments->count();
+    $activeComments = $post->comments()->where('active', true)->with('user.media')->get();
+    $totalComments = $activeComments->count();
 
-		$categories = Categories::withCount(['posts' => function ($query) {
-			$query->where('active', 1);
-		}])->get();
+    $categories = Category::withCount([
+      'posts' => fn($q) => $q->where('status', 'published'),
+    ])->get();
 
-		// get the latest post
-		// $latestPosts = Posts::where('active', 1)
-		// 	->where('id', '!=', $post->id)
-		// 	->latest()
-		// 	->limit(5)
-		// 	->get();
+    $category = $post->category;
+    $relatedPosts = Post::where('status', 'published')
+      ->where('id', '!=', $post->id)
+      ->where(function ($query) use ($post): void {
+        $tags = array_filter(array_map('trim', explode(',', (string) $post->tags)));
+        $query->where('category_id', $post->category_id)->orWhere(function ($q) use ($tags): void {
+          foreach ($tags as $tag) {
+            $q->orWhere('tags', 'LIKE', '%' . $tag . '%');
+          }
+        });
+      })
+      ->with(['category', 'user', 'media'])
+      ->withCount('comments')
+      ->latest()
+      ->limit(3)
+      ->get();
 
-		// get the related post based on category
-		$category = $post->category;
-		$relatedPosts = Posts::where('category_id', $category->id)
-			->where('id', '!=', $post->id)
-			->orWhere(function ($query) use ($post) {
-				// Menggunakan subquery untuk mencocokkan artikel berdasarkan tag yang sama
-				$query->where('id', '!=', $post->id)
-					->where(function ($query) use ($post) {
-						// Memisahkan dan mencocokkan tag-tag
-						$tags = explode(',', $post->tags);
-						foreach ($tags as $tag) {
-							$query->orWhere('tags', 'LIKE', '%' . $tag . '%');
-						}
-					});
-			})
-			->latest()
-			->limit(5)
-			->get();
+    $postTags = explode(',', $post->tags);
 
-		// get tags per post
-		$postTags = explode(',', $post->tags);
+    // Fetch tags via pivot — avoids loading all posts into PHP memory
+    $tags = \App\Models\Tag::whereHas('posts', fn($q) => $q->where('status', 'published'))->get();
 
-		// get all tags
-		$tags = Posts::where('active', 1)->pluck('tags')->flatMap(function ($tags) {
-			return array_map('strtolower', explode(',', $tags));
-		})->unique()->reject(function ($tag) {
-			return empty($tag); // Hapus tag yang kosong
-		});
+    // SEO
+    $pTag = getParagraphTagOnly($post->content) ?? '';
+    $firstPeriod = strpos($pTag, '.');
+    $firstSentence = $firstPeriod !== false ? substr($pTag, 0, $firstPeriod + 1) : $pTag;
+    $canonicalUrl = url('/article/' . $post->slug);
+    $blogImage = $post->image_url;
 
-		/*
-		 * Generate on page SEO
-		*/
-		// get blog description
-		$content = $post->content;
+    SEOTools::setTitle($post->title);
+    SEOTools::setDescription($firstSentence);
+    SEOTools::setCanonical($canonicalUrl);
+    SEOTools::opengraph()->setTitle($post->title);
+    SEOTools::opengraph()->setDescription($firstSentence);
+    SEOTools::opengraph()->setUrl(url('/'));
+    SEOTools::twitter()->setTitle($post->title);
+    SEOTools::twitter()->setDescription($firstSentence);
+    SEOTools::twitter()->setImage($blogImage);
 
-		$pTag = getParagraphTagOnly($content);
+    $isBookmarked =
+      auth()->check() &&
+      Bookmark::where('user_id', auth()->id())
+        ->where('post_id', $post->id)
+        ->exists();
 
-		$firstPeriodPosition = strpos($pTag, '.'); // find the first '.' (dot) symbol in content
+    return view(
+      'blog.post',
+      compact(
+        'post',
+        'activeComments',
+        'totalComments',
+        'relatedPosts',
+        'categories',
+        'postTags',
+        'tags',
+        'isBookmarked',
+      ),
+    );
+  }
 
-		if ($firstPeriodPosition === false) {
-			$firstSentence = $pTag;
-		} else {
-			$firstSentence = substr($pTag, 0, $firstPeriodPosition + 1);
-		}
+  public function storeComment(
+    StoreCommentRequest $request,
+    string $slug,
+  ): RedirectResponse|JsonResponse {
+    $post = Post::where('slug', $slug)->firstOrFail();
+    $userId = $request->user()->id;
 
-		// get URL
-		$baseUrl = url('/');
-		$canonicalUrl = $baseUrl . '/blog/' . $post->slug;
-		$blogImage = $baseUrl . '/uploads/' . $post->image;
+    $data = $request->validated();
+    $data['user_id'] = $userId;
+    $data['post_id'] = $post->id;
+    $data['content'] = strip_tags($data['content']); // XSS guard
 
-		// generate SEO
-		SEOTools::setTitle($post->title);
-		SEOTools::setDescription($firstSentence);
-		SEOTools::setCanonical($canonicalUrl);
+    $comment = Comment::create($data);
+    $comment->load('user', 'post');
 
-		SEOTools::opengraph()->setTitle($post->title);
-		SEOTools::opengraph()->setDescription($firstSentence);
-		SEOTools::opengraph()->setUrl($baseUrl);
+    // Notify the post author (not if they commented on their own post)
+    if ($post->user_id !== $userId) {
+      $post->user->notify(new CommentReceived($post, $request->user()));
+    }
 
-		SEOTools::twitter()->setTitle($post->title);
-		SEOTools::twitter()->setDescription($firstPeriodPosition);
-		SEOTools::twitter()->setImage($blogImage);
+    // Broadcast to all OTHER viewers of this post (toOthers excludes submitter's socket)
+    broadcast(new CommentPosted($comment))->toOthers();
 
-		return view('blog.post', compact(
-			'post',
-			'activeComments',
-			'totalComments',
-			'relatedPosts',
-			'categories',
-			'postTags',
-			'tags'
-		));
-	}
+    if ($request->expectsJson()) {
+      $user = $request->user();
+      $avatar = filter_var($user->display_picture ?? '', FILTER_VALIDATE_URL)
+        ? $user->display_picture
+        : $user->profile_picture_url;
 
-	public function storeComment(StoreCommentRequest $request, $id)
-	{
-		$data = $request->validated();
+      return response()->json([
+        'id' => $comment->id,
+        'content' => $comment->content,
+        'created_at' => $comment->created_at->format('M d, Y'),
+        'user_id' => $user->id,
+        'user_name' => $user->name,
+        'user_avatar' => $avatar,
+        'user_role' => $user->role,
+      ]);
+    }
 
-		$userId = Auth::user()->id;
-		$data['user_id'] = $userId;
+    return back()->with('tsuccess', 'Comment successfully sent!');
+  }
 
-		// escape html char for each inputs
-		foreach ($data as $key => $value) {
-			$data[$key] = strip_tags($value);
-		}
+  public function postByUser(string $slug): View
+  {
+    $user = User::where('slug', $slug)->firstOrFail();
+    $posts = $user
+      ->posts()
+      ->where('status', 'published')
+      ->with(['user', 'comments', 'category', 'media'])
+      ->latest()
+      ->paginate(4);
 
-		$post = Posts::where('slug', $id)->firstOrFail();
+    $sidebarData = getSidebarData();
 
-		$comment = new Comments();
-		$comment->fill($data);
-		$comment->post_id = $post->id;
-
-		$comment->save();
-
-		// create notification
-		if ($post->user_id !== $userId) {
-			Notifications::create([
-				'user_id' => $post->user_id,
-				'post_id' => $post->id,
-				'message' => 'memberikan komentar di artikel',
-				'commenter_id' => $userId
-			]);
-		}
-
-		return back()->with('tsuccess', 'Comment successfully sent!');
-	}
-
-	public function postByUser($slug)
-	{
-		$user = User::where('slug', $slug)->firstOrFail();
-
-		if (!$user) {
-			abort(404);
-		}
-
-		$posts = $user->posts()->with(['user', 'comments'])->latest()->paginate(4);
-
-		$sidebarData = getSidebarData();
-
-		return view('post-by-user', compact('user', 'posts'), $sidebarData);
-	}
+    return view('post-by-user', compact('user', 'posts'), $sidebarData);
+  }
 }

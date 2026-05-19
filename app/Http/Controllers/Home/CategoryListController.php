@@ -1,27 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Home;
 
-use App\Models\Categories;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 
 class CategoryListController extends Controller
 {
-	public function show($category)
-	{
-		$category = Categories::where('name', $category)->firstOrFail();
+  public function show($category)
+  {
+    $category = Category::where('name', $category)->firstOrFail();
 
-		$posts = $category->posts()
-			->with(['user'])
-			->where('active', 1)
-			->latest()
-			->withCount('comments')
-			->paginate(4);
+    $posts = $category
+      ->posts()
+      ->with(['user', 'category', 'media'])
+      ->where('status', 'published')
+      ->latest()
+      ->withCount('comments')
+      ->paginate(4);
 
-		$sidebarData = getSidebarData();
+    $sidebarData = getSidebarData();
 
-		$posts->load('comments');
-
-		return view('category', compact('category', 'posts'), $sidebarData);
-	}
+    return view('category', compact('category', 'posts'), $sidebarData);
+  }
 }

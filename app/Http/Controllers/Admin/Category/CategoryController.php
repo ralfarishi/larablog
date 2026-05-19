@@ -1,66 +1,93 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin\Category;
 
-use App\Models\Categories;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class CategoryController extends Controller
 {
-	public function index(Request $request)
-	{
-		if ($request->ajax()) {
-			$model = Categories::with(['posts'])->latest();
-			return DataTables::of($model)
-				->addColumn('actions', function ($model) use ($request) {
-					$id = $model->id;
-					$link = $request->url() . '/' . $id;
-					return '
-						<div class="d-flex align-items-center">
-							<a href="" data-delete-url="' . $link . '" class="btn btn-danger btn-sm mx-auto delete-data" data-bs-toggle="modal" data-bs-target="#deleteModal"><span class="bi bi-trash-fill"></span></a>
-						</div>
-					';
-				})
-				->addColumn('total_posts', function ($model) use ($request) {
-					return $model->posts->count();
-				})
-				->addColumn('icon', function ($model) use ($request) {
-					return '<i class="' . $model->icon . '"></i>';
-				})
-				->rawColumns(['actions', 'icon'])
-				->make(true);
-		}
+  public function index(): View
+  {
+    return view('admin.categories.list');
+  }
 
-		return view('admin.categories.list');
-	}
+  public function create(): View
+  {
+    return view('admin.categories.create');
+  }
 
-	public function create()
-	{
-		return view('admin.categories.create');
-	}
+  public function store(CategoryRequest $request): RedirectResponse
+  {
+    $data = $request->validated();
+    Category::create($data);
+    Cache::forget('sidebar_data');
+    return to_route('category.index')->with('success', 'Category has been created.');
+  }
 
-	public function store(CategoryRequest $request)
-	{
-		$data = $request->validated();
+  public function edit(string $id): View
+  {
+    $category = Category::findOrFail($id);
+    return view('admin.categories.edit', compact('category'));
+  }
 
-		Categories::create($data);
+  public function update(CategoryRequest $request, string $id): RedirectResponse
+  {
+    $category = Category::findOrFail($id);
+    $data = $request->validated();
+    $category->update($data);
+    Cache::forget('sidebar_data');
+    return to_route('category.index')->with('info', 'Category has been updated.');
+  }
 
-		return to_route('category.index')->with('success', 'Category has been created.');
-	}
+  public function destroy(Request $request, string $id): JsonResponse|RedirectResponse
+  {
+    $category = Category::findOrFail($id);
+    $reassignToId = $request->input('reassign_to');
 
-	public function destroy($id)
-	{
-		$category = Categories::findOrfail($id);
+    try {
+      DB::transaction(function () use ($category, $reassignToId) {
+        if ($category->posts()->count() > 0) {
+          if (!$reassignToId) {
+            throw new \Exception('Please select a replacement category for the existing articles.');
+          }
 
-		if ($category->posts->count() > 0) {
-			return to_route('category.index')->with('warning', 'Cannot delete category that has a related article.');
-		}
+          $category->posts()->update(['category_id' => $reassignToId]);
+        }
 
-		$category->delete();
+        $category->delete();
+      });
 
-		return to_route('category.index')->with('danger', 'Category has been deleted.');
-	}
+      if ($request->expectsJson()) {
+        return response()->json([
+          'success' => true,
+          'message' => 'Category removed and articles reassigned successfully.',
+        ]);
+      }
+
+      Cache::forget('sidebar_data');
+      return to_route('category.index')->with('danger', 'Category has been deleted.');
+    } catch (\Exception $e) {
+      if ($request->expectsJson()) {
+        return response()->json(
+          [
+            'success' => false,
+            'message' => $e->getMessage(),
+          ],
+          422,
+        );
+      }
+
+      return back()->with('warning', $e->getMessage());
+    }
+  }
 }

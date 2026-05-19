@@ -1,52 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-
+use App\Notifications\NewUserRegistered;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-	/**
-	 * Display the registration view.
-	 */
-	public function create(): View
-	{
-		return view('auth.register');
-	}
+  public function create(): View
+  {
+    return view('auth.register');
+  }
 
-	/**
-	 * Handle an incoming registration request.
-	 *
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
-	public function store(UserRequest $request): RedirectResponse
-	{
-		$data = $request->validated();
+  public function store(RegisterRequest $request): RedirectResponse
+  {
+    $validated = $request->validated();
 
-		$data['slug'] = Str::slug($request->name);
-		$data['password'] = Hash::make($request->password);
+    $randomBg = sprintf('%06X', random_int(0, 0xffffff));
 
-		$randomHexColor = sprintf('%06X', rand(0, 0xFFFFFF));
-		$defaultDisplayPicture = 'https://ui-avatars.com/api/?name=' . Str::slug($request->name, '+') . '&size=100&color=fff&background=' . $randomHexColor;
+    $user = User::create([
+      'name' => $validated['name'],
+      'email' => $validated['email'],
+      'role' => 'reader', // always default; role cannot be self-assigned at registration
+      'password' => $validated['password'], // auto-hashed by 'hashed' cast
+      'slug' => Str::slug($validated['name']),
+      'display_picture' =>
+        'https://ui-avatars.com/api/?name=' .
+        Str::slug($validated['name'], '+') .
+        '&size=100&color=fff&background=' .
+        $randomBg,
+    ]);
 
-		$data['display_picture'] = $defaultDisplayPicture;
+    // Notify admin of new registration
+    $admin = User::where('role', 'admin')->first();
+    $admin?->notify(new NewUserRegistered($user));
 
-		$user = User::create($data);
+    event(new Registered($user));
 
-		event(new Registered($user));
-
-		// Auth::login($user);
-
-		// return redirect(RouteServiceProvider::HOME);
-
-		return to_route('login')->with('tsuccess', 'Account has been created!');
-	}
+    return to_route('login')->with('tsuccess', 'Account created! You can now sign in.');
+  }
 }
