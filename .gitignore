@@ -18,10 +18,11 @@ yarn-error.log
 /.idea
 /.vscode
 
+.agents
 /public/uploads/
 
-/resources/views/admin/gallery
-/resources/views/admin/tags
-/resources/views/admin/contact
+GEMINI.md
+TODO.md
+skills-lock.json
 
-/resources/views/profile
+stress-test.cjs
