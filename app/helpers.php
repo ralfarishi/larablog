@@ -24,7 +24,13 @@ function getSidebarData(): array
       'categories' => Category::withCount([
         'posts' => fn($q) => $q->where('status', 'published'),
       ])->get(),
-      'tags' => Tag::withCount(['posts' => fn($q) => $q->where('status', 'published')])->get(),
+      // Only show tags that have at least one published article.
+      // whereHas filters efficiently without a HAVING clause (cross-DB compatible).
+      'tags' => Tag::whereHas('posts', fn($q) => $q->where('status', 'published'))
+        ->withCount(['posts' => fn($q) => $q->where('status', 'published')])
+        ->orderByDesc('posts_count')
+        ->take(8)
+        ->get(),
     ];
   });
 }

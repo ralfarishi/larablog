@@ -49,7 +49,7 @@
       </h3>
       <div class="flex flex-wrap gap-2">
         @if (!$tags->isEmpty())
-          @foreach ($tags->take(8) as $tag)
+          @foreach ($tags as $tag)
             <a
               href="{{ route('post-by-tag', $tag->slug) }}"
               class="text-muted-foreground hover:text-foreground ring-border hover:ring-primary hover:bg-primary/5 inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-semibold ring-1 transition-all"

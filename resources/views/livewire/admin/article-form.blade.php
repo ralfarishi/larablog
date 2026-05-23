@@ -1,6 +1,53 @@
-<form wire:submit.prevent="save" class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-  <!-- Main Form Area -->
-  <div class="space-y-8 lg:col-span-2">
+<div class="space-y-6">
+  <!-- Workspace Control Bar -->
+  <div class="flex items-center justify-between border-b border-border/60 pb-4">
+    <div>
+      <h3 class="text-foreground text-xl font-bold tracking-tight">
+        @if($post)
+          Edit <span class="text-primary">Article</span>
+        @else
+          Create <span class="text-primary">Article</span>
+        @endif
+      </h3>
+    </div>
+    <div class="bg-muted flex items-center gap-1 rounded-xl p-1 shadow-sm">
+      <button
+        type="button"
+        wire:click="$set('editorMode', 'write')"
+        class="flex items-center gap-2 px-4 py-2 text-xs font-black tracking-widest uppercase rounded-lg transition-all active:scale-95 {{ $editorMode === 'write' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-card hover:text-foreground' }}"
+      >
+        <i class="ph ph-pencil-simple text-sm"></i> Write
+      </button>
+      <button
+        type="button"
+        wire:click="$set('editorMode', 'split')"
+        class="flex items-center gap-2 px-4 py-2 text-xs font-black tracking-widest uppercase rounded-lg transition-all active:scale-95 {{ $editorMode === 'split' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-card hover:text-foreground' }}"
+      >
+        <i class="ph ph-columns text-sm"></i> Split
+      </button>
+      <button
+        type="button"
+        wire:click="$set('editorMode', 'preview')"
+        class="flex items-center gap-2 px-4 py-2 text-xs font-black tracking-widest uppercase rounded-lg transition-all active:scale-95 {{ $editorMode === 'preview' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-card hover:text-foreground' }}"
+      >
+        <i class="ph ph-eye text-sm"></i> Preview
+      </button>
+    </div>
+  </div>
+
+  <form wire:submit.prevent="save" @class([
+      'grid grid-cols-1 gap-8',
+      'lg:grid-cols-3' => $editorMode === 'write',
+      'lg:grid-cols-2' => $editorMode === 'split',
+      'grid-cols-1' => $editorMode === 'preview',
+  ])>
+    <!-- Main Form Area -->
+    <div @class([
+        'space-y-8',
+        'lg:col-span-2' => $editorMode === 'write',
+        'lg:col-span-1' => $editorMode === 'split',
+        'hidden' => $editorMode === 'preview',
+    ])>
     <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10">
       <div class="space-y-6">
         <!-- Title -->
@@ -31,8 +78,36 @@
     </div>
   </div>
 
+  <!-- Live Preview Area -->
+  <div @class([
+      'space-y-8',
+      'lg:col-span-1' => $editorMode === 'split',
+      'w-full' => $editorMode === 'preview',
+      'hidden' => $editorMode === 'write',
+  ])>
+    <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10 min-h-[500px] flex flex-col">
+      <h4 class="text-muted-foreground mb-6 flex items-center gap-2 text-sm font-bold tracking-widest uppercase">
+        <i class="ph ph-eye text-primary text-xl"></i>
+        Live Preview
+      </h4>
+
+      {{-- Preview Title --}}
+      <h1 class="text-foreground text-3xl font-black tracking-tight mb-6">
+        {{ $title ?: 'Untitled Article' }}
+      </h1>
+
+      {{-- Rendered Content --}}
+      <div class="prose dark:prose-invert prose-headings:font-black prose-headings:tracking-tight prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline prose-p:text-foreground/90 prose-p:leading-relaxed prose-p:mb-8 prose-img:rounded-[2.5rem] prose-img:shadow-2xl prose-img:w-full prose-li:text-foreground/90 prose-li:mb-2 prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:text-lg prose-blockquote:font-medium prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-3xl prose-code:text-primary prose-code:bg-primary/10 prose-code:px-2 prose-code:py-1.5 prose-code:rounded-xl prose-code:before:hidden prose-code:after:hidden prose-pre:bg-card prose-pre:ring-1 prose-pre:ring-border prose-pre:text-foreground prose-pre:rounded-2xl prose-strong:font-black max-w-none flex-1 overflow-y-auto">
+        {!! \App\Support\ContentRenderer::render($content) !!}
+      </div>
+    </div>
+  </div>
+
   <!-- Sidebar Options -->
-  <div class="flex flex-col gap-8">
+  <div @class([
+      'flex flex-col gap-8',
+      'hidden' => $editorMode !== 'write',
+  ])>
     <!-- Publishing Box -->
     <div class="bg-card ring-border overflow-hidden rounded-[2.5rem] p-8 shadow-sm ring-1">
       <h4
@@ -75,7 +150,7 @@
           <div class="grid grid-cols-2 gap-3">
             <!-- Status -> Published -->
             <label class="group relative cursor-pointer">
-              <input type="radio" wire:model.live="status" value="published" class="peer sr-only" />
+              <input type="radio" wire:model="status" value="published" class="peer sr-only" />
               <div
                 class="border-border bg-card text-muted-foreground group-hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:shadow-primary/10 flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 p-3 shadow-sm transition-all"
               >
@@ -86,7 +161,7 @@
 
             <!-- Status -> Draft -->
             <label class="group relative cursor-pointer">
-              <input type="radio" wire:model.live="status" value="draft" class="peer sr-only" />
+              <input type="radio" wire:model="status" value="draft" class="peer sr-only" />
               <div
                 class="border-border bg-card text-muted-foreground group-hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:shadow-primary/10 flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 p-3 shadow-sm transition-all"
               >
@@ -108,7 +183,7 @@
             <label class="group relative cursor-pointer">
               <input
                 type="radio"
-                wire:model.live="allowed_comment"
+                wire:model="allowed_comment"
                 value="1"
                 class="peer sr-only"
               />
@@ -124,7 +199,7 @@
             <label class="group relative cursor-pointer">
               <input
                 type="radio"
-                wire:model.live="allowed_comment"
+                wire:model="allowed_comment"
                 value="0"
                 class="peer sr-only"
               />
@@ -244,3 +319,4 @@
     </div>
   </div>
 </form>
+</div>

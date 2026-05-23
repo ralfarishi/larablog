@@ -75,13 +75,13 @@
     <table class="w-full border-collapse text-left">
       <thead>
         <tr class="bg-muted/30">
-          <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             #
           </th>
           <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             Category Name
           </th>
-          <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th class="hidden md:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             Slug
           </th>
           <th
@@ -102,7 +102,7 @@
             wire:key="category-{{ $category->id }}"
             class="group hover:bg-muted/20 transition-colors"
           >
-            <td class="text-muted-foreground px-6 py-4 text-sm font-bold">
+            <td class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-sm font-bold">
               {{ $categories->firstItem() + $index }}
             </td>
             <td class="px-6 py-4">
@@ -139,7 +139,7 @@
                 </div>
               @endif
             </td>
-            <td class="text-foreground px-6 py-4 text-sm font-medium italic">
+            <td class="hidden md:table-cell text-foreground px-6 py-4 text-sm font-medium italic">
               /{{ $category->slug }}
             </td>
             <td class="px-6 py-4 text-center">

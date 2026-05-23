@@ -8,11 +8,12 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Services\TagService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Context;
-use Illuminate\Support\Str;
 
 class ArticleForm extends Component
 {
@@ -26,6 +27,7 @@ class ArticleForm extends Component
   public $allowed_comment = true;
   public string $status = 'draft';
   public ?int $category_id = null;
+  public string $editorMode = 'write';
 
   public array $availableTags = [];
 
@@ -50,19 +52,23 @@ class ArticleForm extends Component
   public function mount(?Post $post = null)
   {
     $this->post = $post;
-    $this->availableTags = Tag::pluck('name')->all();
+    // Cache the tags list to avoid querying every time the form loads
+    $this->availableTags = Cache::remember(
+      'article_form_tags',
+      3600,
+      fn () => Tag::orderBy('name')->pluck('name')->all()
+    );
 
     if ($this->post) {
       $this->title = $this->post->title;
       $this->content = $this->post->content;
-      $this->tags = $this->post->tags instanceof \Illuminate\Support\Collection
-        ? $this->post->tags->pluck('name')->implode(',')
-        : (string) $this->post->tags;
+      // Always load from the pivot relation — avoids the legacy string column ambiguity
+      $this->tags = $this->post->tags()->pluck('name')->implode(',');
       $this->allowed_comment = (bool) $this->post->allowed_comment;
       $this->status = $this->post->status;
       $this->category_id = $this->post->category_id;
     } else {
-      $this->category_id = Category::first()?->id;
+      $this->category_id = Category::select('id')->first()?->id;
     }
   }
 
@@ -82,14 +88,14 @@ class ArticleForm extends Component
       ]);
 
       $data = [
-        'title' => $this->title,
-        'slug' => Str::slug($this->title),
-        'content' => $this->content,
+        'title'           => $this->title,
+        'slug'            => Str::slug($this->title),
+        'content'         => $this->content,
         'allowed_comment' => (bool) $this->allowed_comment,
-        'status' => $this->status,
-        'tags' => $this->tags,
-        'category_id' => $this->category_id,
-        'user_id' => auth()->id(),
+        'status'          => $this->status,
+        'category_id'     => $this->category_id,
+        'user_id'         => auth()->id(),
+        // 'tags' is intentionally excluded — managed exclusively by TagService below
       ];
 
       if ($this->post) {
@@ -108,7 +114,8 @@ class ArticleForm extends Component
 
       $tagService->sync($post, $this->tags);
 
-      \Illuminate\Support\Facades\Cache::forget('sidebar_data');
+      Cache::forget('sidebar_data');
+      Cache::forget('article_form_tags'); // Tags list may have changed
 
       session()->flash('success', $message);
       return to_route('article.index');
@@ -127,8 +134,13 @@ class ArticleForm extends Component
 
   public function render()
   {
+    // Cache categories list; only re-queried every 30 min or when cleared
     return view('livewire.admin.article-form', [
-      'categories' => Category::all(),
+      'categories' => Cache::remember(
+        'all_categories',
+        1800,
+        fn () => Category::select('id', 'name')->orderBy('name')->get()
+      ),
     ]);
   }
 }

@@ -27,17 +27,17 @@
     <table class="w-full border-collapse text-left">
       <thead>
         <tr class="bg-muted/30">
-          <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             #
           </th>
           <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             User
           </th>
-          <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th class="hidden md:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             Email
           </th>
           <th
-            class="text-muted-foreground px-6 py-4 text-center text-xs font-black tracking-widest uppercase"
+            class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-center text-xs font-black tracking-widest uppercase"
           >
             Articles
           </th>
@@ -50,8 +50,8 @@
       </thead>
       <tbody class="divide-border divide-y">
         @forelse ($users as $index => $user)
-          <tr class="group hover:bg-muted/20 transition-colors">
-            <td class="text-muted-foreground px-6 py-4 text-sm font-bold">
+          <tr wire:key="user-{{ $user->id }}" class="group hover:bg-muted/20 transition-colors">
+            <td class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-sm font-bold">
               {{ $users->firstItem() + $index }}
             </td>
             <td class="px-6 py-4">
@@ -75,15 +75,12 @@
                 </div>
               </div>
             </td>
-            <td class="text-foreground px-6 py-4 text-sm font-medium italic">{{ $user->email }}</td>
-            <td class="px-6 py-4 text-center">
+            <td class="hidden md:table-cell text-foreground px-6 py-4 text-sm font-medium italic">{{ $user->email }}</td>
+            <td class="hidden sm:table-cell px-6 py-4 text-center">
               <span
                 class="bg-muted text-foreground inline-flex size-8 items-center justify-center rounded-lg text-xs font-black"
               >
-                {{
-                  $user->posts_count ??
-                    $user->posts()->count()
-                }}
+                {{ $user->posts_count ?? 0 }}
               </span>
             </td>
             <td class="px-6 py-4 text-right">

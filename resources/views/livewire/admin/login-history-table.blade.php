@@ -39,19 +39,19 @@
       <table class="w-full text-left">
         <thead>
           <tr class="text-muted-foreground text-[10px] font-black tracking-widest uppercase">
-            <th class="px-4 py-4">#</th>
+            <th class="hidden sm:table-cell px-4 py-4">#</th>
             <th class="px-4 py-4">Identity</th>
-            <th class="px-4 py-4">IP Address</th>
+            <th class="hidden sm:table-cell px-4 py-4">IP Address</th>
             <th class="px-4 py-4">Status</th>
             <th class="px-4 py-4">Login Time</th>
-            <th class="px-4 py-4">Logout Time</th>
-            <th class="px-4 py-4">Activity</th>
+            <th class="hidden md:table-cell px-4 py-4">Logout Time</th>
+            <th class="hidden lg:table-cell px-4 py-4">Activity</th>
           </tr>
         </thead>
         <tbody class="divide-border/50 divide-y">
           @forelse ($history as $row)
             <tr wire:key="{{ $row->id }}" class="group hover:bg-muted/10 transition-colors">
-              <td class="text-muted-foreground/50 px-4 py-5 text-sm font-bold">
+              <td class="hidden sm:table-cell text-muted-foreground/50 px-4 py-5 text-sm font-bold">
                 {{
                   ($history->currentPage() - 1) * $history->perPage() +
                     $loop->iteration
@@ -67,7 +67,7 @@
                   {{ $row->user_agent }}
                 </div>
               </td>
-              <td class="px-4 py-5">
+              <td class="hidden sm:table-cell px-4 py-5">
                 <code class="bg-muted text-foreground rounded px-2 py-1 font-mono text-xs">
                   {{ $row->ip_address }}
                 </code>
@@ -92,7 +92,7 @@
                   }}
                 </span>
               </td>
-              <td class="px-4 py-5">
+              <td class="hidden md:table-cell px-4 py-5">
                 <span class="text-muted-foreground text-sm font-medium">
                   {{
                     $row->logout_at
@@ -101,7 +101,7 @@
                   }}
                 </span>
               </td>
-              <td class="px-4 py-5">
+              <td class="hidden lg:table-cell px-4 py-5">
                 <span class="text-foreground text-sm font-bold">{{ $row->activity ?? '—' }}</span>
               </td>
             </tr>
