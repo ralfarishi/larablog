@@ -50,7 +50,11 @@ class PostTable extends Component
   public function render()
   {
     $posts = Post::query()
-      ->with(['user', 'category', 'tags'])
+      ->with([
+        'user:id,name,email',
+        'category:id,name',
+        'tags:id,name',
+      ])
       ->withCount(['comments', 'bookmarks'])
       ->when($this->search, function ($query) {
         $query

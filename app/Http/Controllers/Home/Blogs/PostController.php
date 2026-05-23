@@ -8,7 +8,6 @@ use App\Events\CommentPosted;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Bookmark;
-use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -23,43 +22,39 @@ class PostController extends Controller
 {
   public function show(string $slug): View
   {
-    $post = Post::where('slug', $slug)->where('status', 'published')->firstOrFail();
+    $post = Post::where('slug', $slug)
+      ->where('status', 'published')
+      ->with(['user:id,name,slug', 'category:id,name,slug', 'tags:id,name,slug'])
+      ->firstOrFail();
 
-    $activeComments = $post->comments()->where('active', true)->with('user.media')->get();
-    $totalComments = $activeComments->count();
-
-    $categories = Category::withCount([
-      'posts' => fn($q) => $q->where('status', 'published'),
-    ])->get();
-
-    $category = $post->category;
+    // Related posts via the proper tags pivot relationship (no LIKE full-table-scan)
+    // Use getRelation() instead of ->tags to bypass the legacy 'tags' string
+    // column on the Post model. Eloquent's getAttribute() returns the column
+    // value before checking loaded relations, so ->tags gives a string, not
+    // the BelongsToMany collection. getRelation() skips that ambiguity entirely.
+    $tagIds = $post->getRelation('tags')->pluck('id')->all();
     $relatedPosts = Post::where('status', 'published')
       ->where('id', '!=', $post->id)
-      ->where(function ($query) use ($post): void {
-        $tags = array_filter(array_map('trim', explode(',', (string) $post->tags)));
-        $query->where('category_id', $post->category_id)->orWhere(function ($q) use ($tags): void {
-          foreach ($tags as $tag) {
-            $q->orWhere('tags', 'LIKE', '%' . $tag . '%');
-          }
-        });
+      ->where(function ($query) use ($post, $tagIds): void {
+        $query->where('category_id', $post->category_id)
+          ->orWhereHas('tags', fn ($q) => $q->whereIn('tags.id', $tagIds));
       })
-      ->with(['category', 'user', 'media'])
+      ->with([
+        'category:id,name,slug',
+        'user:id,name,slug',
+        'media',
+      ])
       ->withCount('comments')
       ->latest()
       ->limit(3)
       ->get();
 
-    $postTags = explode(',', $post->tags);
-
-    // Fetch tags via pivot — avoids loading all posts into PHP memory
-    $tags = \App\Models\Tag::whereHas('posts', fn($q) => $q->where('status', 'published'))->get();
-
-    // SEO
-    $pTag = getParagraphTagOnly($post->content) ?? '';
+    // SEO — generate meta description from content
+    $pTag        = getParagraphTagOnly($post->content) ?? '';
     $firstPeriod = strpos($pTag, '.');
     $firstSentence = $firstPeriod !== false ? substr($pTag, 0, $firstPeriod + 1) : $pTag;
-    $canonicalUrl = url('/article/' . $post->slug);
-    $blogImage = $post->image_url;
+    $canonicalUrl  = url('/article/' . $post->slug);
+    $blogImage     = $post->image_url;
 
     SEOTools::setTitle($post->title);
     SEOTools::setDescription($firstSentence);
@@ -77,17 +72,14 @@ class PostController extends Controller
         ->where('post_id', $post->id)
         ->exists();
 
+    // Use the shared cached sidebar data instead of re-querying categories and tags
+    $sidebarData = getSidebarData();
+
     return view(
       'blog.post',
-      compact(
-        'post',
-        'activeComments',
-        'totalComments',
-        'relatedPosts',
-        'categories',
-        'postTags',
-        'tags',
-        'isBookmarked',
+      array_merge(
+        compact('post', 'relatedPosts', 'isBookmarked'),
+        $sidebarData,
       ),
     );
   }
@@ -96,13 +88,13 @@ class PostController extends Controller
     StoreCommentRequest $request,
     string $slug,
   ): RedirectResponse|JsonResponse {
-    $post = Post::where('slug', $slug)->firstOrFail();
+    $post   = Post::where('slug', $slug)->firstOrFail();
     $userId = $request->user()->id;
 
-    $data = $request->validated();
-    $data['user_id'] = $userId;
-    $data['post_id'] = $post->id;
-    $data['content'] = strip_tags($data['content']); // XSS guard
+    $data              = $request->validated();
+    $data['user_id']   = $userId;
+    $data['post_id']   = $post->id;
+    $data['content']   = strip_tags($data['content']); // XSS guard
 
     $comment = Comment::create($data);
     $comment->load('user', 'post');
@@ -116,19 +108,19 @@ class PostController extends Controller
     broadcast(new CommentPosted($comment))->toOthers();
 
     if ($request->expectsJson()) {
-      $user = $request->user();
+      $user   = $request->user();
       $avatar = filter_var($user->display_picture ?? '', FILTER_VALIDATE_URL)
         ? $user->display_picture
         : $user->profile_picture_url;
 
       return response()->json([
-        'id' => $comment->id,
-        'content' => $comment->content,
-        'created_at' => $comment->created_at->format('M d, Y'),
-        'user_id' => $user->id,
-        'user_name' => $user->name,
+        'id'          => $comment->id,
+        'content'     => $comment->content,
+        'created_at'  => $comment->created_at->format('M d, Y'),
+        'user_id'     => $user->id,
+        'user_name'   => $user->name,
         'user_avatar' => $avatar,
-        'user_role' => $user->role,
+        'user_role'   => $user->role,
       ]);
     }
 
@@ -137,11 +129,17 @@ class PostController extends Controller
 
   public function postByUser(string $slug): View
   {
-    $user = User::where('slug', $slug)->firstOrFail();
+    $user  = User::where('slug', $slug)->firstOrFail();
     $posts = $user
       ->posts()
       ->where('status', 'published')
-      ->with(['user', 'comments', 'category', 'media'])
+      ->select(['id', 'title', 'slug', 'status', 'user_id', 'category_id', 'created_at'])
+      ->with([
+        'user:id,name,slug',
+        'category:id,name,slug',
+        'media',
+      ])
+      ->withCount('comments')
       ->latest()
       ->paginate(4);
 

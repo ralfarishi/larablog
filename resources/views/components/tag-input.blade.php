@@ -15,7 +15,7 @@
 />
 
 {{-- Wrapper with autocomplete dropdown --}}
-<div class="relative" id="{{ $id }}-root">
+<div class="relative" id="{{ $id }}-root" wire:ignore>
   {{-- Visual tag input container --}}
   <div
     id="{{ $id }}-wrapper"

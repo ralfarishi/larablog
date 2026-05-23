@@ -22,7 +22,6 @@ class PostFactory extends Factory
       'slug' => fake()->unique()->slug(),
       'content' => fake()->paragraphs(3, true),
       'image' => null,
-      'tags' => implode(',', fake()->words(3)),
       'user_id' => \App\Models\User::factory(),
       'category_id' => \App\Models\Category::factory(),
       'allowed_comment' => fake()->boolean(),

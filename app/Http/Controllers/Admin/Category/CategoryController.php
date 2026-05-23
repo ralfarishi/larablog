@@ -31,6 +31,7 @@ class CategoryController extends Controller
     $data = $request->validated();
     Category::create($data);
     Cache::forget('sidebar_data');
+    Cache::forget('all_categories');
     return to_route('category.index')->with('success', 'Category has been created.');
   }
 
@@ -46,6 +47,7 @@ class CategoryController extends Controller
     $data = $request->validated();
     $category->update($data);
     Cache::forget('sidebar_data');
+    Cache::forget('all_categories');
     return to_route('category.index')->with('info', 'Category has been updated.');
   }
 
@@ -75,6 +77,7 @@ class CategoryController extends Controller
       }
 
       Cache::forget('sidebar_data');
+      Cache::forget('all_categories');
       return to_route('category.index')->with('danger', 'Category has been deleted.');
     } catch (\Exception $e) {
       if ($request->expectsJson()) {

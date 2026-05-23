@@ -14,6 +14,7 @@ use App\Services\TagService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -41,8 +42,10 @@ class PostController extends Controller
     $data['user_id'] = $request->user()->id;
     $data['slug'] = Str::slug($data['title']);
 
-    $image = $request->file('image');
-    unset($data['image']);
+    $image   = $request->file('image');
+    $tagInput = $data['tags'] ?? '';
+    // Remove fields not on the posts table before insert
+    unset($data['image'], $data['tags']);
 
     $data['allowed_comment'] = filter_var($data['allowed_comment'], FILTER_VALIDATE_BOOLEAN);
 
@@ -53,9 +56,11 @@ class PostController extends Controller
       $post->addMedia($image)->toMediaCollection('cover');
     }
 
-    if (!empty($data['tags'])) {
-      $this->tagService->sync($post, $data['tags']);
+    if (!empty($tagInput)) {
+      $this->tagService->sync($post, $tagInput);
     }
+
+    Cache::forget('sidebar_data');
 
     return to_route('article.index')->with('success', 'Article has been created.');
   }
@@ -77,16 +82,21 @@ class PostController extends Controller
     $data['slug'] = Str::slug($data['title']);
     $data['allowed_comment'] = filter_var($data['allowed_comment'], FILTER_VALIDATE_BOOLEAN);
 
+    $tagInput = $data['tags'] ?? '';
+    // Remove fields not on the posts table before update
+    unset($data['image'], $data['tags']);
+
     if ($request->hasFile('image')) {
       $post->addMedia($request->file('image'))->toMediaCollection('cover');
     }
 
-    unset($data['image']);
     $post->update($data);
 
-    if (!empty($data['tags'])) {
-      $this->tagService->sync($post, $data['tags']);
+    if (!empty($tagInput)) {
+      $this->tagService->sync($post, $tagInput);
     }
+
+    Cache::forget('sidebar_data');
 
     return to_route('article.index')->with('info', 'Article has been updated.');
   }

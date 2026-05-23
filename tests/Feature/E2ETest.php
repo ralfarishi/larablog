@@ -249,4 +249,52 @@ class E2ETest extends TestCase
 
     $this->assertDatabaseMissing('comments', ['id' => $comment->id]);
   }
+
+  /**
+   * CUJ 7: PostTable renders correctly with tag relationships
+   *
+   * Regression test for the tags column vs. tags() BelongsToMany ambiguity.
+   * The Post model has BOTH a legacy string column 'tags' AND a tags() pivot
+   * relationship. Eloquent returns the string column via getAttribute() before
+   * checking loaded relations. This test ensures PostTable uses getRelation('tags')
+   * and does not crash with "Call to a member function take() on string".
+   */
+  public function test_post_table_renders_with_tag_relationships(): void
+  {
+    $admin = User::factory()->create(['role' => 'admin']);
+    $category = Category::factory()->create();
+
+    $tag1 = Tag::factory()->create(['name' => 'laravel']);
+    $tag2 = Tag::factory()->create(['name' => 'php']);
+    $tag3 = Tag::factory()->create(['name' => 'performance']);
+
+    // Post with tags — exercises the getRelation('tags') path in post-table.blade.php
+    $post = Post::factory()->create([
+      'title'       => 'Tagged Article',
+      'status'      => 'published',
+      'user_id'     => $admin->id,
+      'category_id' => $category->id,
+    ]);
+    $post->tags()->attach([$tag1->id, $tag2->id, $tag3->id]);
+
+    // Post with no tags — exercises the empty tags path
+    Post::factory()->create([
+      'title'       => 'Untagged Article',
+      'status'      => 'draft',
+      'user_id'     => $admin->id,
+      'category_id' => $category->id,
+    ]);
+
+    $this->actingAs($admin)->get('/');
+
+    // Should render without "Call to a member function take() on string" exception
+    Livewire::actingAs($admin)
+      ->test(\App\Livewire\Admin\PostTable::class)
+      ->assertSee('Tagged Article')
+      ->assertSee('Untagged Article')
+      ->assertSee('#laravel')
+      ->assertSee('#php')
+      // tag3 should be shown as "+1" overflow since we only show first 2
+      ->assertSee('+1');
+  }
 }

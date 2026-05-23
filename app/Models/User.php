@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -21,7 +20,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements HasMedia
 {
-  use HasApiTokens, HasFactory, HasMediaUrlAttribute, Notifiable, InteractsWithMedia;
+  use HasFactory, HasMediaUrlAttribute, Notifiable, InteractsWithMedia;
 
   protected function casts(): array
   {
@@ -44,7 +43,7 @@ class User extends Authenticatable implements HasMedia
 
   public function registerMediaConversions(?Media $media = null): void
   {
-    $this->addMediaConversion('preview')->fit(Fit::Crop, 300, 300)->nonQueued();
+    $this->addMediaConversion('preview')->fit(Fit::Crop, 300, 300);
   }
 
   public function getProfilePictureUrlAttribute(): string

@@ -313,6 +313,7 @@
         modalType: '',
         modalValue: '',
         modalTitle: '',
+        debounceTimeout: null,
         init() {
           const id = config.id;
           const inputEl = document.getElementById('tiptap-input-' + id);
@@ -337,9 +338,14 @@
             const content = document.getElementById('tiptap-input-' + id).value;
             localStorage.setItem('draft-' + id, content);
 
-            // Livewire sync
+            // Livewire sync with 400ms debounce
             if (window.Livewire && config.wireModel) {
-              this.$wire.set(config.wireModel, content);
+              if (this.debounceTimeout) {
+                clearTimeout(this.debounceTimeout);
+              }
+              this.debounceTimeout = setTimeout(() => {
+                this.$wire.set(config.wireModel, content);
+              }, 400);
             }
           };
 

@@ -24,7 +24,6 @@ use App\Traits\HasMediaUrlAttribute;
     'slug',
     'content',
     'image',
-    'tags',
     'user_id',
     'category_id',
     'allowed_comment',
@@ -78,10 +77,10 @@ class Post extends Model implements HasMedia
 
   public function registerMediaConversions(?Media $media = null): void
   {
-    // Fit::Contain to ensure full image sizing as requested in TODO Point 1
-    $this->addMediaConversion('thumb')->fit(Fit::Contain, 400, 225)->nonQueued();
-
-    $this->addMediaConversion('preview')->fit(Fit::Contain, 1200, 630)->nonQueued();
+    // Conversions are queued (async) to avoid blocking the HTTP response.
+    // Ensure QUEUE_CONNECTION != sync in .env for this to work.
+    $this->addMediaConversion('thumb')->fit(Fit::Contain, 400, 225);
+    $this->addMediaConversion('preview')->fit(Fit::Contain, 1200, 630);
   }
 
   /**
@@ -95,6 +94,33 @@ class Post extends Model implements HasMedia
       legacyColumn: $this->image,
       fallback: 'https://placehold.co/1200x630?text=No+Image',
     );
+  }
+
+  /**
+   * Get the estimated reading time in minutes.
+   * Returns the persisted DB value when available; computes on the fly only
+   * as a fallback (e.g. on freshly created models before the observer fires).
+   */
+  public function getReadingTimeAttribute(): int
+  {
+    // Use the stored column if it has been persisted
+    if ($this->attributes['reading_time'] ?? null) {
+      return (int) $this->attributes['reading_time'];
+    }
+
+    $plainText = strip_tags(\App\Support\ContentRenderer::render($this->content));
+    $wordCount = str_word_count($plainText);
+    return (int) max(1, ceil($wordCount / 200));
+  }
+
+  /**
+   * Get the engagement score for the post.
+   */
+  public function getEngagementScoreAttribute(): int
+  {
+    $bookmarksCount = $this->bookmarks_count ?? $this->bookmarks()->count();
+    $commentsCount = $this->comments_count ?? $this->comments()->count();
+    return ($bookmarksCount * 2) + $commentsCount;
   }
 
   public function user(): BelongsTo
@@ -119,7 +145,7 @@ class Post extends Model implements HasMedia
 
   public function tags(): BelongsToMany
   {
-    return $this->belongsToMany(Tag::class);
+    return $this->belongsToMany(Tag::class)->withTimestamps();
   }
 
   /**

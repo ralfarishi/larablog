@@ -19,7 +19,8 @@ class PreviewController extends Controller
       return to_route('article.index')->with('warning', "Can't preview a published article.");
     }
 
-    $tags = array_filter(array_map('trim', explode(',', (string) $post->tags)));
+    // Load tags from the pivot relation (not the legacy string column)
+    $tags = $post->tags()->orderBy('name')->get();
 
     return view('blog.preview', compact('post', 'tags'));
   }
