@@ -29,12 +29,26 @@
     @if ($results && count($results) > 0)
       <div class="grid grid-cols-1 gap-10">
         @foreach ($results as $post)
+          @php
+            $safeQuery   = e($query);
+            $safeTitle   = e($post->title);
+            $safeExcerpt = e(str(strip_tags((string) getParagraphTagOnly($post->content)))->limit(100));
+            $highlightedTitle   = $safeQuery !== ''
+              ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeTitle)
+              : $safeTitle;
+            $highlightedExcerpt = $safeQuery !== ''
+              ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeExcerpt)
+              : $safeExcerpt;
+          @endphp
           <article
+            wire:key="result-{{ $post->id }}"
             class="bg-card ring-border group flex flex-col overflow-hidden rounded-[2.5rem] shadow-sm ring-1 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl md:flex-row"
           >
             <div class="bg-muted/50 aspect-video w-full overflow-hidden md:aspect-auto md:w-1/3">
               <img
                 src="{{ $post->image_url }}"
+                alt="{{ e($post->title) }}"
+                loading="lazy"
                 class="h-full w-full object-contain transition-transform duration-700 group-hover:scale-110"
               />
             </div>
@@ -56,24 +70,10 @@
               <h2
                 class="text-foreground group-hover:text-primary mb-4 text-2xl leading-tight font-black transition-colors md:text-3xl"
               >
-                <a href="{{ route('post', $post->slug) }}">
-                  {!!
-                    str_ireplace(
-                      $query,
-                      "<mark>$query</mark>",
-                      $post->title,
-                    )
-                  !!}
-                </a>
+                <a href="{{ route('post', $post->slug) }}">{!! $highlightedTitle !!}</a>
               </h2>
               <p class="text-muted-foreground mb-6 line-clamp-2 font-medium">
-                {!!
-                  str_ireplace(
-                    $query,
-                    "<mark>$query</mark>",
-                    str(strip_tags((string) getParagraphTagOnly($post->content)))->limit(100),
-                  )
-                !!}
+                {!! $highlightedExcerpt !!}
               </p>
               <div class="flex items-center gap-3">
                 <span class="text-foreground text-xs font-black">
