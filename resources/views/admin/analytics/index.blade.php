@@ -48,7 +48,7 @@
           : 'text-muted-foreground bg-muted');
     @endphp
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {{-- Published Posts --}}
       <div
         class="bg-card ring-border hover:shadow-primary/5 group cursor-default rounded-[2.5rem] p-8 shadow-sm ring-1 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg"
@@ -145,6 +145,44 @@
         <div class="text-foreground text-4xl font-black">{{ $idleDrafts->count() }}</div>
         <p class="text-muted-foreground mt-1 text-xs font-medium">unpublished 7+ days</p>
       </div>
+
+      {{-- Average Reading Time --}}
+      <div
+        class="bg-card ring-border hover:shadow-primary/5 group cursor-default rounded-[2.5rem] p-8 shadow-sm ring-1 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg"
+      >
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="flex h-14 w-14 items-center justify-center rounded-3xl bg-sky-500/10 text-sky-500 transition-transform duration-300 group-hover:scale-110"
+          >
+            <i class="ph ph-timer text-3xl"></i>
+          </div>
+        </div>
+        <h4 class="text-muted-foreground mb-1 text-sm font-bold tracking-widest uppercase">
+          Avg Reading Time
+        </h4>
+        <div class="text-foreground text-4xl font-black">
+          {{ $avgReadingTime }} <span class="text-lg font-bold text-muted-foreground">mins</span>
+        </div>
+        <p class="text-muted-foreground mt-1 text-xs font-medium">per published post</p>
+      </div>
+
+      {{-- Average Engagement --}}
+      <div
+        class="bg-card ring-border hover:shadow-primary/5 group cursor-default rounded-[2.5rem] p-8 shadow-sm ring-1 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-lg"
+      >
+        <div class="mb-6 flex items-start justify-between">
+          <div
+            class="flex h-14 w-14 items-center justify-center rounded-3xl bg-rose-500/10 text-rose-500 transition-transform duration-300 group-hover:scale-110"
+          >
+            <i class="ph ph-fire text-3xl"></i>
+          </div>
+        </div>
+        <h4 class="text-muted-foreground mb-1 text-sm font-bold tracking-widest uppercase">
+          Avg Engagement
+        </h4>
+        <div class="text-foreground text-4xl font-black">{{ $avgEngagement }}</div>
+        <p class="text-muted-foreground mt-1 text-xs font-medium">(bookmarks * 2) + comments</p>
+      </div>
     </div>
 
     {{-- Chart + Top Posts --}}
@@ -197,72 +235,142 @@
       </div>
     </div>
 
-    {{-- Idle Drafts Table --}}
-    @if ($idleDrafts->isNotEmpty())
-      <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10">
-        <div class="mb-8 flex items-center justify-between">
+    {{-- Bottom Grid: Idle Drafts & Activity Feed --}}
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      {{-- Idle Drafts Table --}}
+      <div class="lg:col-span-2">
+        <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10 h-full flex flex-col justify-between">
           <div>
-            <h4 class="text-foreground text-lg font-black">Idle Drafts</h4>
-            <p class="text-muted-foreground mt-1 text-xs font-bold tracking-widest uppercase">Unpublished for 7+ days</p>
+            <div class="mb-8 flex items-center justify-between">
+              <div>
+                <h4 class="text-foreground text-lg font-black">Idle Drafts</h4>
+                <p class="text-muted-foreground mt-1 text-xs font-bold tracking-widest uppercase">Unpublished for 7+ days</p>
+              </div>
+              @if ($idleDrafts->isNotEmpty())
+                <span
+                  class="rounded-xl bg-amber-500/10 px-3 py-1.5 text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase"
+                >
+                  Needs Attention
+                </span>
+              @endif
+            </div>
+            @if ($idleDrafts->isEmpty())
+              <div class="flex flex-col items-center justify-center py-16 text-center">
+                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500 mb-4">
+                  <i class="ph ph-check-circle text-4xl"></i>
+                </div>
+                <p class="text-foreground text-lg font-bold">All Clean!</p>
+                <p class="text-muted-foreground mt-1 text-sm">No idle drafts requiring immediate attention.</p>
+              </div>
+            @else
+              <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="border-border border-b text-left">
+                      <th
+                        class="text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
+                      >
+                        Title
+                      </th>
+                      <th
+                        class="hidden sm:table-cell text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
+                      >
+                        Author
+                      </th>
+                      <th
+                        class="hidden sm:table-cell text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
+                      >
+                        Last Updated
+                      </th>
+                      <th class="px-4 pb-4"></th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-border/50 divide-y">
+                    @foreach ($idleDrafts as $draft)
+                      <tr class="group hover:bg-muted/30 transition-colors">
+                        <td class="text-foreground px-4 py-4 text-sm font-medium">
+                          <span class="line-clamp-1">{{ $draft->title }}</span>
+                        </td>
+                        <td class="hidden sm:table-cell text-muted-foreground px-4 py-4 text-sm font-medium">
+                          {{ $draft->user->name ?? '—' }}
+                        </td>
+                        <td class="hidden sm:table-cell text-muted-foreground px-4 py-4 text-sm font-medium">
+                          <time
+                            datetime="{{ $draft->updated_at }}"
+                            >{{ $draft->updated_at->diffForHumans() }}</time
+                          >
+                        </td>
+                        <td class="px-4 py-4 text-right">
+                          <a
+                            href="{{ route('article.edit', $draft) }}"
+                            class="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 active:scale-95"
+                          >
+                            <i class="ph ph-pencil-simple"></i> Edit
+                          </a>
+                        </td>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+            @endif
           </div>
-          <span
-            class="rounded-xl bg-amber-500/10 px-3 py-1.5 text-[10px] font-black tracking-[0.2em] text-amber-500 uppercase"
-          >
-            Needs Attention
-          </span>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full border-collapse">
-            <thead>
-              <tr class="border-border border-b text-left">
-                <th
-                  class="text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
-                >
-                  Title
-                </th>
-                <th
-                  class="text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
-                >
-                  Author
-                </th>
-                <th
-                  class="text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
-                >
-                  Last Updated
-                </th>
-                <th class="px-4 pb-4"></th>
-              </tr>
-            </thead>
-            <tbody class="divide-border/50 divide-y">
-              @foreach ($idleDrafts as $draft)
-                <tr class="group hover:bg-muted/30 transition-colors">
-                  <td class="text-foreground px-4 py-4 text-sm font-medium">
-                    <span class="line-clamp-1">{{ $draft->title }}</span>
-                  </td>
-                  <td class="text-muted-foreground px-4 py-4 text-sm font-medium">
-                    {{ $draft->user->name ?? '—' }}
-                  </td>
-                  <td class="text-muted-foreground px-4 py-4 text-sm font-medium">
-                    <time
-                      datetime="{{ $draft->updated_at }}"
-                      >{{ $draft->updated_at->diffForHumans() }}</time
-                    >
-                  </td>
-                  <td class="px-4 py-4 text-right">
-                    <a
-                      href="{{ route('article.edit', $draft) }}"
-                      class="bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-black tracking-widest uppercase transition-all duration-300 active:scale-95"
-                    >
-                      <i class="ph ph-pencil-simple"></i> Edit
-                    </a>
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
         </div>
       </div>
-    @endif
+
+      {{-- Platform Activity Feed --}}
+      <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10">
+        <h4 class="text-foreground mb-1 text-lg font-black">Platform Activity</h4>
+        <p class="text-muted-foreground mb-8 text-xs font-bold tracking-widest uppercase">Recent events</p>
+        @if ($activityFeed->isEmpty())
+          <div class="flex flex-col items-center justify-center py-10 text-center">
+            <i class="ph ph-clock-counter-clockwise text-muted-foreground/20 mb-3 text-5xl"></i>
+            <p class="text-muted-foreground text-sm font-semibold">No recent activity.</p>
+          </div>
+        @else
+          <div class="relative pl-4 border-l border-border/70 space-y-6">
+            @foreach ($activityFeed as $activity)
+              @php
+                $classes = explode(' ', $activity['icon']);
+                $iconClass = implode(' ', array_filter($classes, fn($c) => str_starts_with($c, 'ph')));
+                $colorClasses = implode(' ', array_filter($classes, fn($c) => !str_starts_with($c, 'ph')));
+              @endphp
+              <div class="relative group flex items-start gap-4">
+                {{-- Dot indicator overlapping the timeline line --}}
+                <div class="absolute -left-[25px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-card bg-background">
+                  <div class="h-2 w-2 rounded-full bg-primary/70 group-hover:bg-primary transition-colors"></div>
+                </div>
+
+                {{-- Activity Icon --}}
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $colorClasses }} transition-transform duration-300 group-hover:scale-110">
+                  <i class="{{ $iconClass }} text-lg"></i>
+                </div>
+
+                {{-- Activity Description --}}
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="text-foreground text-sm font-bold truncate">
+                      {{ $activity['user'] }}
+                    </p>
+                    <time class="text-muted-foreground text-[10px] font-bold tracking-wider uppercase shrink-0">
+                      {{ $activity['time']->diffForHumans(null, true) }}
+                    </time>
+                  </div>
+                  <p class="text-muted-foreground mt-1 text-xs font-semibold leading-relaxed">
+                    {{ $activity['content'] }}
+                  </p>
+                  @if (!empty($activity['target']))
+                    <p class="text-primary mt-0.5 text-xs font-bold truncate">
+                      {{ $activity['target'] }}
+                    </p>
+                  @endif
+                </div>
+              </div>
+            @endforeach
+          </div>
+        @endif
+      </div>
+    </div>
   </div>
 @endsection
 

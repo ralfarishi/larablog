@@ -196,15 +196,13 @@
                 Story Tags
               </h4>
               <div class="flex flex-wrap gap-2">
-                @if (!empty(array_filter($tags)))
+                @if ($tags->isNotEmpty())
                   @foreach ($tags as $tag)
-                    @if (!empty($tag))
-                      <span
-                        class="bg-muted/40 text-muted-foreground ring-border/50 hover:bg-background hover:text-primary cursor-default rounded-xl px-4 py-2 text-[10px] font-black tracking-widest uppercase ring-1 transition-all"
-                      >
-                        #{{ trim($tag) }}
-                      </span>
-                    @endif
+                    <span
+                      class="bg-muted/40 text-muted-foreground ring-border/50 hover:bg-background hover:text-primary cursor-default rounded-xl px-4 py-2 text-[10px] font-black tracking-widest uppercase ring-1 transition-all"
+                    >
+                      #{{ $tag->name }}
+                    </span>
                   @endforeach
                 @endif
               </div>
