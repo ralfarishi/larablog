@@ -50,11 +50,11 @@
       style="top: 1.5rem; right: -1rem"
     >
       <i
-        class="ph-bold ph-caret-double-right transition-transform duration-300 toggle-icon-collapsed hidden"
+        class="ph-bold ph-caret-double-right toggle-icon-collapsed hidden transition-transform duration-300"
         x-show="sidebarCollapsed"
       ></i>
       <i
-        class="ph-bold ph-caret-double-left transition-transform duration-300 toggle-icon-expanded"
+        class="ph-bold ph-caret-double-left toggle-icon-expanded transition-transform duration-300"
         x-show="!sidebarCollapsed"
       ></i>
     </button>
@@ -73,7 +73,7 @@
     <ul class="flex-1 space-y-2">
       <li
         class="px-4 pb-2 transition-opacity duration-300"
-        :class="(sidebarCollapsed && !isMobile) ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+        :class="sidebarCollapsed && !isMobile ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
       >
         <span
           class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
@@ -85,7 +85,7 @@
         <a
           href="{{ route('dashboard') }}"
           class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('dashboard') ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-          :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+          :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
           title="Dashboard"
         >
           <i
@@ -104,7 +104,7 @@
 
       <li
         class="px-4 pt-6 pb-2 transition-opacity duration-300"
-        :class="(sidebarCollapsed && !isMobile) ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+        :class="sidebarCollapsed && !isMobile ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
       >
         <span
           class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
@@ -115,9 +115,9 @@
       <!-- Articles -->
       <li x-data="{ open: {{ request()->routeIs('article*') ? 'true' : 'false' }} }">
         <button
-          @click="(sidebarCollapsed && !isMobile) ? (sidebarCollapsed = false) : (open = !open)"
+          @click="sidebarCollapsed && !isMobile ? (sidebarCollapsed = false) : (open = !open)"
           class="w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('article*') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-          :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+          :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
           title="Articles"
         >
           <div class="flex items-center gap-4">
@@ -162,7 +162,7 @@
         <a
           href="{{ route('comment.index') }}"
           class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('comment.index') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-          :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+          :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
           title="Comments"
         >
           <i class="ph ph-chat-circle-dots text-xl"></i>
@@ -183,7 +183,7 @@
           <a
             href="{{ route('category.index') }}"
             class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('category.index') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-            :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+            :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
             title="Categories"
           >
             <i class="ph ph-bookmarks text-xl"></i>
@@ -202,9 +202,9 @@
           x-data="{ open: {{ request()->routeIs('user*') || request()->routeIs('login-history*') ? 'true' : 'false' }} }"
         >
           <button
-            @click="(sidebarCollapsed && !isMobile) ? (sidebarCollapsed = false) : (open = !open)"
+            @click="sidebarCollapsed && !isMobile ? (sidebarCollapsed = false) : (open = !open)"
             class="w-full flex items-center justify-between gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('user*') || request()->routeIs('login-history*') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-            :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+            :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
             title="User Control"
           >
             <div class="flex items-center gap-4">
@@ -249,7 +249,7 @@
           <a
             href="{{ route('analytics.index') }}"
             class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('analytics.*') ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-            :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+            :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
             title="Analytics"
           >
             <i
@@ -269,7 +269,7 @@
 
       <li
         class="px-4 pt-6 pb-2 transition-opacity duration-300"
-        :class="(sidebarCollapsed && !isMobile) ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
+        :class="sidebarCollapsed && !isMobile ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'"
       >
         <span
           class="text-muted-foreground/60 text-[10px] font-black tracking-[0.2em] whitespace-nowrap uppercase"
@@ -281,7 +281,7 @@
         <a
           href="{{ route('user.edit', auth()->user()->slug) }}"
           class="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group {{ request()->routeIs('user.edit') ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground' }}"
-          :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+          :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
           title="Settings"
         >
           <i class="ph ph-gear text-xl"></i>
@@ -305,7 +305,7 @@
           document.getElementById('logout-form').submit();
         "
         class="group flex items-center gap-4 rounded-2xl px-4 py-3.5 text-sm font-bold text-red-500 transition-all hover:bg-red-50"
-        :class="(sidebarCollapsed && !isMobile) ? 'justify-center px-0' : ''"
+        :class="sidebarCollapsed && !isMobile ? 'justify-center px-0' : ''"
         title="Sign Out"
       >
         <i class="ph ph-sign-out text-xl transition-transform group-hover:-translate-x-1"></i>

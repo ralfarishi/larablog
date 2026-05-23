@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Home;
 
-use App\Models\Category;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 
 class CategoryListController extends Controller
 {

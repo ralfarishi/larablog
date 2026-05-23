@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -85,10 +86,8 @@ class UserController extends Controller
     return back()->with('info', 'Profile has been updated.');
   }
 
-  public function destroy(
-    Request $request,
-    string $slug,
-  ): \Illuminate\Http\JsonResponse|RedirectResponse {
+  public function destroy(Request $request, string $slug): JsonResponse|RedirectResponse
+  {
     $user = User::where('slug', $slug)->firstOrFail();
 
     if ($user->id === auth()->id()) {
@@ -101,6 +100,7 @@ class UserController extends Controller
           422,
         );
       }
+
       return to_route('user.index')->with('warning', 'You cannot delete your own account.');
     }
 

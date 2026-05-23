@@ -97,7 +97,7 @@
 
     <!-- Main Content Area -->
     <div
-      class="flex min-h-screen flex-col pl-0 lg:pl-72 transition-all duration-300"
+      class="flex min-h-screen flex-col pl-0 transition-all duration-300 lg:pl-72"
       :class="{
         'lg:pl-72': !sidebarCollapsed || isMobile,
         'lg:pl-24': sidebarCollapsed && !isMobile,

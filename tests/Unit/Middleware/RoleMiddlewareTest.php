@@ -6,6 +6,7 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class RoleMiddlewareTest extends TestCase
@@ -24,7 +25,7 @@ class RoleMiddlewareTest extends TestCase
 
   public function test_it_aborts_for_unauthenticated_user(): void
   {
-    $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    $this->expectException(HttpException::class);
     $this->expectExceptionMessage('Unauthorized.');
 
     $middleware = new RoleMiddleware();
@@ -36,7 +37,7 @@ class RoleMiddlewareTest extends TestCase
 
   public function test_it_aborts_for_user_with_incorrect_role(): void
   {
-    $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    $this->expectException(HttpException::class);
     $this->expectExceptionMessage('Unauthorized.');
 
     $middleware = new RoleMiddleware();

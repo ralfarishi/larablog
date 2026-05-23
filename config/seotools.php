@@ -54,7 +54,7 @@ return [
     'defaults' => [
       'card' => 'summary_large_image',
       'title' => 'LaraBlog: Selalu Relevan',
-      //'site'        => '@LuizVinicius73',
+      // 'site'        => '@LuizVinicius73',
     ],
   ],
   'json-ld' => [

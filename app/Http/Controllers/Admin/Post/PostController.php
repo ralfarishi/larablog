@@ -21,6 +21,7 @@ use Illuminate\View\View;
 class PostController extends Controller
 {
   public function __construct(private readonly TagService $tagService) {}
+
   public function index(): View
   {
     return view('admin.posts.list');
@@ -42,7 +43,7 @@ class PostController extends Controller
     $data['user_id'] = $request->user()->id;
     $data['slug'] = Str::slug($data['title']);
 
-    $image   = $request->file('image');
+    $image = $request->file('image');
     $tagInput = $data['tags'] ?? '';
     // Remove fields not on the posts table before insert
     unset($data['image'], $data['tags']);
@@ -139,6 +140,7 @@ class PostController extends Controller
           422,
         );
       }
+
       return to_route('article.index')->with(
         'warning',
         'This article is published. Unpublish it first before deleting.',

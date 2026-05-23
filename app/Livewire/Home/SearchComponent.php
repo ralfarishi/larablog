@@ -24,7 +24,7 @@ class SearchComponent extends Component
 
     if (strlen($this->query) >= 2) {
       $results = Post::search($this->query)
-        ->query(fn ($query) => $query->with(['category', 'user', 'media']))
+        ->query(fn($query) => $query->with(['category', 'user', 'media']))
         ->where('status', 'published')
         ->take(10)
         ->get();

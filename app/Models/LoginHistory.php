@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
 class LoginHistory extends Model
 {
   use HasFactory;
+
   const UPDATED_AT = null;
 
   protected function casts(): array

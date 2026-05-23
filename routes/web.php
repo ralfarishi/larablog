@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\Analytics\AnalyticsController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Comment\CommentController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
@@ -12,10 +11,11 @@ use App\Http\Controllers\Admin\Post\PreviewController;
 use App\Http\Controllers\Admin\User\LoginHistoryController;
 use App\Http\Controllers\Admin\User\UserController;
 use App\Http\Controllers\Home\Blogs\PostController;
-use App\Http\Controllers\Home\BookmarkController;
 use App\Http\Controllers\Home\CategoryListController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\Home\SearchController;
 use App\Http\Controllers\Home\TagController;
+use App\Livewire\Blog\ReaderDashboard;
 use Illuminate\Support\Facades\Route;
 
 // ──────────────────────────────────────────────
@@ -33,7 +33,7 @@ Route::get('/article/user/{slug}', [PostController::class, 'postByUser'])->name(
 // ──────────────────────────────────────────────
 Route::middleware('auth')->group(function (): void {
   // Reader Dashboard & Bookmarks
-  Route::get('/my/dashboard', \App\Livewire\Blog\ReaderDashboard::class)->name('reader.dashboard');
+  Route::get('/my/dashboard', ReaderDashboard::class)->name('reader.dashboard');
   // Redirect legacy /my/bookmarks to the unified reader dashboard
   Route::redirect('/my/bookmarks', '/my/dashboard')->name('bookmark.index');
 });
@@ -76,7 +76,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 // ──────────────────────────────────────────────
 // Search route
 // ──────────────────────────────────────────────
-Route::get('/search', [\App\Http\Controllers\Home\SearchController::class, 'index'])->name('search');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 // ──────────────────────────────────────────────
 // Error Page Preview Routes (Dev Only)
@@ -87,6 +87,7 @@ if (app()->environment('local')) {
     if (!in_array($code, $validCodes)) {
       abort(404);
     }
+
     return response()->view("errors.{$code}", [], $code);
   })->name('debug.error');
 }

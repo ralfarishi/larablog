@@ -10,6 +10,7 @@ use Livewire\Component;
 class BookmarkToggle extends Component
 {
   public Post $post;
+
   public bool $isBookmarked = false;
 
   public function mount(Post $post)

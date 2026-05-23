@@ -10,10 +10,15 @@ use Livewire\Component;
 class DeleteConfirmationModal extends Component
 {
   public bool $show = false;
+
   public string $title = 'Confirm Deletion';
+
   public string $message = 'Are you sure you want to delete this record? This action is permanent and cannot be undone.';
+
   public ?string $action = null;
+
   public $targetId = null;
+
   public string $componentId = '';
 
   #[On('open-confirm-modal')]

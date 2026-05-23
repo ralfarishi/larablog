@@ -33,7 +33,5 @@
 />
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-
-
 <!-- Vite App CSS and JS -->
 @vite (['resources/css/app.css', 'resources/js/app.js'])

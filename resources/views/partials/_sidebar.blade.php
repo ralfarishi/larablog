@@ -1,5 +1,5 @@
 <div class="bg-card ring-border mb-12 rounded-3xl p-6 shadow-sm ring-1 md:p-8">
-  <div class="grid grid-cols-1 gap-8 md:grid-cols-3 items-start">
+  <div class="grid grid-cols-1 items-start gap-8 md:grid-cols-3">
     <!-- Search Box -->
     <div class="w-full">
       <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">
@@ -23,9 +23,7 @@
 
     <!-- Categories Widget -->
     <div class="w-full">
-      <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">
-        Topics
-      </h3>
+      <h3 class="text-muted-foreground mb-3 text-sm font-bold tracking-wider uppercase">Topics</h3>
       <div class="flex flex-wrap gap-2">
         @foreach ($categories as $category)
           <a

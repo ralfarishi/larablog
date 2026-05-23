@@ -11,7 +11,9 @@ use Livewire\Component;
 class LoginHistoryStats extends Component
 {
   public int $totalData = 0;
+
   public int $loginSuccess = 0;
+
   public int $loginFailed = 0;
 
   public function mount(): void

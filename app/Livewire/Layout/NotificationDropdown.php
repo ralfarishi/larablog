@@ -64,7 +64,10 @@ class NotificationDropdown extends Component
   public function markAllRead(): void
   {
     // Single bulk UPDATE instead of N individual markAsRead() calls
-    auth()->user()->unreadNotifications()->update(['read_at' => now()]);
+    auth()
+      ->user()
+      ->unreadNotifications()
+      ->update(['read_at' => now()]);
     broadcast(new NotificationRead(userId: (string) auth()->id(), all: true))->toOthers();
   }
 

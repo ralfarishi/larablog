@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -29,7 +30,7 @@ class PostTable extends Component
 
     $post->delete();
 
-    \Illuminate\Support\Facades\Cache::forget('sidebar_data');
+    Cache::forget('sidebar_data');
 
     $this->dispatch('toast', message: 'Article has been deleted.', type: 'error');
   }
@@ -41,7 +42,7 @@ class PostTable extends Component
     $post->status = $post->status === 'published' ? 'draft' : 'published';
     $post->save();
 
-    \Illuminate\Support\Facades\Cache::forget('sidebar_data');
+    Cache::forget('sidebar_data');
 
     $statusText = ucfirst($post->status);
     $this->dispatch('toast', message: "Article status updated to {$statusText}.", type: 'success');
@@ -50,11 +51,7 @@ class PostTable extends Component
   public function render()
   {
     $posts = Post::query()
-      ->with([
-        'user:id,name,email',
-        'category:id,name',
-        'tags:id,name',
-      ])
+      ->with(['user:id,name,email', 'category:id,name', 'tags:id,name'])
       ->withCount(['comments', 'bookmarks'])
       ->when($this->search, function ($query) {
         $query

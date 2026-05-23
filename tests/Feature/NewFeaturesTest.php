@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\ArticleForm;
+use App\Livewire\Blog\ReaderDashboard;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
-use App\Livewire\Blog\ReaderDashboard;
-use App\Livewire\Admin\ArticleForm;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -23,8 +23,7 @@ class NewFeaturesTest extends TestCase
    */
   public function test_guest_cannot_access_reader_dashboard(): void
   {
-    $this->get('/my/dashboard')
-      ->assertRedirect(route('login'));
+    $this->get('/my/dashboard')->assertRedirect(route('login'));
   }
 
   /**
@@ -137,13 +136,9 @@ class NewFeaturesTest extends TestCase
     $reader = User::factory()->create(['role' => 'reader']);
 
     // 1. Verify access control: readers and writers should be forbidden
-    $this->actingAs($reader)
-      ->get(route('analytics.index'))
-      ->assertStatus(403);
+    $this->actingAs($reader)->get(route('analytics.index'))->assertStatus(403);
 
-    $this->actingAs($writer)
-      ->get(route('analytics.index'))
-      ->assertStatus(403);
+    $this->actingAs($writer)->get(route('analytics.index'))->assertStatus(403);
 
     // 2. Admin should access successfully
     $category = Category::create(['name' => 'News', 'slug' => 'news']);
@@ -181,17 +176,25 @@ class NewFeaturesTest extends TestCase
     $reader2 = User::factory()->create(['role' => 'reader']);
 
     $reader1->bookmarks()->create(['post_id' => $post1->id]);
-    Comment::create(['post_id' => $post1->id, 'user_id' => $reader1->id, 'content' => 'First test comment text here.', 'active' => true]);
-    Comment::create(['post_id' => $post1->id, 'user_id' => $reader2->id, 'content' => 'Second test comment text here.', 'active' => true]);
+    Comment::create([
+      'post_id' => $post1->id,
+      'user_id' => $reader1->id,
+      'content' => 'First test comment text here.',
+      'active' => true,
+    ]);
+    Comment::create([
+      'post_id' => $post1->id,
+      'user_id' => $reader2->id,
+      'content' => 'Second test comment text here.',
+      'active' => true,
+    ]);
 
     // Post 2: 2 bookmarks, 0 comments -> (2 * 2) + 0 = 4 engagement
     $reader1->bookmarks()->create(['post_id' => $post2->id]);
     $reader2->bookmarks()->create(['post_id' => $post2->id]);
 
     // Request analytics page as admin
-    $response = $this->actingAs($admin)
-      ->get(route('analytics.index'))
-      ->assertStatus(200);
+    $response = $this->actingAs($admin)->get(route('analytics.index'))->assertStatus(200);
 
     // Verify view has correct calculation data
     // Avg Reading time: post1 is 1 min, post2 is 2 mins. Average is (1 + 2) / 2 = 1.5 -> ceil to 2 mins.
@@ -213,10 +216,8 @@ class NewFeaturesTest extends TestCase
   public function test_admin_can_access_reader_dashboard(): void
   {
     $admin = User::factory()->create(['role' => 'admin']);
-    $response = $this->actingAs($admin)
-      ->get('/my/dashboard');
-    
+    $response = $this->actingAs($admin)->get('/my/dashboard');
+
     $response->assertStatus(200);
   }
 }
-

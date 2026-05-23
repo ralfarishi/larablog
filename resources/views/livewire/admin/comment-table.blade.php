@@ -27,7 +27,9 @@
     <table class="w-full border-collapse text-left">
       <thead>
         <tr class="bg-muted/30">
-          <th class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th
+            class="text-muted-foreground hidden px-6 py-4 text-xs font-black tracking-widest uppercase sm:table-cell"
+          >
             #
           </th>
           <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
@@ -36,11 +38,13 @@
           <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             Comment
           </th>
-          <th class="hidden md:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th
+            class="text-muted-foreground hidden px-6 py-4 text-xs font-black tracking-widest uppercase md:table-cell"
+          >
             Post
           </th>
           <th
-            class="hidden md:table-cell text-muted-foreground px-6 py-4 text-center text-xs font-black tracking-widest uppercase"
+            class="text-muted-foreground hidden px-6 py-4 text-center text-xs font-black tracking-widest uppercase md:table-cell"
           >
             Date
           </th>
@@ -58,8 +62,11 @@
       </thead>
       <tbody class="divide-border divide-y">
         @forelse ($comments as $index => $comment)
-          <tr wire:key="comment-{{ $comment->id }}" class="group hover:bg-muted/20 transition-colors">
-            <td class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-sm font-bold">
+          <tr
+            wire:key="comment-{{ $comment->id }}"
+            class="group hover:bg-muted/20 transition-colors"
+          >
+            <td class="text-muted-foreground hidden px-6 py-4 text-sm font-bold sm:table-cell">
               {{ $comments->firstItem() + $index }}
             </td>
             <td class="px-6 py-4">
@@ -80,7 +87,7 @@
                 {{ $comment->content }}
               </p>
             </td>
-            <td class="hidden md:table-cell px-6 py-4">
+            <td class="hidden px-6 py-4 md:table-cell">
               @if ($comment->post)
                 <a
                   href="{{ route('post', $comment->post->slug) }}"
@@ -93,7 +100,9 @@
                 <span class="text-muted-foreground text-sm">-</span>
               @endif
             </td>
-            <td class="hidden md:table-cell text-muted-foreground px-6 py-4 text-center text-xs font-medium">
+            <td
+              class="text-muted-foreground hidden px-6 py-4 text-center text-xs font-medium md:table-cell"
+            >
               {{
                 $comment->created_at->format(
                   'M d, Y H:i:s',

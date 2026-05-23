@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Blog;
 
+use App\Events\CommentPosted;
 use App\Models\Comment;
 use App\Models\Post;
 use Livewire\Attributes\On;
@@ -15,6 +16,7 @@ class PostComments extends Component
   use WithPagination;
 
   public Post $post;
+
   public string $content = '';
 
   public function mount(Post $post): void
@@ -41,16 +43,16 @@ class PostComments extends Component
     ]);
 
     $comment = Comment::create([
-      'user_id'   => auth()->id(),
-      'post_id'   => $this->post->id,
-      'content'   => $this->content,
+      'user_id' => auth()->id(),
+      'post_id' => $this->post->id,
+      'content' => $this->content,
       'is_active' => true,
     ]);
 
     $this->content = '';
 
     // Broadcast event for Reverb
-    event(new \App\Events\CommentPosted($comment));
+    event(new CommentPosted($comment));
 
     session()->flash('message', 'Comment posted!');
   }
@@ -59,7 +61,8 @@ class PostComments extends Component
   {
     // Paginated with user.media eager loaded to avoid N+1 avatar queries.
     // The unbounded ->get() caused memory explosion on high-traffic posts.
-    $comments = $this->post->comments()
+    $comments = $this->post
+      ->comments()
       ->where('active', true)
       ->with(['user', 'user.media'])
       ->latest()
@@ -70,4 +73,3 @@ class PostComments extends Component
     ]);
   }
 }
-

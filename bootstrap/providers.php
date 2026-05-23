@@ -1,8 +1,13 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Artesaos\SEOTools\Providers\SEOToolsServiceProvider;
+use Stevebauman\Location\LocationServiceProvider;
+use Yajra\DataTables\DataTablesServiceProvider;
+
 return [
-  App\Providers\AppServiceProvider::class,
-  Yajra\DataTables\DataTablesServiceProvider::class,
-  Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
-  Stevebauman\Location\LocationServiceProvider::class,
+  AppServiceProvider::class,
+  DataTablesServiceProvider::class,
+  SEOToolsServiceProvider::class,
+  LocationServiceProvider::class,
 ];

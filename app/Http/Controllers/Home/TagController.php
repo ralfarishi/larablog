@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Home;
 
-use App\Models\Post;
-use App\Models\Tag;
 use App\Http\Controllers\Controller;
+use App\Models\Tag;
 
 class TagController extends Controller
 {
@@ -16,12 +15,16 @@ class TagController extends Controller
 
     $posts = $tagModel
       ->posts()
-      ->select(['posts.id', 'posts.title', 'posts.slug', 'posts.status', 'posts.user_id', 'posts.category_id', 'posts.created_at'])
-      ->with([
-        'user:id,name,slug',
-        'category:id,name,slug',
-        'media',
+      ->select([
+        'posts.id',
+        'posts.title',
+        'posts.slug',
+        'posts.status',
+        'posts.user_id',
+        'posts.category_id',
+        'posts.created_at',
       ])
+      ->with(['user:id,name,slug', 'category:id,name,slug', 'media'])
       ->withCount('comments')
       ->where('status', 'published')
       ->latest()

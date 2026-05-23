@@ -78,7 +78,7 @@
   }
 
   code:not(pre code) {
-    @apply bg-muted border-border/50 text-foreground max-w-full inline-block rounded-md border px-1.5 py-[2px] align-middle font-mono text-[0.825em] font-semibold leading-normal wrap-break-word my-0.5;
+    @apply bg-muted border-border/50 text-foreground my-0.5 inline-block max-w-full rounded-md border px-1.5 py-[2px] align-middle font-mono text-[0.825em] leading-normal font-semibold wrap-break-word;
   }
 }
 

@@ -39,4 +39,3 @@ document.addEventListener('livewire:navigated', () => {
 });
 
 window.lenis = lenis;
-

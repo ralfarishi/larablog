@@ -27,6 +27,7 @@ class UserTable extends Component
 
     if ($user->id === auth()->id()) {
       session()->flash('warning', 'You cannot delete your own account.');
+
       return;
     }
 

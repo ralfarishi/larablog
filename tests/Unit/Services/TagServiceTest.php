@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Post;
-use App\Models\Tag;
 use App\Services\TagService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

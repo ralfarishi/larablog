@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Carbon\Carbon;
 use App\Models\Category;
 use App\Models\Tag;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 function formatDate(mixed $date): string
@@ -54,11 +54,12 @@ function getParagraphTagOnly(mixed $s): ?string
                 $text .= $child['text'];
               }
             }
+
             return $text;
           }
         }
       }
-    } catch (\Exception) {
+    } catch (Exception) {
       // Fallback to HTML parsing if JSON decode fails
     }
   }

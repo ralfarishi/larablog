@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Blog;
 
-use App\Models\Bookmark;
-use App\Models\Comment;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -20,9 +18,13 @@ class ReaderDashboard extends Component
 
   // Profile Settings Form Properties
   public string $name = '';
+
   public string $email = '';
+
   public string $password = '';
+
   public string $password_confirmation = '';
+
   public $avatar;
 
   public function mount(): void
@@ -109,19 +111,23 @@ class ReaderDashboard extends Component
       HTML;
     }
 
-    $bookmarks = $this->activeTab === 'bookmarks'
-      ? $user->bookmarks()
+    $bookmarks =
+      $this->activeTab === 'bookmarks'
+        ? $user
+          ->bookmarks()
           ->with(['post.category', 'post.user'])
           ->latest()
           ->paginate(6, ['*'], 'bookmarks-page')
-      : collect();
+        : collect();
 
-    $comments = $this->activeTab === 'comments'
-      ? $user->comments()
+    $comments =
+      $this->activeTab === 'comments'
+        ? $user
+          ->comments()
           ->with('post')
           ->latest()
           ->paginate(10, ['*'], 'comments-page')
-      : collect();
+        : collect();
 
     return view('livewire.blog.reader-dashboard', [
       'bookmarks' => $bookmarks,

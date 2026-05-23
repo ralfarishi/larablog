@@ -14,8 +14,8 @@ class TagService
    * Parse a comma-separated tag string, upsert each tag,
    * and sync the pivot table for the given post.
    *
-   * @param  Post   $post     The post to sync tags for
-   * @param  string $tagInput Comma-separated tag names (e.g. "Laravel,PHP,Web")
+   * @param  Post  $post  The post to sync tags for
+   * @param  string  $tagInput  Comma-separated tag names (e.g. "Laravel,PHP,Web")
    */
   public function sync(Post $post, string $tagInput): void
   {

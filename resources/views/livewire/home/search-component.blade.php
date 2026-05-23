@@ -30,15 +30,17 @@
       <div class="grid grid-cols-1 gap-10">
         @foreach ($results as $post)
           @php
-            $safeQuery   = e($query);
-            $safeTitle   = e($post->title);
+            $safeQuery = e($query);
+            $safeTitle = e($post->title);
             $safeExcerpt = e(str(strip_tags((string) getParagraphTagOnly($post->content)))->limit(100));
-            $highlightedTitle   = $safeQuery !== ''
-              ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeTitle)
-              : $safeTitle;
-            $highlightedExcerpt = $safeQuery !== ''
-              ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeExcerpt)
-              : $safeExcerpt;
+            $highlightedTitle =
+              $safeQuery !== ''
+                ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeTitle)
+                : $safeTitle;
+            $highlightedExcerpt =
+              $safeQuery !== ''
+                ? str_ireplace($safeQuery, "<mark>{$safeQuery}</mark>", $safeExcerpt)
+                : $safeExcerpt;
           @endphp
           <article
             wire:key="result-{{ $post->id }}"

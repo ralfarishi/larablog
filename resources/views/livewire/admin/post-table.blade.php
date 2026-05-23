@@ -27,20 +27,26 @@
     <table class="w-full border-collapse text-left">
       <thead>
         <tr class="bg-muted/30">
-          <th class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th
+            class="text-muted-foreground hidden px-6 py-4 text-xs font-black tracking-widest uppercase sm:table-cell"
+          >
             #
           </th>
           <th class="text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
             Article
           </th>
-          <th class="hidden md:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th
+            class="text-muted-foreground hidden px-6 py-4 text-xs font-black tracking-widest uppercase md:table-cell"
+          >
             Category
           </th>
-          <th class="hidden lg:table-cell text-muted-foreground px-6 py-4 text-xs font-black tracking-widest uppercase">
+          <th
+            class="text-muted-foreground hidden px-6 py-4 text-xs font-black tracking-widest uppercase lg:table-cell"
+          >
             Tags
           </th>
           <th
-            class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-center text-xs font-black tracking-widest uppercase"
+            class="text-muted-foreground hidden px-6 py-4 text-center text-xs font-black tracking-widest uppercase sm:table-cell"
           >
             Engagement
           </th>
@@ -57,7 +63,7 @@
       <tbody class="divide-border divide-y">
         @forelse ($posts as $index => $post)
           <tr wire:key="post-{{ $post->id }}" class="group hover:bg-muted/20 transition-colors">
-            <td class="hidden sm:table-cell text-muted-foreground px-6 py-4 text-sm font-bold">
+            <td class="text-muted-foreground hidden px-6 py-4 text-sm font-bold sm:table-cell">
               {{ $posts->firstItem() + $index }}
             </td>
             <td class="px-6 py-4">
@@ -74,24 +80,26 @@
                 </span>
               </div>
             </td>
-            <td class="hidden md:table-cell px-6 py-4">
+            <td class="hidden px-6 py-4 md:table-cell">
               <span
                 class="bg-primary/10 text-primary w-fit rounded-lg px-2 py-0.5 text-[10px] font-black tracking-widest uppercase"
               >
                 {{ $post->category->name }}
               </span>
             </td>
-            <td class="hidden lg:table-cell px-6 py-4">
+            <td class="hidden px-6 py-4 lg:table-cell">
               <div class="flex flex-wrap gap-1">
                 @foreach ($post->getRelation('tags')->take(2) as $tag)
                   <span class="text-muted-foreground text-[9px] font-bold">#{{ $tag->name }}</span>
                 @endforeach
                 @if ($post->getRelation('tags')->count() > 2)
-                  <span class="text-muted-foreground text-[9px] font-bold">+{{ $post->getRelation('tags')->count() - 2 }}</span>
+                  <span class="text-muted-foreground text-[9px] font-bold"
+                    >+{{ $post->getRelation('tags')->count() - 2 }}</span
+                  >
                 @endif
               </div>
             </td>
-            <td class="hidden sm:table-cell px-6 py-4 text-center">
+            <td class="hidden px-6 py-4 text-center sm:table-cell">
               <div class="text-muted-foreground flex items-center justify-center gap-4">
                 <div class="flex flex-col items-center">
                   <i class="ph ph-chat-circle text-lg"></i>

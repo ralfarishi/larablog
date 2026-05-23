@@ -15,7 +15,6 @@ use App\Notifications\CommentReceived;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PostController extends Controller
@@ -36,25 +35,22 @@ class PostController extends Controller
     $relatedPosts = Post::where('status', 'published')
       ->where('id', '!=', $post->id)
       ->where(function ($query) use ($post, $tagIds): void {
-        $query->where('category_id', $post->category_id)
-          ->orWhereHas('tags', fn ($q) => $q->whereIn('tags.id', $tagIds));
+        $query
+          ->where('category_id', $post->category_id)
+          ->orWhereHas('tags', fn($q) => $q->whereIn('tags.id', $tagIds));
       })
-      ->with([
-        'category:id,name,slug',
-        'user:id,name,slug',
-        'media',
-      ])
+      ->with(['category:id,name,slug', 'user:id,name,slug', 'media'])
       ->withCount('comments')
       ->latest()
       ->limit(3)
       ->get();
 
     // SEO — generate meta description from content
-    $pTag        = getParagraphTagOnly($post->content) ?? '';
+    $pTag = getParagraphTagOnly($post->content) ?? '';
     $firstPeriod = strpos($pTag, '.');
     $firstSentence = $firstPeriod !== false ? substr($pTag, 0, $firstPeriod + 1) : $pTag;
-    $canonicalUrl  = url('/article/' . $post->slug);
-    $blogImage     = $post->image_url;
+    $canonicalUrl = url('/article/' . $post->slug);
+    $blogImage = $post->image_url;
 
     SEOTools::setTitle($post->title);
     SEOTools::setDescription($firstSentence);
@@ -77,10 +73,7 @@ class PostController extends Controller
 
     return view(
       'blog.post',
-      array_merge(
-        compact('post', 'relatedPosts', 'isBookmarked'),
-        $sidebarData,
-      ),
+      array_merge(compact('post', 'relatedPosts', 'isBookmarked'), $sidebarData),
     );
   }
 
@@ -88,13 +81,13 @@ class PostController extends Controller
     StoreCommentRequest $request,
     string $slug,
   ): RedirectResponse|JsonResponse {
-    $post   = Post::where('slug', $slug)->firstOrFail();
+    $post = Post::where('slug', $slug)->firstOrFail();
     $userId = $request->user()->id;
 
-    $data              = $request->validated();
-    $data['user_id']   = $userId;
-    $data['post_id']   = $post->id;
-    $data['content']   = strip_tags($data['content']); // XSS guard
+    $data = $request->validated();
+    $data['user_id'] = $userId;
+    $data['post_id'] = $post->id;
+    $data['content'] = strip_tags($data['content']); // XSS guard
 
     $comment = Comment::create($data);
     $comment->load('user', 'post');
@@ -108,19 +101,19 @@ class PostController extends Controller
     broadcast(new CommentPosted($comment))->toOthers();
 
     if ($request->expectsJson()) {
-      $user   = $request->user();
+      $user = $request->user();
       $avatar = filter_var($user->display_picture ?? '', FILTER_VALIDATE_URL)
         ? $user->display_picture
         : $user->profile_picture_url;
 
       return response()->json([
-        'id'          => $comment->id,
-        'content'     => $comment->content,
-        'created_at'  => $comment->created_at->format('M d, Y'),
-        'user_id'     => $user->id,
-        'user_name'   => $user->name,
+        'id' => $comment->id,
+        'content' => $comment->content,
+        'created_at' => $comment->created_at->format('M d, Y'),
+        'user_id' => $user->id,
+        'user_name' => $user->name,
         'user_avatar' => $avatar,
-        'user_role'   => $user->role,
+        'user_role' => $user->role,
       ]);
     }
 
@@ -129,16 +122,12 @@ class PostController extends Controller
 
   public function postByUser(string $slug): View
   {
-    $user  = User::where('slug', $slug)->firstOrFail();
+    $user = User::where('slug', $slug)->firstOrFail();
     $posts = $user
       ->posts()
       ->where('status', 'published')
       ->select(['id', 'title', 'slug', 'status', 'user_id', 'category_id', 'created_at'])
-      ->with([
-        'user:id,name,slug',
-        'category:id,name,slug',
-        'media',
-      ])
+      ->with(['user:id,name,slug', 'category:id,name,slug', 'media'])
       ->withCount('comments')
       ->latest()
       ->paginate(4);

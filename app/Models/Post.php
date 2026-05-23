@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Support\ContentRenderer;
+use App\Traits\HasMediaUrlAttribute;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Traits\HasMediaUrlAttribute;
 
 #[
   Fillable([
@@ -108,8 +109,9 @@ class Post extends Model implements HasMedia
       return (int) $this->attributes['reading_time'];
     }
 
-    $plainText = strip_tags(\App\Support\ContentRenderer::render($this->content));
+    $plainText = strip_tags(ContentRenderer::render($this->content));
     $wordCount = str_word_count($plainText);
+
     return (int) max(1, ceil($wordCount / 200));
   }
 
@@ -120,7 +122,8 @@ class Post extends Model implements HasMedia
   {
     $bookmarksCount = $this->bookmarks_count ?? $this->bookmarks()->count();
     $commentsCount = $this->comments_count ?? $this->comments()->count();
-    return ($bookmarksCount * 2) + $commentsCount;
+
+    return $bookmarksCount * 2 + $commentsCount;
   }
 
   public function user(): BelongsTo

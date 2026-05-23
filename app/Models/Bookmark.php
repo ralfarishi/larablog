@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Bookmark extends Model
 {
   use HasFactory;
+
   public function user(): BelongsTo
   {
     return $this->belongsTo(User::class);

@@ -32,12 +32,14 @@ class CategoryController extends Controller
     Category::create($data);
     Cache::forget('sidebar_data');
     Cache::forget('all_categories');
+
     return to_route('category.index')->with('success', 'Category has been created.');
   }
 
   public function edit(string $id): View
   {
     $category = Category::findOrFail($id);
+
     return view('admin.categories.edit', compact('category'));
   }
 
@@ -48,6 +50,7 @@ class CategoryController extends Controller
     $category->update($data);
     Cache::forget('sidebar_data');
     Cache::forget('all_categories');
+
     return to_route('category.index')->with('info', 'Category has been updated.');
   }
 
@@ -78,6 +81,7 @@ class CategoryController extends Controller
 
       Cache::forget('sidebar_data');
       Cache::forget('all_categories');
+
       return to_route('category.index')->with('danger', 'Category has been deleted.');
     } catch (\Exception $e) {
       if ($request->expectsJson()) {

@@ -20,13 +20,21 @@ class ArticleForm extends Component
   use WithFileUploads;
 
   public ?Post $post = null;
+
   public string $title = '';
+
   public string $content = '';
+
   public $image;
+
   public string $tags = '';
+
   public $allowed_comment = true;
+
   public string $status = 'draft';
+
   public ?int $category_id = null;
+
   public string $editorMode = 'write';
 
   public array $availableTags = [];
@@ -56,7 +64,7 @@ class ArticleForm extends Component
     $this->availableTags = Cache::remember(
       'article_form_tags',
       3600,
-      fn () => Tag::orderBy('name')->pluck('name')->all()
+      fn() => Tag::orderBy('name')->pluck('name')->all(),
     );
 
     if ($this->post) {
@@ -88,13 +96,13 @@ class ArticleForm extends Component
       ]);
 
       $data = [
-        'title'           => $this->title,
-        'slug'            => Str::slug($this->title),
-        'content'         => $this->content,
+        'title' => $this->title,
+        'slug' => Str::slug($this->title),
+        'content' => $this->content,
         'allowed_comment' => (bool) $this->allowed_comment,
-        'status'          => $this->status,
-        'category_id'     => $this->category_id,
-        'user_id'         => auth()->id(),
+        'status' => $this->status,
+        'category_id' => $this->category_id,
+        'user_id' => auth()->id(),
         // 'tags' is intentionally excluded — managed exclusively by TagService below
       ];
 
@@ -118,6 +126,7 @@ class ArticleForm extends Component
       Cache::forget('article_form_tags'); // Tags list may have changed
 
       session()->flash('success', $message);
+
       return to_route('article.index');
     } catch (\Exception $e) {
       Log::error('Article Save Failure', [
@@ -139,7 +148,7 @@ class ArticleForm extends Component
       'categories' => Cache::remember(
         'all_categories',
         1800,
-        fn () => Category::select('id', 'name')->orderBy('name')->get()
+        fn() => Category::select('id', 'name')->orderBy('name')->get(),
       ),
     ]);
   }

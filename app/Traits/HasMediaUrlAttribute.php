@@ -21,8 +21,8 @@ trait HasMediaUrlAttribute
    *
    * @param  string  $collection  Spatie collection name (e.g. 'cover', 'avatar')
    * @param  string  $conversion  Spatie conversion name (e.g. 'preview', 'thumb')
-   * @param  string|null $legacyColumn  The model attribute holding the legacy path/URL
-   * @param  string  $fallback    URL to return when no media is found
+   * @param  string|null  $legacyColumn  The model attribute holding the legacy path/URL
+   * @param  string  $fallback  URL to return when no media is found
    */
   protected function resolveMediaUrl(
     string $collection,

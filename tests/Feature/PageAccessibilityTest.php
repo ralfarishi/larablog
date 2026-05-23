@@ -29,308 +29,283 @@ use Tests\TestCase;
  */
 class PageAccessibilityTest extends TestCase
 {
-    use RefreshDatabase;
+  use RefreshDatabase;
 
-    private User $admin;
-    private User $writer;
-    private User $reader;
-    private Category $category;
-    private Tag $tag;
-    private Post $publishedPost;
-    private Post $draftPost;
+  private User $admin;
 
-    /**
-     * Seed shared fixtures once for the whole test class.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
+  private User $writer;
 
-        $this->admin  = User::factory()->create(['role' => 'admin',  'slug' => 'admin-user']);
-        $this->writer = User::factory()->create(['role' => 'writer', 'slug' => 'writer-user']);
-        $this->reader = User::factory()->create(['role' => 'reader', 'slug' => 'reader-user']);
+  private User $reader;
 
-        $this->category = Category::create(['name' => 'Technology', 'slug' => 'technology']);
+  private Category $category;
 
-        $this->tag = Tag::factory()->create(['name' => 'laravel', 'slug' => 'laravel']);
+  private Tag $tag;
 
-        // Published post — used for public article page, tag page, category page
-        $this->publishedPost = Post::factory()->create([
-            'title'           => 'Published Test Article',
-            'slug'            => 'published-test-article',
-            'status'          => 'published',
-            'user_id'         => $this->writer->id,
-            'category_id'     => $this->category->id,
-            'allowed_comment' => true,
-            'content'         => json_encode([
-                'type'    => 'doc',
-                'content' => [
-                    ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => 'Hello world paragraph content.']]],
-                ],
-            ]),
-        ]);
+  private Post $publishedPost;
 
-        // Attach a tag via pivot to exercise the BelongsToMany relation path
-        $this->publishedPost->tags()->attach($this->tag->id);
+  private Post $draftPost;
 
-        // Draft post — available in admin panel
-        $this->draftPost = Post::factory()->create([
-            'title'       => 'Draft Test Article',
-            'slug'        => 'draft-test-article',
-            'status'      => 'draft',
-            'user_id'     => $this->writer->id,
-            'category_id' => $this->category->id,
-        ]);
+  /**
+   * Seed shared fixtures once for the whole test class.
+   */
+  protected function setUp(): void
+  {
+    parent::setUp();
 
-        // Comment for moderation pages
-        Comment::create([
-            'post_id' => $this->publishedPost->id,
-            'user_id' => $this->reader->id,
-            'content' => 'This is a test comment for accessibility tests.',
-            'active'  => true,
-        ]);
-    }
+    $this->admin = User::factory()->create(['role' => 'admin', 'slug' => 'admin-user']);
+    $this->writer = User::factory()->create(['role' => 'writer', 'slug' => 'writer-user']);
+    $this->reader = User::factory()->create(['role' => 'reader', 'slug' => 'reader-user']);
 
-    // ────────────────────────────────────────────────────────────────────────
-    // GROUP 1: Public Pages (Guest access)
-    // ────────────────────────────────────────────────────────────────────────
+    $this->category = Category::create(['name' => 'Technology', 'slug' => 'technology']);
 
-    #[Test]
-    public function test_homepage_is_accessible_to_guests(): void
-    {
-        $this->get('/')->assertStatus(200);
-    }
+    $this->tag = Tag::factory()->create(['name' => 'laravel', 'slug' => 'laravel']);
 
-    #[Test]
-    public function test_article_show_page_is_accessible_to_guests(): void
-    {
-        // This is the page that triggers "pluck() on string" when tags are not
-        // retrieved via the pivot relation correctly.
-        $this->get("/article/{$this->publishedPost->slug}")->assertStatus(200);
-    }
+    // Published post — used for public article page, tag page, category page
+    $this->publishedPost = Post::factory()->create([
+      'title' => 'Published Test Article',
+      'slug' => 'published-test-article',
+      'status' => 'published',
+      'user_id' => $this->writer->id,
+      'category_id' => $this->category->id,
+      'allowed_comment' => true,
+      'content' => json_encode([
+        'type' => 'doc',
+        'content' => [
+          [
+            'type' => 'paragraph',
+            'content' => [['type' => 'text', 'text' => 'Hello world paragraph content.']],
+          ],
+        ],
+      ]),
+    ]);
 
-    #[Test]
-    public function test_category_page_is_accessible_to_guests(): void
-    {
-        $this->get("/category/{$this->category->name}")->assertStatus(200);
-    }
+    // Attach a tag via pivot to exercise the BelongsToMany relation path
+    $this->publishedPost->tags()->attach($this->tag->id);
 
-    #[Test]
-    public function test_tag_page_is_accessible_to_guests(): void
-    {
-        $this->get("/tag/{$this->tag->slug}")->assertStatus(200);
-    }
+    // Draft post — available in admin panel
+    $this->draftPost = Post::factory()->create([
+      'title' => 'Draft Test Article',
+      'slug' => 'draft-test-article',
+      'status' => 'draft',
+      'user_id' => $this->writer->id,
+      'category_id' => $this->category->id,
+    ]);
 
-    #[Test]
-    public function test_post_by_user_page_is_accessible_to_guests(): void
-    {
-        $this->get("/article/user/{$this->writer->slug}")->assertStatus(200);
-    }
+    // Comment for moderation pages
+    Comment::create([
+      'post_id' => $this->publishedPost->id,
+      'user_id' => $this->reader->id,
+      'content' => 'This is a test comment for accessibility tests.',
+      'active' => true,
+    ]);
+  }
 
-    #[Test]
-    public function test_search_page_is_accessible_to_guests(): void
-    {
-        $this->get('/search')->assertStatus(200);
-    }
+  // ────────────────────────────────────────────────────────────────────────
+  // GROUP 1: Public Pages (Guest access)
+  // ────────────────────────────────────────────────────────────────────────
 
-    #[Test]
-    public function test_search_page_with_query_is_accessible_to_guests(): void
-    {
-        $this->get('/search?q=laravel')->assertStatus(200);
-    }
+  #[Test]
+  public function test_homepage_is_accessible_to_guests(): void
+  {
+    $this->get('/')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_login_page_is_accessible_to_guests(): void
-    {
-        $this->get('/login')->assertStatus(200);
-    }
+  #[Test]
+  public function test_article_show_page_is_accessible_to_guests(): void
+  {
+    // This is the page that triggers "pluck() on string" when tags are not
+    // retrieved via the pivot relation correctly.
+    $this->get("/article/{$this->publishedPost->slug}")->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_register_page_is_accessible_to_guests(): void
-    {
-        $this->get('/register')->assertStatus(200);
-    }
+  #[Test]
+  public function test_category_page_is_accessible_to_guests(): void
+  {
+    $this->get("/category/{$this->category->name}")->assertStatus(200);
+  }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // GROUP 2: Auth-Protected Pages (Any authenticated user)
-    // ────────────────────────────────────────────────────────────────────────
+  #[Test]
+  public function test_tag_page_is_accessible_to_guests(): void
+  {
+    $this->get("/tag/{$this->tag->slug}")->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_reader_dashboard_is_accessible_to_reader(): void
-    {
-        $this->actingAs($this->reader)
-            ->get('/my/dashboard')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_post_by_user_page_is_accessible_to_guests(): void
+  {
+    $this->get("/article/user/{$this->writer->slug}")->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_reader_dashboard_is_accessible_to_admin(): void
-    {
-        $this->actingAs($this->admin)
-            ->get('/my/dashboard')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_search_page_is_accessible_to_guests(): void
+  {
+    $this->get('/search')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_bookmark_redirect_works_for_auth_user(): void
-    {
-        $this->actingAs($this->reader)
-            ->get('/my/bookmarks')
-            ->assertRedirect('/my/dashboard');
-    }
+  #[Test]
+  public function test_search_page_with_query_is_accessible_to_guests(): void
+  {
+    $this->get('/search?q=laravel')->assertStatus(200);
+  }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // GROUP 3: Admin + Writer Dashboard Pages
-    // ────────────────────────────────────────────────────────────────────────
+  #[Test]
+  public function test_login_page_is_accessible_to_guests(): void
+  {
+    $this->get('/login')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_dashboard_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_register_page_is_accessible_to_guests(): void
+  {
+    $this->get('/register')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_dashboard_is_accessible_to_admin(): void
-    {
-        $this->actingAs($this->admin)
-            ->get('/dashboard')
-            ->assertStatus(200);
-    }
+  // ────────────────────────────────────────────────────────────────────────
+  // GROUP 2: Auth-Protected Pages (Any authenticated user)
+  // ────────────────────────────────────────────────────────────────────────
 
-    #[Test]
-    public function test_article_list_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/article')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_reader_dashboard_is_accessible_to_reader(): void
+  {
+    $this->actingAs($this->reader)->get('/my/dashboard')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_article_create_page_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/article/create')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_reader_dashboard_is_accessible_to_admin(): void
+  {
+    $this->actingAs($this->admin)->get('/my/dashboard')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_article_edit_page_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get("/dashboard/article/{$this->draftPost->slug}/edit")
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_bookmark_redirect_works_for_auth_user(): void
+  {
+    $this->actingAs($this->reader)->get('/my/bookmarks')->assertRedirect('/my/dashboard');
+  }
 
-    #[Test]
-    public function test_article_preview_is_accessible_to_writer(): void
-    {
-        // PreviewController redirects published posts back to the article list
-        // ("Can't preview a published article."). Must use a draft to hit the 200 path.
-        $this->actingAs($this->writer)
-            ->get("/dashboard/article/p/{$this->draftPost->slug}")
-            ->assertStatus(200);
-    }
+  // ────────────────────────────────────────────────────────────────────────
+  // GROUP 3: Admin + Writer Dashboard Pages
+  // ────────────────────────────────────────────────────────────────────────
 
-    #[Test]
-    public function test_comment_list_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/comment')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_dashboard_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_user_list_is_accessible_to_writer(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/user')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_dashboard_is_accessible_to_admin(): void
+  {
+    $this->actingAs($this->admin)->get('/dashboard')->assertStatus(200);
+  }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // GROUP 4: Admin-Only Pages
-    // ────────────────────────────────────────────────────────────────────────
+  #[Test]
+  public function test_article_list_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/article')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_category_list_is_accessible_to_admin(): void
-    {
-        $this->actingAs($this->admin)
-            ->get('/dashboard/category')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_article_create_page_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/article/create')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_analytics_page_is_accessible_to_admin(): void
-    {
-        // This also exercises the ceil() fix for avg('reading_time')
-        $this->actingAs($this->admin)
-            ->get('/dashboard/analytics')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_article_edit_page_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)
+      ->get("/dashboard/article/{$this->draftPost->slug}/edit")
+      ->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_login_history_is_accessible_to_admin(): void
-    {
-        $this->actingAs($this->admin)
-            ->get('/dashboard/login-history')
-            ->assertStatus(200);
-    }
+  #[Test]
+  public function test_article_preview_is_accessible_to_writer(): void
+  {
+    // PreviewController redirects published posts back to the article list
+    // ("Can't preview a published article."). Must use a draft to hit the 200 path.
+    $this->actingAs($this->writer)
+      ->get("/dashboard/article/p/{$this->draftPost->slug}")
+      ->assertStatus(200);
+  }
 
-    // ────────────────────────────────────────────────────────────────────────
-    // GROUP 5: Access-Control Assertions (Non-admin routes blocked)
-    // ────────────────────────────────────────────────────────────────────────
+  #[Test]
+  public function test_comment_list_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/comment')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_reader_is_forbidden_from_dashboard(): void
-    {
-        $this->actingAs($this->reader)
-            ->get('/dashboard')
-            ->assertStatus(403);
-    }
+  #[Test]
+  public function test_user_list_is_accessible_to_writer(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/user')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_reader_is_forbidden_from_analytics(): void
-    {
-        $this->actingAs($this->reader)
-            ->get('/dashboard/analytics')
-            ->assertStatus(403);
-    }
+  // ────────────────────────────────────────────────────────────────────────
+  // GROUP 4: Admin-Only Pages
+  // ────────────────────────────────────────────────────────────────────────
 
-    #[Test]
-    public function test_writer_is_forbidden_from_analytics(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/analytics')
-            ->assertStatus(403);
-    }
+  #[Test]
+  public function test_category_list_is_accessible_to_admin(): void
+  {
+    $this->actingAs($this->admin)->get('/dashboard/category')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_writer_is_forbidden_from_category_management(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/category')
-            ->assertStatus(403);
-    }
+  #[Test]
+  public function test_analytics_page_is_accessible_to_admin(): void
+  {
+    // This also exercises the ceil() fix for avg('reading_time')
+    $this->actingAs($this->admin)->get('/dashboard/analytics')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_writer_is_forbidden_from_login_history(): void
-    {
-        $this->actingAs($this->writer)
-            ->get('/dashboard/login-history')
-            ->assertStatus(403);
-    }
+  #[Test]
+  public function test_login_history_is_accessible_to_admin(): void
+  {
+    $this->actingAs($this->admin)->get('/dashboard/login-history')->assertStatus(200);
+  }
 
-    #[Test]
-    public function test_guest_is_redirected_from_dashboard(): void
-    {
-        $this->get('/dashboard')->assertRedirect('/login');
-    }
+  // ────────────────────────────────────────────────────────────────────────
+  // GROUP 5: Access-Control Assertions (Non-admin routes blocked)
+  // ────────────────────────────────────────────────────────────────────────
 
-    #[Test]
-    public function test_guest_is_redirected_from_reader_dashboard(): void
-    {
-        $this->get('/my/dashboard')->assertRedirect('/login');
-    }
+  #[Test]
+  public function test_reader_is_forbidden_from_dashboard(): void
+  {
+    $this->actingAs($this->reader)->get('/dashboard')->assertStatus(403);
+  }
+
+  #[Test]
+  public function test_reader_is_forbidden_from_analytics(): void
+  {
+    $this->actingAs($this->reader)->get('/dashboard/analytics')->assertStatus(403);
+  }
+
+  #[Test]
+  public function test_writer_is_forbidden_from_analytics(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/analytics')->assertStatus(403);
+  }
+
+  #[Test]
+  public function test_writer_is_forbidden_from_category_management(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/category')->assertStatus(403);
+  }
+
+  #[Test]
+  public function test_writer_is_forbidden_from_login_history(): void
+  {
+    $this->actingAs($this->writer)->get('/dashboard/login-history')->assertStatus(403);
+  }
+
+  #[Test]
+  public function test_guest_is_redirected_from_dashboard(): void
+  {
+    $this->get('/dashboard')->assertRedirect('/login');
+  }
+
+  #[Test]
+  public function test_guest_is_redirected_from_reader_dashboard(): void
+  {
+    $this->get('/my/dashboard')->assertRedirect('/login');
+  }
 }

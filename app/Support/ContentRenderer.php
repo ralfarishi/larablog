@@ -20,6 +20,7 @@ class ContentRenderer
     if (!self::isJson($content)) {
       // Clean up any stray backticks from markdown-style code
       $content = self::cleanBackticks($content);
+
       // Sanitize legacy HTML — strip dangerous tags, keep safe formatting
       return strip_tags(
         (string) $content,
@@ -78,6 +79,7 @@ class ContentRenderer
           $text = self::applyMark($mark, $text);
         }
       }
+
       return $text;
     }
 
@@ -93,6 +95,7 @@ class ContentRenderer
           2 => 'text-2xl md:text-3xl font-bold text-foreground mb-4 mt-8',
           default => 'text-xl md:text-2xl font-bold text-foreground mb-3 mt-6',
         };
+
         return "<h{$level} class=\"{$headingClass}\">{$content}</h{$level}>";
       case 'bulletList':
         return "<ul class=\"list-disc list-inside mb-4 space-y-2 text-muted-foreground pl-4\">{$content}</ul>";
@@ -104,12 +107,14 @@ class ContentRenderer
         return "<blockquote class=\"border-l-4 border-primary pl-6 py-3 my-6 italic text-lg text-muted-foreground bg-muted/30 rounded-r-lg\">{$content}</blockquote>";
       case 'codeBlock':
         $escapedContent = htmlspecialchars($content);
+
         return '<pre class="bg-muted/50 text-foreground border border-border/50 rounded-xl p-4 md:p-5 my-6 text-[13px] sm:text-sm font-mono leading-relaxed whitespace-pre-wrap wrap-break-word"><code>' .
           $escapedContent .
           '</code></pre>';
       case 'image':
         $src = htmlspecialchars($node['attrs']['src'] ?? '', ENT_QUOTES, 'UTF-8');
         $alt = htmlspecialchars($node['attrs']['alt'] ?? '', ENT_QUOTES, 'UTF-8');
+
         return "<img src=\"{$src}\" alt=\"{$alt}\" class=\"rounded-3xl shadow-xl border border-border mx-auto my-8 max-w-full\">";
 
       case 'horizontalRule':
@@ -140,6 +145,7 @@ class ContentRenderer
         $href = htmlspecialchars($mark['attrs']['href'] ?? '#');
         $target = $mark['attrs']['target'] ?? '_blank';
         $rel = $target === '_blank' ? 'noopener noreferrer' : '';
+
         return "<a href=\"{$href}\" class=\"text-primary underline underline-offset-4 decoration-2 hover:decoration-primary transition-colors\" target=\"{$target}\" rel=\"{$rel}\">{$text}</a>";
       default:
         return $text;
@@ -150,8 +156,9 @@ class ContentRenderer
   {
     $html = '';
     foreach ($attrs as $key => $value) {
-      $html .= " {$key}=\"" . htmlspecialchars((string) $value) . "\"";
+      $html .= " {$key}=\"" . htmlspecialchars((string) $value) . '"';
     }
+
     return $html;
   }
 
@@ -161,6 +168,7 @@ class ContentRenderer
       return false;
     }
     json_decode($string);
+
     return json_last_error() === JSON_ERROR_NONE;
   }
 }

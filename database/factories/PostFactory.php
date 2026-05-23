@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,8 +24,8 @@ class PostFactory extends Factory
       'slug' => fake()->unique()->slug(),
       'content' => fake()->paragraphs(3, true),
       'image' => null,
-      'user_id' => \App\Models\User::factory(),
-      'category_id' => \App\Models\Category::factory(),
+      'user_id' => User::factory(),
+      'category_id' => Category::factory(),
       'allowed_comment' => fake()->boolean(),
       'status' => fake()->randomElement(['draft', 'published', 'hidden']),
     ];

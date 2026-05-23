@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Admin;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,8 +15,11 @@ class CategoryTable extends Component
   use WithPagination;
 
   public string $search = '';
+
   public string $new_category_name = '';
+
   public ?int $editingCategoryId = null;
+
   public string $editingCategoryName = '';
 
   public function updatingSearch()
@@ -29,9 +33,9 @@ class CategoryTable extends Component
       'new_category_name' => 'required|string|max:255|unique:categories,name',
     ]);
 
-    \App\Models\Category::create([
+    Category::create([
       'name' => $this->new_category_name,
-      'slug' => \Illuminate\Support\Str::slug($this->new_category_name),
+      'slug' => Str::slug($this->new_category_name),
     ]);
 
     $this->new_category_name = '';
@@ -61,7 +65,7 @@ class CategoryTable extends Component
     $category = Category::findOrFail($this->editingCategoryId);
     $category->update([
       'name' => $this->editingCategoryName,
-      'slug' => \Illuminate\Support\Str::slug($this->editingCategoryName),
+      'slug' => Str::slug($this->editingCategoryName),
     ]);
 
     $this->cancelEditing();
@@ -75,6 +79,7 @@ class CategoryTable extends Component
 
     if ($category->posts()->count() > 0) {
       session()->flash('warning', 'Cannot delete category with associated articles.');
+
       return;
     }
 

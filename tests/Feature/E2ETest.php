@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Livewire\Admin\ArticleForm;
+use App\Livewire\Admin\CategoryTable;
+use App\Livewire\Admin\CommentTable;
+use App\Livewire\Admin\PostTable;
+use App\Livewire\Admin\UserTable;
+use App\Livewire\Blog\BookmarkToggle;
+use App\Livewire\Blog\PostComments;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
-use App\Livewire\Blog\BookmarkToggle;
-use App\Livewire\Blog\PostComments;
-use App\Livewire\Admin\ArticleForm;
-use App\Livewire\Admin\CategoryTable;
-use App\Livewire\Admin\UserTable;
-use App\Livewire\Admin\CommentTable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -225,7 +227,7 @@ class E2ETest extends TestCase
       'status' => 'published',
     ]);
 
-    $comment = \App\Models\Comment::create([
+    $comment = Comment::create([
       'post_id' => $post->id,
       'user_id' => $writer->id,
       'content' => 'This is a comment waiting for admin moderation.',
@@ -270,18 +272,18 @@ class E2ETest extends TestCase
 
     // Post with tags — exercises the getRelation('tags') path in post-table.blade.php
     $post = Post::factory()->create([
-      'title'       => 'Tagged Article',
-      'status'      => 'published',
-      'user_id'     => $admin->id,
+      'title' => 'Tagged Article',
+      'status' => 'published',
+      'user_id' => $admin->id,
       'category_id' => $category->id,
     ]);
     $post->tags()->attach([$tag1->id, $tag2->id, $tag3->id]);
 
     // Post with no tags — exercises the empty tags path
     Post::factory()->create([
-      'title'       => 'Untagged Article',
-      'status'      => 'draft',
-      'user_id'     => $admin->id,
+      'title' => 'Untagged Article',
+      'status' => 'draft',
+      'user_id' => $admin->id,
       'category_id' => $category->id,
     ]);
 
@@ -289,7 +291,7 @@ class E2ETest extends TestCase
 
     // Should render without "Call to a member function take() on string" exception
     Livewire::actingAs($admin)
-      ->test(\App\Livewire\Admin\PostTable::class)
+      ->test(PostTable::class)
       ->assertSee('Tagged Article')
       ->assertSee('Untagged Article')
       ->assertSee('#laravel')

@@ -161,7 +161,7 @@
           Avg Reading Time
         </h4>
         <div class="text-foreground text-4xl font-black">
-          {{ $avgReadingTime }} <span class="text-lg font-bold text-muted-foreground">mins</span>
+          {{ $avgReadingTime }} <span class="text-muted-foreground text-lg font-bold">mins</span>
         </div>
         <p class="text-muted-foreground mt-1 text-xs font-medium">per published post</p>
       </div>
@@ -239,7 +239,9 @@
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
       {{-- Idle Drafts Table --}}
       <div class="lg:col-span-2">
-        <div class="bg-card ring-border rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10 h-full flex flex-col justify-between">
+        <div
+          class="bg-card ring-border flex h-full flex-col justify-between rounded-[2.5rem] p-8 shadow-sm ring-1 sm:p-10"
+        >
           <div>
             <div class="mb-8 flex items-center justify-between">
               <div>
@@ -256,7 +258,9 @@
             </div>
             @if ($idleDrafts->isEmpty())
               <div class="flex flex-col items-center justify-center py-16 text-center">
-                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500 mb-4">
+                <div
+                  class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500"
+                >
                   <i class="ph ph-check-circle text-4xl"></i>
                 </div>
                 <p class="text-foreground text-lg font-bold">All Clean!</p>
@@ -273,12 +277,12 @@
                         Title
                       </th>
                       <th
-                        class="hidden sm:table-cell text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
+                        class="text-muted-foreground hidden px-4 pb-4 text-xs font-black tracking-widest uppercase sm:table-cell"
                       >
                         Author
                       </th>
                       <th
-                        class="hidden sm:table-cell text-muted-foreground px-4 pb-4 text-xs font-black tracking-widest uppercase"
+                        class="text-muted-foreground hidden px-4 pb-4 text-xs font-black tracking-widest uppercase sm:table-cell"
                       >
                         Last Updated
                       </th>
@@ -291,10 +295,14 @@
                         <td class="text-foreground px-4 py-4 text-sm font-medium">
                           <span class="line-clamp-1">{{ $draft->title }}</span>
                         </td>
-                        <td class="hidden sm:table-cell text-muted-foreground px-4 py-4 text-sm font-medium">
+                        <td
+                          class="text-muted-foreground hidden px-4 py-4 text-sm font-medium sm:table-cell"
+                        >
                           {{ $draft->user->name ?? '—' }}
                         </td>
-                        <td class="hidden sm:table-cell text-muted-foreground px-4 py-4 text-sm font-medium">
+                        <td
+                          class="text-muted-foreground hidden px-4 py-4 text-sm font-medium sm:table-cell"
+                        >
                           <time
                             datetime="{{ $draft->updated_at }}"
                             >{{ $draft->updated_at->diffForHumans() }}</time
@@ -328,39 +336,52 @@
             <p class="text-muted-foreground text-sm font-semibold">No recent activity.</p>
           </div>
         @else
-          <div class="relative pl-4 border-l border-border/70 space-y-6">
+          <div class="border-border/70 relative space-y-6 border-l pl-4">
             @foreach ($activityFeed as $activity)
               @php
                 $classes = explode(' ', $activity['icon']);
                 $iconClass = implode(' ', array_filter($classes, fn($c) => str_starts_with($c, 'ph')));
                 $colorClasses = implode(' ', array_filter($classes, fn($c) => !str_starts_with($c, 'ph')));
               @endphp
-              <div class="relative group flex items-start gap-4">
+              <div class="group relative flex items-start gap-4">
                 {{-- Dot indicator overlapping the timeline line --}}
-                <div class="absolute -left-[25px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-card bg-background">
-                  <div class="h-2 w-2 rounded-full bg-primary/70 group-hover:bg-primary transition-colors"></div>
+                <div
+                  class="border-card bg-background absolute top-1.5 -left-[25px] flex h-4 w-4 items-center justify-center rounded-full border"
+                >
+                  <div
+                    class="bg-primary/70 group-hover:bg-primary h-2 w-2 rounded-full transition-colors"
+                  ></div>
                 </div>
 
                 {{-- Activity Icon --}}
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $colorClasses }} transition-transform duration-300 group-hover:scale-110">
+                <div
+                  class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $colorClasses }} transition-transform duration-300 group-hover:scale-110"
+                >
                   <i class="{{ $iconClass }} text-lg"></i>
                 </div>
 
                 {{-- Activity Description --}}
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center justify-between gap-2">
-                    <p class="text-foreground text-sm font-bold truncate">
+                    <p class="text-foreground truncate text-sm font-bold">
                       {{ $activity['user'] }}
                     </p>
-                    <time class="text-muted-foreground text-[10px] font-bold tracking-wider uppercase shrink-0">
-                      {{ $activity['time']->diffForHumans(null, true) }}
+                    <time
+                      class="text-muted-foreground shrink-0 text-[10px] font-bold tracking-wider uppercase"
+                    >
+                      {{
+                        $activity['time']->diffForHumans(
+                          null,
+                          true,
+                        )
+                      }}
                     </time>
                   </div>
-                  <p class="text-muted-foreground mt-1 text-xs font-semibold leading-relaxed">
+                  <p class="text-muted-foreground mt-1 text-xs leading-relaxed font-semibold">
                     {{ $activity['content'] }}
                   </p>
                   @if (!empty($activity['target']))
-                    <p class="text-primary mt-0.5 text-xs font-bold truncate">
+                    <p class="text-primary mt-0.5 truncate text-xs font-bold">
                       {{ $activity['target'] }}
                     </p>
                   @endif

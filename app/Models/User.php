@@ -20,7 +20,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements HasMedia
 {
-  use HasFactory, HasMediaUrlAttribute, Notifiable, InteractsWithMedia;
+  use HasFactory, HasMediaUrlAttribute, InteractsWithMedia, Notifiable;
 
   protected function casts(): array
   {
