@@ -32,8 +32,10 @@ Route::get('/article/user/{slug}', [PostController::class, 'postByUser'])->name(
 // Notification routes (auth required)
 // ──────────────────────────────────────────────
 Route::middleware('auth')->group(function (): void {
-  // Bookmarks
-  Route::get('/my/bookmarks', [BookmarkController::class, 'index'])->name('bookmark.index');
+  // Reader Dashboard & Bookmarks
+  Route::get('/my/dashboard', \App\Livewire\Blog\ReaderDashboard::class)->name('reader.dashboard');
+  // Redirect legacy /my/bookmarks to the unified reader dashboard
+  Route::redirect('/my/bookmarks', '/my/dashboard')->name('bookmark.index');
 });
 
 // ──────────────────────────────────────────────
@@ -51,10 +53,6 @@ Route::middleware(['auth', 'verified', 'role:admin,writer'])
     ]);
 
     Route::get('/article/p/{slug}', [PreviewController::class, 'preview'])->name('preview');
-
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name(
-      'admin.logout',
-    );
   });
 
 // ──────────────────────────────────────────────
@@ -78,11 +76,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])
 // ──────────────────────────────────────────────
 // Search route
 // ──────────────────────────────────────────────
-Route::get('/search', function () {
-  return view('search', [
-    'query' => request()->query('q', ''),
-  ]);
-})->name('search');
+Route::get('/search', [\App\Http\Controllers\Home\SearchController::class, 'index'])->name('search');
 
 // ──────────────────────────────────────────────
 // Error Page Preview Routes (Dev Only)

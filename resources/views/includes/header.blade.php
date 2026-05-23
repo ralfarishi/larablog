@@ -84,11 +84,11 @@
                   Dashboard
                 </a>
                 <a
-                  href="{{ route('bookmark.index') }}"
+                  href="{{ route('reader.dashboard') }}"
                   class="text-foreground hover:bg-muted hover:text-primary flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-colors"
                 >
-                  <i class="ph ph-bookmark-simple text-lg"></i>
-                  My Bookmarks
+                  <i class="ph ph-user text-lg"></i>
+                  Reader Center
                 </a>
                 <div class="bg-border mx-2 my-1 h-px"></div>
                 <a
@@ -105,23 +105,57 @@
               </div>
             </li>
           @else
-            <li>
-              <a
-                href="{{ route('bookmark.index') }}"
-                class="text-muted-foreground hover:text-primary text-sm font-bold transition-colors"
-                >Bookmarks</a
+            <li class="relative" x-data="{ open: false }">
+              <button
+                @click="open = !open"
+                @click.outside="open = false"
+                class="bg-card ring-border hover:ring-primary/50 flex items-center gap-3 rounded-full py-1.5 pr-4 pl-2 ring-1 transition-all focus:outline-none"
               >
-            </li>
-            <li>
-              <a
-                href="{{ route('logout') }}"
-                onclick="
-                  event.preventDefault();
-                  document.getElementById('logout-form').submit();
-                "
-                class="text-muted-foreground hover:text-primary text-sm font-bold transition-colors"
-                >Sign Out</a
+                <div class="h-8 w-8 shrink-0 overflow-hidden rounded-full">
+                  <img
+                    src="{{ auth()->user()->profile_picture_url }}"
+                    alt="Avatar"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+                <span
+                  class="text-foreground text-sm font-bold capitalize"
+                  >{{ auth()->user()->name }}</span
+                >
+                <i class="ph ph-caret-down text-muted-foreground"></i>
+              </button>
+
+              <div
+                x-show="open"
+                style="display: none"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                class="bg-card ring-border absolute right-0 z-50 mt-4 w-56 overflow-hidden rounded-3xl p-2 shadow-xl ring-1 focus:outline-none"
               >
+                <a
+                  href="{{ route('reader.dashboard') }}"
+                  class="text-foreground hover:bg-muted hover:text-primary flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-colors"
+                >
+                  <i class="ph ph-user text-lg"></i>
+                  Reader Center
+                </a>
+                <div class="bg-border mx-2 my-1 h-px"></div>
+                <a
+                  href="{{ route('logout') }}"
+                  onclick="
+                    event.preventDefault();
+                    document.getElementById('logout-form').submit();
+                  "
+                  class="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold text-red-500 transition-colors hover:bg-red-50"
+                >
+                  <i class="ph ph-sign-out text-lg"></i>
+                  Sign Out
+                </a>
+              </div>
             </li>
           @endif
         @endauth
@@ -168,9 +202,9 @@
             </li>
             <li>
               <a
-                href="{{ route('bookmark.index') }}"
+                href="{{ route('reader.dashboard') }}"
                 class="bg-card ring-border text-foreground hover:ring-primary flex items-center gap-3 rounded-2xl p-4 ring-1 transition-colors"
-                ><i class="ph ph-bookmark-simple text-xl"></i> My Bookmarks</a
+                ><i class="ph ph-user text-xl"></i> Reader Center</a
               >
             </li>
             <li>
@@ -187,9 +221,9 @@
           @else
             <li>
               <a
-                href="{{ route('bookmark.index') }}"
+                href="{{ route('reader.dashboard') }}"
                 class="bg-card ring-border text-foreground hover:ring-primary flex items-center gap-3 rounded-2xl p-4 ring-1 transition-colors"
-                ><i class="ph ph-bookmark-simple text-xl"></i> My Bookmarks</a
+                ><i class="ph ph-user text-xl"></i> Reader Center</a
               >
             </li>
             <li>

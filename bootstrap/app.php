@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
     // Middleware aliases (previously $middlewareAliases in Kernel.php)
     $middleware->alias([
-      'is.admin' => \App\Http\Middleware\IsAdmin::class,
       'role' => \App\Http\Middleware\RoleMiddleware::class,
     ]);
   })

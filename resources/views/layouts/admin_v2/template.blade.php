@@ -16,40 +16,50 @@
     })();
   </script>
   <style>
-    /* Main content padding based on sidebar state */
-    body:not(.main-content-collapsed) .lg\:pl-72 {
-      padding-left: 18rem !important;
-    }
-    body.main-content-collapsed .lg\:pl-72,
-    html.sidebar-collapsed .lg\:pl-72 {
-      padding-left: 6rem !important;
-    }
+    @media (min-width: 1024px) {
+      /* Main content padding based on sidebar state */
+      body:not(.main-content-collapsed) .lg\:pl-72 {
+        padding-left: 18rem !important;
+      }
+      body.main-content-collapsed .lg\:pl-72,
+      html.sidebar-collapsed .lg\:pl-72 {
+        padding-left: 6rem !important;
+      }
 
-    /* Sidebar collapsed states */
-    html.sidebar-collapsed aside {
-      width: 6rem !important;
-    }
-    html.sidebar-collapsed aside h1 {
-      display: none !important;
-    }
-    html.sidebar-collapsed aside .px-4.pb-2,
-    html.sidebar-collapsed aside .px-4.pt-6.pb-2 {
-      opacity: 0 !important;
-      height: 0 !important;
-      overflow: hidden !important;
-    }
-    html.sidebar-collapsed aside span.whitespace-nowrap {
-      display: none !important;
-    }
-    html.sidebar-collapsed aside .justify-between {
-      justify-content: center !important;
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-    }
-    html.sidebar-collapsed aside .px-4.py-3\.5 {
-      justify-content: center !important;
-      padding-left: 0 !important;
-      padding-right: 0 !important;
+      /* Sidebar collapsed states */
+      html.sidebar-collapsed aside {
+        width: 6rem !important;
+      }
+      html.sidebar-collapsed aside h1 {
+        display: none !important;
+      }
+      html.sidebar-collapsed aside .px-4.pb-2,
+      html.sidebar-collapsed aside .px-4.pt-6.pb-2 {
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+      html.sidebar-collapsed aside span.whitespace-nowrap {
+        display: none !important;
+      }
+      html.sidebar-collapsed aside .justify-between {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      html.sidebar-collapsed aside .px-4.py-3\.5 {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      /* Toggle icon visibility based on document state */
+      html.sidebar-collapsed aside button .toggle-icon-collapsed {
+        display: inline-block !important;
+      }
+      html.sidebar-collapsed aside button .toggle-icon-expanded {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -61,6 +71,7 @@
     x-data="{
       sidebarOpen: false,
       sidebarCollapsed: localStorage.getItem('sidebarCollapsed') === 'true',
+      isMobile: window.innerWidth < 1024,
     }"
     x-init="
       $watch('sidebarCollapsed', (value) => {
@@ -78,6 +89,7 @@
         document.body.classList.add('main-content-collapsed');
       }
     "
+    @resize.window="isMobile = window.innerWidth < 1024"
     class="bg-background min-h-screen"
   >
     <!-- Sidebar -->
@@ -85,8 +97,11 @@
 
     <!-- Main Content Area -->
     <div
-      class="flex min-h-screen flex-col pl-0 transition-all duration-300 lg:pl-72"
-      :class="sidebarCollapsed ? 'lg:pl-24' : ''"
+      class="flex min-h-screen flex-col pl-0 lg:pl-72 transition-all duration-300"
+      :class="{
+        'lg:pl-72': !sidebarCollapsed || isMobile,
+        'lg:pl-24': sidebarCollapsed && !isMobile,
+      }"
     >
       <!-- Top Navbar -->
       <header
